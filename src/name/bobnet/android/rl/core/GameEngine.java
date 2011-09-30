@@ -7,4 +7,14 @@ package name.bobnet.android.rl.core;
 
 public class GameEngine {
 	
+	// engine singleton
+	private static GameEngine engine;
+	
+	public static GameEngine getEngine() {
+		if (engine == null)
+			engine = new GameEngine();
+		
+		return engine;
+	}
+
 }
