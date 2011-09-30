@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class Tile extends Entity {
+import name.bobnet.android.rl.core.message.Message;
+
+public class Tile implements Entity {
 
 	/*
 	 * Entities that can be on the tile
@@ -36,7 +38,7 @@ public class Tile extends Entity {
 		projectiles = new ArrayList<Entity>();
 		items = new Stack<Entity>();
 	}
-
+	
 	@Override
 	public void tick() {
 		// call the tick method of our children
@@ -61,6 +63,12 @@ public class Tile extends Entity {
 		
 		// tileType
 		tileType.tick();
+	}
+
+	@Override
+	public void processMessage(Message message) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**

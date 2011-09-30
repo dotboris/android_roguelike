@@ -5,7 +5,9 @@
  */
 package name.bobnet.android.rl.core.ents;
 
-public class Dungeon extends Entity {
+import name.bobnet.android.rl.core.message.Message;
+
+public class Dungeon implements Entity {
 
 	// constants
 	public final static int D_WIDTH = 255;
@@ -24,13 +26,19 @@ public class Dungeon extends Entity {
 				tiles[x][y] = new Tile();
 			}
 	}
-
+	
 	@Override
 	public void tick() {
 		// tick all children
 		for (int x = 0; x < D_WIDTH; x++)
 			for (int y = 0; y < D_HEIGHT; y++)  
 				tiles[x][y].tick();
+	}
+	
+	@Override
+	public void processMessage(Message message) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

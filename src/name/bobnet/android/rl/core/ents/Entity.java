@@ -5,10 +5,14 @@
  */
 package name.bobnet.android.rl.core.ents;
 
-public abstract class Entity {
-	
+import name.bobnet.android.rl.core.message.Message;
+
+public interface Entity {
+
 	/**
 	 * Called whenever the game ticks
 	 */
-	public abstract void tick();
+	public void tick();
+
+	public void processMessage(Message message);
 }
