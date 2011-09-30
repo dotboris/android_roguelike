@@ -3,22 +3,22 @@
  * Class Purpose:		Game tile that contains entities
  * Created by:			boris on 2011-09-30
  */
-package name.bobnet.android.rl.core;
+package name.bobnet.android.rl.core.ents;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-import name.bobnet.android.rl.core.ents.Entity;
-
-public class Tile {
+public class Tile extends Entity {
 
 	/*
 	 * Entities that can be on the tile
 	 * 
-	 * - Projectiles (Spells, Arrows, Rocks, etc.) - Monster or player - Items
-	 * on the floor - The type of the tile itself (Floor, Wall, Stairs, Shallow
-	 * Water, Deep Water, Lava, etc.)
+	 * - Projectiles (Spells, Arrows, Rocks, etc.) 
+	 * - Monster or player 
+	 * - Items on the floor 
+	 * - The type of the tile itself 
+	 * 		(Floor, Wall, Stairs, Shallow Water, Deep Water, Lava, etc.)
 	 */
 	private ArrayList<Entity> projectiles;
 	private Entity mob;
@@ -27,7 +27,6 @@ public class Tile {
 
 	public Tile() {
 		// TODO: Add a default tile
-		this(new Entity());
 	}
 
 	public Tile(Entity tileType) {
@@ -36,6 +35,32 @@ public class Tile {
 		// create the items stack
 		projectiles = new ArrayList<Entity>();
 		items = new Stack<Entity>();
+	}
+
+	@Override
+	public void tick() {
+		// call the tick method of our children
+
+		// general purpose iterator
+		Iterator<Entity> it;
+
+		// projectiles
+		it = projectiles.iterator();
+		while (it.hasNext()) {
+			it.next().tick();
+		}
+
+		// mob
+		if (mob != null)
+			mob.tick();
+
+		// items
+		it = items.iterator();
+		while (it.hasNext())
+			it.next().tick();
+		
+		// tileType
+		tileType.tick();
 	}
 
 	/**
