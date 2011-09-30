@@ -5,6 +5,10 @@
  */
 package name.bobnet.android.rl.core.ents;
 
-public class Entity {
-
+public abstract class Entity {
+	
+	/**
+	 * Called whenever the game ticks
+	 */
+	public abstract void tick();
 }
