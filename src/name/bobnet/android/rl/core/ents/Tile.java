@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import name.bobnet.android.rl.core.ents.tiles.TileType;
+import name.bobnet.android.rl.core.ents.tiles.Wall;
+import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.message.Message;
 
 public class Tile implements Entity {
@@ -25,20 +28,20 @@ public class Tile implements Entity {
 	private ArrayList<Entity> projectiles;
 	private Entity mob;
 	private Stack<Entity> items;
-	private Entity tileType;
+	private TileType tileType;
 
 	public Tile() {
-		// TODO: Add a default tile
+		this(new Wall(TileStyle.ROCK));
 	}
 
-	public Tile(Entity tileType) {
+	public Tile(TileType tileType) {
 		setTileType(tileType);
 
 		// create the items stack
 		projectiles = new ArrayList<Entity>();
 		items = new Stack<Entity>();
 	}
-	
+
 	@Override
 	public void tick() {
 		// call the tick method of our children
@@ -60,7 +63,7 @@ public class Tile implements Entity {
 		it = items.iterator();
 		while (it.hasNext())
 			it.next().tick();
-		
+
 		// tileType
 		tileType.tick();
 	}
@@ -68,7 +71,7 @@ public class Tile implements Entity {
 	@Override
 	public void processMessage(Message message) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -146,7 +149,7 @@ public class Tile implements Entity {
 	/**
 	 * @return the tileType
 	 */
-	public Entity getTileType() {
+	public TileType getTileType() {
 		return tileType;
 	}
 
@@ -157,7 +160,7 @@ public class Tile implements Entity {
 	 * @throws NullPointerException
 	 *             thrown when tileType is null
 	 */
-	public void setTileType(Entity tileType) {
+	public void setTileType(TileType tileType) {
 		if (tileType == null)
 			throw new NullPointerException("tileType cannot be null");
 
