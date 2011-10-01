@@ -29,6 +29,7 @@ public class Tile implements Entity {
 	private Entity mob;
 	private Stack<Entity> items;
 	private TileType tileType;
+	private boolean visible;
 
 	public Tile() {
 		this(new Wall(TileStyle.ROCK));
@@ -40,6 +41,7 @@ public class Tile implements Entity {
 		// create the items stack
 		projectiles = new ArrayList<Entity>();
 		items = new Stack<Entity>();
+		setVisible(false);
 	}
 
 	@Override
@@ -166,6 +168,21 @@ public class Tile implements Entity {
 
 		// set the tile type
 		this.tileType = tileType;
+	}
+
+	/**
+	 * @return the visible
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+
+	/**
+	 * @param visible
+	 *            the visible to set
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 }
