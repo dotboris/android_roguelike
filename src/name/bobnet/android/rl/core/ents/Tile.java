@@ -71,7 +71,7 @@ public class Tile implements Entity {
 		// general purpose iterator
 		Iterator<Entity> it;
 
-		// projectiles
+		// super ents
 		it = superEnts.iterator();
 		while (it.hasNext()) {
 			it.next().tick();
@@ -97,24 +97,24 @@ public class Tile implements Entity {
 	}
 
 	/**
-	 * @return the iterator of the projectiles
+	 * @return the iterator of the super ents
 	 */
-	public Iterator<Entity> getProjectilesIterator() {
+	public Iterator<Entity> getSuperEntsIterator() {
 		return superEnts.iterator();
 	}
 
 	/**
-	 * Add a projectile
+	 * Add a super entity
 	 * 
 	 * @throws NullPointerException
-	 *             thrown when proj is null
+	 *             thrown when supEnt is null
 	 */
-	public void addProjectile(Entity proj) {
-		if (proj == null)
+	public void addSuperEntity(Entity supEnt) {
+		if (supEnt == null)
 			throw new NullPointerException("proj cannot be null");
 
-		// add the projectile
-		superEnts.add(proj);
+		// add the superEnt
+		superEnts.add(supEnt);
 	}
 
 	/**
