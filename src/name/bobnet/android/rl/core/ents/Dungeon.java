@@ -19,26 +19,40 @@ public class Dungeon implements Entity {
 	public Dungeon() {
 		// create the tiles array
 		tiles = new Tile[D_WIDTH][D_HEIGHT];
-		
+
 		// create the tiles
 		for (int x = 0; x < D_WIDTH; x++)
 			for (int y = 0; y < D_HEIGHT; y++) {
-				tiles[x][y] = new Tile();
+				tiles[x][y] = new Tile(x, y);
 			}
 	}
-	
+
+	/**
+	 * Get the tile relative to the provided one using the provided offset
+	 * 
+	 * @param t
+	 *            The tile that is the starting point
+	 * @param offsetX
+	 *            the x offset
+	 * @param offsetY
+	 *            the y offset
+	 */
+	public Tile getRelativeTile(Tile t, int offsetX, int offsetY) {
+		return tiles[t.getX() + offsetX][t.getY() + offsetY];
+	}
+
 	@Override
 	public void tick() {
 		// tick all children
 		for (int x = 0; x < D_WIDTH; x++)
-			for (int y = 0; y < D_HEIGHT; y++)  
+			for (int y = 0; y < D_HEIGHT; y++)
 				tiles[x][y].tick();
 	}
-	
+
 	@Override
 	public void processMessage(Message message) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

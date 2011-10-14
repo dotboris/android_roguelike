@@ -30,12 +30,32 @@ public class Tile implements Entity {
 	private Stack<Entity> items;
 	private TileType tileType;
 	private boolean visible;
+	private int x, y;
 
-	public Tile() {
-		this(new Wall(TileStyle.ROCK));
+	/**
+	 * @param x
+	 *            position of the tile in the dungeon
+	 * @param y
+	 *            position of the tile in the dungeon
+	 * @throws IndexOutOfBoundsException
+	 *             thrown when x or y are out of bounds
+	 */
+	public Tile(int x, int y) throws IndexOutOfBoundsException {
+		this(new Wall(TileStyle.ROCK), x, y);
 	}
 
-	public Tile(TileType tileType) {
+	/**
+	 * @param tileType
+	 *            the type of tile to be made (Wall, floor, door, etc.)
+	 * @param x
+	 *            position of the tile in the dungeon
+	 * @param y
+	 *            position of the tile in the dungeon
+	 * @throws IndexOutOfBoundsException
+	 *             thrown when x or y are out of bounds
+	 */
+	public Tile(TileType tileType, int x, int y)
+			throws IndexOutOfBoundsException {
 		setTileType(tileType);
 
 		// create the items stack
@@ -183,6 +203,46 @@ public class Tile implements Entity {
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	/**
+	 * @return the x
+	 */
+	public int getX() {
+		return x;
+	}
+
+	/**
+	 * @param x
+	 *            the x to set
+	 * @throws IndexOutOfBoundsException
+	 *             thrown when x is out of bounds
+	 */
+	public void setX(int x) {
+		if (x < 0 && x >= Dungeon.D_WIDTH)
+			throw new IndexOutOfBoundsException("x is out of bounds");
+
+		this.x = x;
+	}
+
+	/**
+	 * @return the y
+	 */
+	public int getY() {
+		return y;
+	}
+
+	/**
+	 * @param y
+	 *            the y to set
+	 * @throws IndexOutOfBoundsException
+	 *             thrown when y is out of bounds
+	 */
+	public void setY(int y) {
+		if (y < 0 && y >= Dungeon.D_HEIGHT)
+			throw new IndexOutOfBoundsException("y is out of bounds");
+
+		this.y = y;
 	}
 
 }
