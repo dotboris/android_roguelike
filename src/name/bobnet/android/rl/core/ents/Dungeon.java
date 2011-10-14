@@ -36,9 +36,25 @@ public class Dungeon implements Entity {
 	 *            the x offset
 	 * @param offsetY
 	 *            the y offset
+	 * @throws IndexOutOfBoundsException
+	 *             thrown when the new tile doesn't exist
+	 * @throws NullPointerException
+	 *             thrown when the origin tile is null
 	 */
 	public Tile getRelativeTile(Tile t, int offsetX, int offsetY) {
 		return tiles[t.getX() + offsetX][t.getY() + offsetY];
+	}
+
+	/**
+	 * Get a tile with its position
+	 * 
+	 * @param x
+	 *            the x position of the tile
+	 * @param y
+	 *            the y position of the tile
+	 */
+	public Tile getTile(int x, int y) {
+		return tiles[x][y];
 	}
 
 	@Override
