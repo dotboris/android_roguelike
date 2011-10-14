@@ -19,13 +19,13 @@ public class Tile implements Entity {
 	/*
 	 * Entities that can be on the tile
 	 * 
-	 * - Projectiles (Spells, Arrows, Rocks, etc.) 
+	 * - Super Entities (Spells, Arrows, Rocks, etc.) 
 	 * - Monster or player 
 	 * - Items on the floor 
 	 * - The type of the tile itself 
 	 * 		(Floor, Wall, Stairs, Shallow Water, Deep Water, Lava, etc.)
 	 */
-	private ArrayList<Entity> projectiles;
+	private ArrayList<Entity> superEnts;
 	private Entity mob;
 	private Stack<Entity> items;
 	private TileType tileType;
@@ -39,7 +39,7 @@ public class Tile implements Entity {
 		setTileType(tileType);
 
 		// create the items stack
-		projectiles = new ArrayList<Entity>();
+		superEnts = new ArrayList<Entity>();
 		items = new Stack<Entity>();
 		setVisible(false);
 	}
@@ -52,7 +52,7 @@ public class Tile implements Entity {
 		Iterator<Entity> it;
 
 		// projectiles
-		it = projectiles.iterator();
+		it = superEnts.iterator();
 		while (it.hasNext()) {
 			it.next().tick();
 		}
@@ -80,7 +80,7 @@ public class Tile implements Entity {
 	 * @return the iterator of the projectiles
 	 */
 	public Iterator<Entity> getProjectilesIterator() {
-		return projectiles.iterator();
+		return superEnts.iterator();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class Tile implements Entity {
 			throw new NullPointerException("proj cannot be null");
 
 		// add the projectile
-		projectiles.add(proj);
+		superEnts.add(proj);
 	}
 
 	/**
