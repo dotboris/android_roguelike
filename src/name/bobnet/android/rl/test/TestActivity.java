@@ -18,6 +18,8 @@ public class TestActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		Log.d("RL", "Creating engine");
+		
 		// create an engine object
 		engine = GameEngine.getEngine();
 		
@@ -26,6 +28,10 @@ public class TestActivity extends Activity {
 		engine.init();
 		
 		Log.d("RL", "Inited Engine");
+		
+		setContentView(new TestView(this));
+		
+		Log.d("RL", "loaded the test view");
 	}
 	
 }
