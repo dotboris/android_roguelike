@@ -20,7 +20,7 @@ public class Wall extends TileType {
 	 *            is the wall breakable (diggable)
 	 */
 	public Wall(TileStyle style, boolean seeThrough, boolean breakable) {
-		super(style);
+		super(style, false);
 		this.seeThrough = seeThrough;
 		this.breakable = breakable;
 	}

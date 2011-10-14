@@ -22,9 +22,11 @@ public abstract class TileType implements Entity {
 
 	// variables
 	protected TileStyle style;
+	protected boolean passThrough;
 
-	public TileType(TileStyle style) {
+	public TileType(TileStyle style, boolean passThrough) {
 		setStyle(style);
+		setPassThrough(passThrough);
 	}
 
 	/**
@@ -46,6 +48,21 @@ public abstract class TileType implements Entity {
 
 		// set style
 		this.style = style;
+	}
+
+	/**
+	 * @return the passThrough
+	 */
+	public boolean isPassThrough() {
+		return passThrough;
+	}
+
+	/**
+	 * @param passThrough
+	 *            the passThrough to set
+	 */
+	public void setPassThrough(boolean passThrough) {
+		this.passThrough = passThrough;
 	}
 
 }
