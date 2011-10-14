@@ -18,7 +18,7 @@ public class Message {
 	 * @author boris
 	 */
 	public enum MessageType {
-		M_ENTITY_ENTER_TILE, M_ENTITY_LEAVE_TILE, M_DO_DAMAGE
+		M_ENTITY_ENTER_TILE, M_ENTITY_LEAVE_TILE, M_DO_DAMAGE, M_INTERACT
 	}
 
 	// variables
