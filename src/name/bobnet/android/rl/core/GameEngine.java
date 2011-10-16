@@ -5,6 +5,8 @@
  */
 package name.bobnet.android.rl.core;
 
+import android.content.res.Resources;
+import android.util.Log;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.tiles.Floor;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
@@ -18,17 +20,25 @@ public class GameEngine {
 	// variables
 	private MessageManager messageManager;
 	private Dungeon currentDungeon;
+	private ActionsManager actionsManager;
 
 	private GameEngine() {
+
 		// create a message manager
 		messageManager = new MessageManager();
+		Log.d("RL", "Created MessageManager: " + messageManager.toString());
 	}
 
 	/**
 	 * Starts the game
 	 */
-	public void init() {
+	public void init(Resources res) {
 		// TODO: Init engine
+
+		// get an action manager
+		ActionsManager.initActionManager(res);
+		actionsManager = ActionsManager.getActionManager();
+		Log.d("RL", "Created ActionsManager: " + actionsManager.toString());
 
 		// create a new dungeon (for testing)
 		currentDungeon = new Dungeon();

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+	Guidelines for actions
+	
+	An action has to be associated with a number of ticks.
+	This is the number of ticks it takes to perform the action.
+	
+	The format of an action will be:
+	<item>A_ACTION_NAME ticks</item>
+	
+	Example:
+	<item>A_DUMMY_ACTION 10</item>
+	
+	Notes:
+	* Actions names are all caps with no spaces. 
+	* The name should start with A_ to identify it as an action.
+	* The name and the number of ticks to perform the action are separated
+		by a single space.
+ -->
+
+<resources>
+    <string-array name="actions">
+	    <!-- Dummy actions -->
+    	<item>A_DUMMY_10 10</item>
+     	<item>A_DUMMY_20 20</item>
+     	<item>A_DUMMY_30 30</item>
+     	<item>A_DUMMY_40 40</item>
+    </string-array>
+</resources>

@@ -12,7 +12,7 @@ import android.util.Log;
  */
 public class TestActivity extends Activity {
 
-	GameEngine engine;
+	private GameEngine engine;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +23,9 @@ public class TestActivity extends Activity {
 		// create an engine object
 		engine = GameEngine.getEngine();
 		
-		Log.d("RL", "Created Enggine: " + engine.toString());
-		
-		engine.init();
+		Log.d("RL", "Created Engine: " + engine.toString());
+
+		engine.init(getResources());
 		
 		Log.d("RL", "Inited Engine");
 		
