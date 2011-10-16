@@ -10,7 +10,6 @@ import android.util.Log;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.tiles.Floor;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
-import name.bobnet.android.rl.core.message.MessageManager;
 
 public class GameEngine {
 
@@ -24,9 +23,6 @@ public class GameEngine {
 
 	private GameEngine() {
 
-		// create a message manager
-		messageManager = new MessageManager();
-		Log.d("RL", "Created MessageManager: " + messageManager.toString());
 	}
 
 	/**
@@ -40,6 +36,10 @@ public class GameEngine {
 		actionsManager = ActionsManager.getActionManager();
 		Log.d("RL", "Created ActionsManager: " + actionsManager.toString());
 
+		// create a message manager
+		messageManager = MessageManager.getMessageManager();
+		Log.d("RL", "Created MessageManager: " + messageManager.toString());
+		
 		// create a new dungeon (for testing)
 		currentDungeon = new Dungeon();
 
