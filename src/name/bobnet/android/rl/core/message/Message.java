@@ -28,8 +28,6 @@ public class Message {
 	private Map<String, Object> arguments;
 
 	/**
-	 * @param sender
-	 *            the sender of the message
 	 * @param receiver
 	 *            the receiver of the message
 	 * @param messageType
@@ -74,13 +72,8 @@ public class Message {
 	/**
 	 * @param sender
 	 *            the sender to set
-	 * @throws NullPointerException
-	 *             thrown when sender is null
 	 */
 	public void setSender(Entity sender) {
-		if (sender == null)
-			throw new NullPointerException("sender cannot be null");
-
 		// set the sender
 		this.sender = sender;
 	}
