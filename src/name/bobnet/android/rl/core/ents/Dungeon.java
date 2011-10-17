@@ -67,7 +67,10 @@ public class Dungeon implements Entity {
 
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// send message to all children
+		for (int x = 0; x < D_WIDTH; x++)
+			for (int y = 0; y < D_HEIGHT; y++)
+				tiles[x][y].processMessage(message);
 
 	}
 

@@ -52,10 +52,11 @@ public class TestView extends View {
 
 				// send destroy message
 				MessageManager.getMessenger().sendMessage(
-						new Message(null, dummy, MessageType.M_DESTROY));
+						new Message(null, engine.getCurrentDungeon().getTile(
+								10, 10), MessageType.M_DESTROY));
 
 				// remove it from the tile
-				i.remove();
+//				i.remove();
 			} catch (Exception e) {
 				// TODO: handle exception
 			}

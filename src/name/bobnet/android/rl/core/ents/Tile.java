@@ -92,8 +92,28 @@ public class Tile implements Entity {
 
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// send the message to all children
 
+		// general purpose iterator
+		Iterator<Entity> it;
+
+		// super ents
+		it = superEnts.iterator();
+		while (it.hasNext()) {
+			it.next().processMessage(message);
+		}
+
+		// mob
+		if (mob != null)
+			mob.processMessage(message);
+
+		// items
+		it = items.iterator();
+		while (it.hasNext())
+			it.next().processMessage(message);
+
+		// tileType
+		tileType.processMessage(message);
 	}
 
 	/**
