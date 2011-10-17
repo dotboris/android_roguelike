@@ -5,9 +5,16 @@
  */
 package name.bobnet.android.rl.test;
 
+import java.util.Iterator;
+
 import name.bobnet.android.rl.core.GameEngine;
+import name.bobnet.android.rl.core.MessageManager;
+import name.bobnet.android.rl.core.ents.Dummy;
 import name.bobnet.android.rl.core.ents.Dungeon;
+import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.tiles.Wall;
+import name.bobnet.android.rl.core.message.Message;
+import name.bobnet.android.rl.core.message.Message.MessageType;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -27,12 +34,32 @@ public class TestView extends View {
 		super(context);
 		pActivity = (Activity) context;
 		engine = GameEngine.getEngine();
+
+		engine.getCurrentDungeon().getTile(10, 10).addSuperEntity(new Dummy());
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		invalidate();
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			for (int i = 0; i < 10; i++)
+				engine.doAction("A_DUMMY_10");
+			try {
+				// delete the dummy ent
+				Iterator<Entity> i = engine.getCurrentDungeon().getTile(10, 10)
+						.getSuperEntsIterator();
+				Entity dummy = i.next();
+
+				// send destroy message
+				MessageManager.getMessenger().sendMessage(
+						new Message(null, dummy, MessageType.M_DESTROY));
+
+				// remove it from the tile
+				i.remove();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 		return true;
 	}
 
