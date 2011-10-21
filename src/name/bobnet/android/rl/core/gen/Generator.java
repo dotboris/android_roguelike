@@ -6,6 +6,7 @@
 package name.bobnet.android.rl.core.gen;
 
 import name.bobnet.android.rl.core.ents.Dungeon;
+import name.bobnet.android.rl.core.ents.tiles.TileType;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 
 public abstract class Generator {
@@ -22,6 +23,30 @@ public abstract class Generator {
 		// set fields
 		this.style = style;
 		this.dungeon = dungeon;
+	}
+
+	/**
+	 * Fills a rectangle in the dungeon with a certain tiletype
+	 * 
+	 * @param tileType
+	 *            the tile to fill the dungeon with
+	 * @param x
+	 *            the x position of the rectangle
+	 * @param y
+	 *            the y position of the rectangle
+	 * @param w
+	 *            the width of the rectangle
+	 * @param h
+	 *            the height of the rectangle
+	 */
+	protected void dFillRect(int x, int y, int w, int h, TileType tileType) {
+		// cycle through the cells
+		for (int cx = x; cx < x + w; cx++)
+			for (int cy = y; cy < y + h; cy++) {
+				// set the tile type of the cell
+				dungeon.getTile(cx, cy)
+						.setTileType((TileType) tileType.clone());
+			}
 	}
 
 	/**

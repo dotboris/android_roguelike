@@ -65,4 +65,13 @@ public abstract class TileType implements Entity, Cloneable {
 		this.passThrough = passThrough;
 	}
 
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
+	}
+
 }
