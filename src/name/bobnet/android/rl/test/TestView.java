@@ -68,6 +68,8 @@ public class TestView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
+		Log.d("RL", "Started drawing");
+		
 		// values
 		float tW, tH;
 		tW = getWidth() / (float) Dungeon.D_WIDTH;
@@ -85,12 +87,15 @@ public class TestView extends View {
 		for (int x = 0; x < Dungeon.D_WIDTH; x++)
 			for (int y = 0; y < Dungeon.D_HEIGHT; y++) {
 				if (engine.getCurrentDungeon().getTile(x, y).getTileType() instanceof Wall)
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pRed);
+//					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
+//							pRed);
+					canvas.drawPoint(x, y, pRed);
 				else
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pBlue);
+//					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
+//							pBlue);
+					canvas.drawPoint(x, y, pBlue);
 			}
-
+		
+		Log.d("RL", "done drawing");
 	}
 }
