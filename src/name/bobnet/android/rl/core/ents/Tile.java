@@ -30,6 +30,7 @@ public class Tile implements Entity {
 	private Stack<Entity> items;
 	private TileType tileType;
 	private boolean visible;
+	private boolean genUsed;
 	private int x, y;
 
 	/**
@@ -263,6 +264,21 @@ public class Tile implements Entity {
 			throw new IndexOutOfBoundsException("y is out of bounds");
 
 		this.y = y;
+	}
+
+	/**
+	 * @return true if the generator has used this tile
+	 */
+	public boolean isGenUsed() {
+		return genUsed;
+	}
+
+	/**
+	 * @param genUsed
+	 *            whether or not the generator has used that tile
+	 */
+	public void setGenUsed(boolean genUsed) {
+		this.genUsed = genUsed;
 	}
 
 }
