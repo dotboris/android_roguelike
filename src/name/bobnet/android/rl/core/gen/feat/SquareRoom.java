@@ -35,8 +35,8 @@ public class SquareRoom extends Feature {
 		int w, h;
 
 		// determine the width and height
-		w = MIN_WIDTH + rnd.nextInt(MIN_WIDTH + MAX_WIDTH + 1);
-		h = MIN_HEIGHT + rnd.nextInt(MIN_HEIGHT + MAX_HEIGHT + 1);
+		w = MIN_WIDTH + rnd.nextInt(MAX_WIDTH - MIN_WIDTH + 1);
+		h = MIN_HEIGHT + rnd.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1);
 
 		// determine the x and y coordinates
 		switch (s) {
@@ -53,16 +53,16 @@ public class SquareRoom extends Feature {
 			y2 = y;
 			break;
 		case EAST:
-			x1 = x - w / 2;
-			x2 = x + w / 2;
-			y1 = y - h;
-			y2 = y;
+			x1 = x - w;
+			x2 = x;
+			y1 = y - h / 2;
+			y2 = y + h / 2;
 			break;
 		case WEST:
-			x1 = x - w / 2;
-			x2 = x + w / 2;
-			y1 = y;
-			y2 = y + h;
+			x1 = x;
+			x2 = x + w;
+			y1 = y - h / 2;
+			y2 = y + h / 2;
 			break;
 		}
 	}
@@ -104,7 +104,7 @@ public class SquareRoom extends Feature {
 		switch (side) {
 		case NORTH:
 		case SOUTH:
-			return rnd.nextInt(x1 + x2) + x1;
+			return rnd.nextInt(x2 - x1 + 1) + x1;
 		case WEST:
 			return x1 - 1;
 		case EAST:
@@ -123,7 +123,7 @@ public class SquareRoom extends Feature {
 			return y2 + 1;
 		case WEST:
 		case EAST:
-			return rnd.nextInt(y1 + y2) + y1;
+			return rnd.nextInt(y2 - y1 + 1) + y1;
 		default:
 			return -1;
 		}

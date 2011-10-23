@@ -78,8 +78,8 @@ public class Dungeon implements Entity {
 	public void fillRect(int x, int y, int w, int h, TileType tileType,
 			boolean genFlag) {
 		// cycle through the cells
-		for (int cx = x; cx < x + w; cx++)
-			for (int cy = y; cy < y + h; cy++) {
+		for (int cx = x; cx <= x + w; cx++)
+			for (int cy = y; cy <= y + h; cy++) {
 				// set the tile type of the cell
 				this.getTile(cx, cy).setTileType((TileType) tileType.clone());
 				
