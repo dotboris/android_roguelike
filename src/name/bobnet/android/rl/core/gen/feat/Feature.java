@@ -8,12 +8,14 @@ package name.bobnet.android.rl.core.gen.feat;
 import java.util.Random;
 
 import name.bobnet.android.rl.core.ents.Dungeon;
+import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 
 public abstract class Feature {
 
 	// variables
 	protected Dungeon d;
 	protected Random rnd;
+	protected TileStyle style;
 
 	/**
 	 * The possible sides of a feature
@@ -31,10 +33,13 @@ public abstract class Feature {
 	 *            the dungeon to work with
 	 * @param rnd
 	 *            the random number generator used to generate the dungeon
+	 * @param style
+	 *            the style of the feature
 	 */
-	public Feature(Dungeon d, Random rnd) {
+	public Feature(Dungeon d, Random rnd, TileStyle style) {
 		this.d = d;
 		this.rnd = rnd;
+		this.style = style;
 	}
 
 	/**
