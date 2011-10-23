@@ -98,4 +98,34 @@ public class SquareRoom extends Feature {
 		// place all the floor tiles
 		d.fillRect(x1, y1, x2 - x1, y2 - y1, new Floor(style), true);
 	}
+
+	@Override
+	public int getRndWallX(Side side) {
+		switch (side) {
+		case NORTH:
+		case SOUTH:
+			return rnd.nextInt(x1 + x2) + x1;
+		case WEST:
+			return x1 - 1;
+		case EAST:
+			return x2 + 1;
+		default:
+			return -1;
+		}
+	}
+
+	@Override
+	public int getRndWallY(Side side) {
+		switch (side) {
+		case NORTH:
+			return y1 - 1;
+		case SOUTH:
+			return y2 + 1;
+		case WEST:
+		case EAST:
+			return rnd.nextInt(y1 + y2) + y1;
+		default:
+			return -1;
+		}
+	}
 }

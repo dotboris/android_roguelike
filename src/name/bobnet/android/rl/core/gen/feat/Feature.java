@@ -68,4 +68,22 @@ public abstract class Feature {
 	 */
 	public abstract void place();
 
+	/**
+	 * Get a random x coordinate for a wall
+	 * 
+	 * @param side
+	 *            the side of the wall
+	 * @return the random x value of a point on said side
+	 */
+	public abstract int getRndWallX(Side side);
+
+	/**
+	 * Get a random y coordinate for a wall
+	 * 
+	 * @param side
+	 *            the side of the wall
+	 * @return the random y value of a point on said side
+	 */
+	public abstract int getRndWallY(Side side);
+
 }
