@@ -5,6 +5,7 @@
  */
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.ents.tiles.TileType;
 import name.bobnet.android.rl.core.message.Message;
 
 public class Dungeon implements Entity {
@@ -55,6 +56,29 @@ public class Dungeon implements Entity {
 	 */
 	public Tile getTile(int x, int y) {
 		return tiles[x][y];
+	}
+
+	/**
+	 * Fills a rectangle in the dungeon with a certain tiletype
+	 * 
+	 * @param tileType
+	 *            the tile to fill the dungeon with
+	 * @param x
+	 *            the x position of the rectangle
+	 * @param y
+	 *            the y position of the rectangle
+	 * @param w
+	 *            the width of the rectangle
+	 * @param h
+	 *            the height of the rectangle
+	 */
+	public void fillRect(int x, int y, int w, int h, TileType tileType) {
+		// cycle through the cells
+		for (int cx = x; cx < x + w; cx++)
+			for (int cy = y; cy < y + h; cy++) {
+				// set the tile type of the cell
+				this.getTile(cx, cy).setTileType((TileType) tileType.clone());
+			}
 	}
 
 	@Override
