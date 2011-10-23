@@ -71,13 +71,21 @@ public class Dungeon implements Entity {
 	 *            the width of the rectangle
 	 * @param h
 	 *            the height of the rectangle
+	 * @param genFlag
+	 *            whether or not to set the generation flag on the affected
+	 *            tiles
 	 */
-	public void fillRect(int x, int y, int w, int h, TileType tileType) {
+	public void fillRect(int x, int y, int w, int h, TileType tileType,
+			boolean genFlag) {
 		// cycle through the cells
 		for (int cx = x; cx < x + w; cx++)
 			for (int cy = y; cy < y + h; cy++) {
 				// set the tile type of the cell
 				this.getTile(cx, cy).setTileType((TileType) tileType.clone());
+				
+				// set the generation flag
+				if (genFlag)
+					getTile(cx, cy).setGenUsed(true);
 			}
 	}
 
