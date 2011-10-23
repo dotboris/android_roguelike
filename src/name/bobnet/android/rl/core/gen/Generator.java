@@ -5,6 +5,8 @@
  */
 package name.bobnet.android.rl.core.gen;
 
+import java.util.Random;
+
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 
@@ -13,6 +15,7 @@ public abstract class Generator {
 	// variables
 	protected Dungeon dungeon;
 	protected TileStyle style;
+	protected Random rnd;
 
 	public enum DungeonType {
 		STANDARD
@@ -22,6 +25,9 @@ public abstract class Generator {
 		// set fields
 		this.style = style;
 		this.dungeon = dungeon;
+		
+		// create new random number generator
+		rnd = new Random();
 	}
 
 	/**

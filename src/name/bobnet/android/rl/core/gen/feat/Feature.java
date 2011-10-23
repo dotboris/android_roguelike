@@ -5,12 +5,15 @@
  */
 package name.bobnet.android.rl.core.gen.feat;
 
+import java.util.Random;
+
 import name.bobnet.android.rl.core.ents.Dungeon;
 
 public abstract class Feature {
 
 	// variables
 	protected Dungeon d;
+	protected Random rnd;
 
 	/**
 	 * The possible sides of a feature
@@ -26,9 +29,12 @@ public abstract class Feature {
 	 * 
 	 * @param d
 	 *            the dungeon to work with
+	 * @param rnd
+	 *            the random number generator used to generate the dungeon
 	 */
-	public Feature(Dungeon d) {
+	public Feature(Dungeon d, Random rnd) {
 		this.d = d;
+		this.rnd = rnd;
 	}
 
 	/**
