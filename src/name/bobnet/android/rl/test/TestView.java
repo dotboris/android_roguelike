@@ -79,8 +79,6 @@ public class TestView extends View {
 		float tW, tH;
 		tW = 3.0f;
 		tH = 3.0f;
-		//tW = getWidth() / (float) Dungeon.D_WIDTH;
-		//tH = getHeight() / (float) Dungeon.D_HEIGHT;
 
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
@@ -96,11 +94,9 @@ public class TestView extends View {
 				if (engine.getCurrentDungeon().getTile(x, y).getTileType() instanceof Wall)
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pRed);
-//					canvas.drawPoint(x, y, pRed);
 				else
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pBlue);
-//					canvas.drawPoint(x, y, pBlue);
 			}
 		
 		Log.d("RL", "done drawing");

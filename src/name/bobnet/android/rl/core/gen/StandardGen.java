@@ -54,16 +54,7 @@ public class StandardGen extends Generator {
 			// pick a random feature
 			Feature oldFeat = features[rnd.nextInt(fCount)];
 
-			// create a feature
-			// if (oldFeat instanceof SquareRoom) {
-			// if (!corridor)
-			// continue;
-			// tFeature = new Corridor(dungeon, rnd, style);
-			// } else {
-			// if (corridor)
-			// continue;
-			// tFeature = new SquareRoom(dungeon, rnd, style);
-			// }
+			// determine what feature to place
 			if (oldFeat instanceof SquareRoom)
 				tFeature = new Corridor(dungeon, rnd, style);
 			else if (rnd.nextInt(101) > 25) {
@@ -108,9 +99,6 @@ public class StandardGen extends Generator {
 
 				// place the feature
 				tFeature.place();
-
-				// flip corridor flag
-				// corridor = !corridor;
 			}
 		}
 
