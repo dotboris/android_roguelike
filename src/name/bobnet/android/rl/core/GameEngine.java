@@ -13,8 +13,9 @@ import android.content.res.Resources;
 import android.util.Log;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
-import name.bobnet.android.rl.core.ents.tiles.Floor;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
+import name.bobnet.android.rl.core.gen.Generator;
+import name.bobnet.android.rl.core.gen.Generator.DungeonType;
 
 public class GameEngine {
 
@@ -57,13 +58,14 @@ public class GameEngine {
 		Log.d("RL", "Created MessageManager: " + messageManager.toString());
 
 		// create a new dungeon (for testing)
-		currentDungeon = new Dungeon();
+		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
+				TileStyle.ROCK);
 
 		// set a few floor tiles
-		for (int i = 50; i < 100; i++)
-			for (int j = 50; j < 100; j++)
-				currentDungeon.getTile(i, j).setTileType(
-						new Floor(TileStyle.ROCK));
+		// for (int i = 50; i < 100; i++)
+		// for (int j = 50; j < 100; j++)
+		// currentDungeon.getTile(i, j).setTileType(
+		// new Floor(TileStyle.ROCK));
 	}
 
 	/**

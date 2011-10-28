@@ -72,8 +72,10 @@ public class TestView extends View {
 		
 		// values
 		float tW, tH;
-		tW = getWidth() / (float) Dungeon.D_WIDTH;
-		tH = getHeight() / (float) Dungeon.D_HEIGHT;
+		tW = 5.0f;
+		tH = 5.0f;
+		//tW = getWidth() / (float) Dungeon.D_WIDTH;
+		//tH = getHeight() / (float) Dungeon.D_HEIGHT;
 
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
