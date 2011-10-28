@@ -14,13 +14,14 @@ import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 public class SquareRoom extends Feature {
 
 	// constants
-	public static final int MAX_WIDTH = 50;
-	public static final int MIN_WIDTH = 2;
-	public static final int MAX_HEIGHT = 50;
-	public static final int MIN_HEIGHT = 2;
+	public static final int MAX_WIDTH = 30;
+	public static final int MIN_WIDTH = 8;
+	public static final int MAX_HEIGHT = 30;
+	public static final int MIN_HEIGHT = 8;
 
 	// variables
 	private int x1, x2, y1, y2;
+	private Side side;
 
 	public SquareRoom(Dungeon d, Random rnd, TileStyle style) {
 		super(d, rnd, style);
@@ -34,6 +35,9 @@ public class SquareRoom extends Feature {
 		// variables
 		int w, h;
 
+		// set the side
+		this.side = s;
+		
 		// determine the width and height
 		w = MIN_WIDTH + rnd.nextInt(MAX_WIDTH - MIN_WIDTH + 1);
 		h = MIN_HEIGHT + rnd.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1);
@@ -74,8 +78,10 @@ public class SquareRoom extends Feature {
 	public boolean check() {
 		try {
 			// check all the tiles to see if the generator used it
-			for (int x = x1; x <= x2; x++)
-				for (int y = y1; y <= y2; y++) {
+			for (int x = x1 - (side == Side.WEST ? 0 : 1); x <= x2
+					+ (side == Side.EAST ? 0 : 1); x++)
+				for (int y = y1 - (side == Side.NORTH ? 0 : 1); y <= y2
+						+ (side == Side.SOUTH ? 0 : 1); y++) {
 					if (d.getTile(x, y).isGenUsed()) {
 						// it's not a wall get out
 						return false;
