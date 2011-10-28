@@ -42,6 +42,11 @@ public class TestView extends View {
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// generate a new dungeon and redraw
+			engine.genDugeon();
+			invalidate();
+			
+			
 			for (int i = 0; i < 10; i++)
 				engine.doAction("A_DUMMY_10");
 			try {

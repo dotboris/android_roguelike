@@ -61,11 +61,12 @@ public class GameEngine {
 		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
 				TileStyle.ROCK);
 
-		// set a few floor tiles
-		// for (int i = 50; i < 100; i++)
-		// for (int j = 50; j < 100; j++)
-		// currentDungeon.getTile(i, j).setTileType(
-		// new Floor(TileStyle.ROCK));
+	}
+
+	// TESTING generate a new dungeon and set it as the current dungeon
+	public void genDugeon() {
+		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
+				TileStyle.ROCK);
 	}
 
 	/**
