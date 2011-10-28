@@ -20,7 +20,7 @@ public class SquareRoom extends Feature {
 	public static final int MIN_HEIGHT = 3;
 
 	// variables
-	private int x1, x2, y1, y2;
+	private int x1, x2, y1, y2, w, h;
 	private Side side;
 
 	public SquareRoom(Dungeon d, Random rnd, TileStyle style) {
@@ -32,41 +32,38 @@ public class SquareRoom extends Feature {
 	 */
 	@Override
 	public void generate(int x, int y, Side s) {
-		// variables
-		int w, h;
-
 		// set the side
 		this.side = s;
-		
+
 		// determine the width and height
-		w = MIN_WIDTH + rnd.nextInt(MAX_WIDTH - MIN_WIDTH + 1);
-		h = MIN_HEIGHT + rnd.nextInt(MAX_HEIGHT - MIN_HEIGHT + 1);
+		w = MIN_WIDTH + rnd.nextInt(MAX_WIDTH - MIN_WIDTH);
+		h = MIN_HEIGHT + rnd.nextInt(MAX_HEIGHT - MIN_HEIGHT);
 
 		// determine the x and y coordinates
 		switch (s) {
 		case NORTH:
-			x1 = x - w / 2;
-			x2 = x + w / 2;
+			x1 = x - (w - 1) / 2;
+			x2 = x + (w - 1) / 2;
 			y1 = y;
-			y2 = y + h;
+			y2 = y + (h - 1);
 			break;
 		case SOUTH:
-			x1 = x - w / 2;
-			x2 = x + w / 2;
-			y1 = y - h;
+			x1 = x - (w - 1) / 2;
+			x2 = x + (w - 1) / 2;
+			y1 = y - (h - 1);
 			y2 = y;
 			break;
 		case EAST:
-			x1 = x - w;
+			x1 = x - (w - 1);
 			x2 = x;
-			y1 = y - h / 2;
-			y2 = y + h / 2;
+			y1 = y - (h - 1) / 2;
+			y2 = y + (h - 1) / 2;
 			break;
 		case WEST:
 			x1 = x;
-			x2 = x + w;
-			y1 = y - h / 2;
-			y2 = y + h / 2;
+			x2 = x + (w - 1);
+			y1 = y - (h - 1) / 2;
+			y2 = y + (h - 1) / 2;
 			break;
 		}
 	}
@@ -102,7 +99,7 @@ public class SquareRoom extends Feature {
 	@Override
 	public void place() {
 		// place all the floor tiles
-		d.fillRect(x1, y1, x2 - x1, y2 - y1, new Floor(style), true);
+		d.fillRect(x1, y1, w, h, new Floor(style), true);
 	}
 
 	@Override
@@ -110,7 +107,7 @@ public class SquareRoom extends Feature {
 		switch (side) {
 		case NORTH:
 		case SOUTH:
-			return rnd.nextInt(x2 - x1 + 1) + x1;
+			return rnd.nextInt(w) + x1;
 		case WEST:
 			return x1 - 1;
 		case EAST:
@@ -129,7 +126,7 @@ public class SquareRoom extends Feature {
 			return y2 + 1;
 		case WEST:
 		case EAST:
-			return rnd.nextInt(y2 - y1 + 1) + y1;
+			return rnd.nextInt(h) + y1;
 		default:
 			return -1;
 		}

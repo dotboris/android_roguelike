@@ -31,7 +31,7 @@ public class Corridor extends Feature {
 	@Override
 	public void generate(int x, int y, Side s) {
 		// generate random length
-		l = L_MIN + rnd.nextInt(L_MAX - L_MIN + 1);
+		l = L_MIN + rnd.nextInt(L_MAX - L_MIN);
 
 		// determine x, y and vert
 		switch (s) {
@@ -42,11 +42,11 @@ public class Corridor extends Feature {
 			break;
 		case SOUTH:
 			this.x = x;
-			this.y = y - l;
+			this.y = y - (l - 1);
 			vert = true;
 			break;
 		case EAST:
-			this.x = x - l;
+			this.x = x - (l - 1);
 			this.y = y;
 			vert = false;
 			break;
@@ -67,7 +67,7 @@ public class Corridor extends Feature {
 		try {
 			// check the line
 			for (int j = -1; j <= 1; j++)
-				for (int i = vert ? y : x; i <= (vert ? y : x) + l; i++)
+				for (int i = vert ? y : x; i <= (vert ? y : x) + (l - 1); i++)
 					if (d.getTile(vert ? x + j : i, vert ? i : y + j)
 							.isGenUsed())
 						return false;
@@ -109,9 +109,9 @@ public class Corridor extends Feature {
 			switch (side) {
 			case NORTH:
 			case SOUTH:
-				return x + rnd.nextInt(l + 1);
+				return x + rnd.nextInt(l);
 			case EAST:
-				return x + l + 1;
+				return x + l;
 			case WEST:
 				return x - 1;
 			}
@@ -131,10 +131,10 @@ public class Corridor extends Feature {
 			case NORTH:
 				return y - 1;
 			case SOUTH:
-				return y + l + 1;
+				return y + l;
 			case EAST:
 			case WEST:
-				return y + rnd.nextInt(l + 1);
+				return y + rnd.nextInt(l);
 			}
 		} else {
 			// horizontal line
