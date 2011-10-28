@@ -5,6 +5,8 @@
  */
 package name.bobnet.android.rl.core;
 
+import name.bobnet.android.rl.core.ents.Dungeon;
+
 /**
  * Manages all the dungeon.
  * 
@@ -22,6 +24,14 @@ package name.bobnet.android.rl.core;
  */
 public class DungeonManager {
 
+	// constants
+	public static final String D_PATH = "dungeons/";
+	public static final String D_PREFIX = "dun_";
+
+	// variables
+	private int cLevel;
+	private Dungeon cDungeon;
+	
 	// singleton
 	private static DungeonManager dungeonManager;
 
@@ -38,8 +48,21 @@ public class DungeonManager {
 		// return the singleton
 		return dungeonManager;
 	}
-	
+
 	private DungeonManager() {
-		// TODO: DungeonManager constructor
+		// set the current level
+		cLevel = -1;
+	}
+
+	/**
+	 * Get the dungeon at a specific level
+	 * 
+	 * @param level
+	 *            the level of the dungeon to get
+	 * @return the dungeon
+	 */
+	public Dungeon getDungeon(int level) {
+		// TODO: getDungeon() Method
+		return null;
 	}
 }
