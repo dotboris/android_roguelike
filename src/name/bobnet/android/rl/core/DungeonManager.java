@@ -22,4 +22,24 @@ package name.bobnet.android.rl.core;
  */
 public class DungeonManager {
 
+	// singleton
+	private static DungeonManager dungeonManager;
+
+	/**
+	 * Get the {@link DungeonManager} Singleton
+	 * 
+	 * @return the {@link DungeonManager} singleton
+	 */
+	public static DungeonManager getDungeonManager() {
+		// create the singleton instance
+		if (dungeonManager == null)
+			dungeonManager = new DungeonManager();
+
+		// return the singleton
+		return dungeonManager;
+	}
+	
+	private DungeonManager() {
+		// TODO: DungeonManager constructor
+	}
 }
