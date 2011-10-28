@@ -14,10 +14,10 @@ import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 public class SquareRoom extends Feature {
 
 	// constants
-	public static final int MAX_WIDTH = 30;
-	public static final int MIN_WIDTH = 8;
-	public static final int MAX_HEIGHT = 30;
-	public static final int MIN_HEIGHT = 8;
+	public static final int MAX_WIDTH = 10;
+	public static final int MIN_WIDTH = 3;
+	public static final int MAX_HEIGHT = 10;
+	public static final int MIN_HEIGHT = 3;
 
 	// variables
 	private int x1, x2, y1, y2;

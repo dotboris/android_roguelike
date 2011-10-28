@@ -40,11 +40,8 @@ public class StandardGen extends Generator {
 		// feature count
 		int fCount = 1;
 
-		// flags
-		// boolean corridor = true;
-
 		// create a first static room
-		tFeature.generate(127, 127, Side.NORTH);
+		tFeature.generate(Dungeon.D_WIDTH / 2, Dungeon.D_HEIGHT / 2, Side.NORTH);
 
 		// add it to the features array
 		features[0] = tFeature;
@@ -67,7 +64,7 @@ public class StandardGen extends Generator {
 			// continue;
 			// tFeature = new SquareRoom(dungeon, rnd, style);
 			// }
-			if(oldFeat instanceof SquareRoom)
+			if (oldFeat instanceof SquareRoom)
 				tFeature = new Corridor(dungeon, rnd, style);
 			else if (rnd.nextInt(101) > 25) {
 				tFeature = new SquareRoom(dungeon, rnd, style);

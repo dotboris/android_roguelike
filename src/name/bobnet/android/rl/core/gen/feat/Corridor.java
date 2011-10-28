@@ -15,7 +15,7 @@ public class Corridor extends Feature {
 
 	// constants
 	public static final int L_MIN = 3;
-	public static final int L_MAX = 20;
+	public static final int L_MAX = 10;
 
 	// variables
 	private int x, y, l;

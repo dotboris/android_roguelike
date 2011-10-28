@@ -11,8 +11,8 @@ import name.bobnet.android.rl.core.message.Message;
 public class Dungeon implements Entity {
 
 	// constants
-	public final static int D_WIDTH = 255;
-	public final static int D_HEIGHT = 255;
+	public final static int D_WIDTH = 80;
+	public final static int D_HEIGHT = 80;
 
 	// variables
 	private Tile[][] tiles;
