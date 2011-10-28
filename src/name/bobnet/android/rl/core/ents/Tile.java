@@ -62,7 +62,10 @@ public class Tile implements Entity {
 		// create the items stack
 		superEnts = new ArrayList<Entity>();
 		items = new Stack<Entity>();
+		
+		// set fields
 		setVisible(false);
+		setGenUsed(false);
 	}
 
 	@Override
