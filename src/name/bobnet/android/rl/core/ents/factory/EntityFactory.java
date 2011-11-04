@@ -73,6 +73,56 @@ public class EntityFactory {
 	}
 
 	/**
+	 * Get a specific entity by class and name
+	 * 
+	 * The class subclass and specclass need to be specified for the template to
+	 * be found
+	 * 
+	 * @param eClass
+	 *            the class of the entity
+	 * @param eSubClass
+	 *            the subclass of the entity
+	 * @param eSpecClass
+	 *            the specfication class of the entity
+	 * @param name
+	 *            the name of the entity
+	 * @return the entity to be generated or <code>null</code> if the entity
+	 *         cannot be found
+	 */
+	public Entity getEntity(String eClass, String eSubClass, String eSpecClass,
+			String name, Random rnd) {
+		// variables
+		TreeNode cNode = templates;
+		String[] classes = new String[3];
+		classes[0] = eClass;
+		classes[1] = eSubClass;
+		classes[2] = eSpecClass;
+		TreeNode templateNode;
+
+		// get to the right place in the tree
+		for (String cClass : classes)
+			if (cClass != null) {
+				// check if the class exists
+				if (cNode.getChild(cClass) == null) {
+					// class doesn't exist return null
+					return null;
+				}
+
+				// set that as the current node
+				cNode = cNode.getChild(cClass);
+			} else
+				// hit a null class stop searching
+				break;
+
+		// generate the entity
+		templateNode = cNode.getChild(name);
+		if (templateNode != null)
+			return ((Template) templateNode.getValue()).generate(rnd);
+		else
+			return null;
+	}
+
+	/**
 	 * Get a random entity filtered by class
 	 * 
 	 * @param eClass
