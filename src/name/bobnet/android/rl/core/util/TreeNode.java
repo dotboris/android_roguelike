@@ -5,6 +5,7 @@
  */
 package name.bobnet.android.rl.core.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -103,6 +104,15 @@ public class TreeNode {
 	 */
 	public Set<String> getNames() {
 		return children.keySet();
+	}
+
+	/**
+	 * get all the children of the node
+	 * 
+	 * @return a collection of the children
+	 */
+	public Collection<TreeNode> getChildren() {
+		return children.values();
 	}
 
 	/**
