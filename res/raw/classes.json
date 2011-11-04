@@ -1,0 +1,23 @@
+{
+	"classes" : [
+		{
+			"name" : "item",
+			"file" : "items.json",
+			"sub_classes" : [
+				{
+					"name" : "weapon",
+					"spec_classes" : [
+						{
+							"name" : "sword",
+							"display" : "Swords"
+						},
+						{
+							"name" : "blunt",
+							"display" : "Maces & Mauls"
+						}					
+					]
+				}
+			]
+		}
+	]
+}

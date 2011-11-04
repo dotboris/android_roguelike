@@ -1,0 +1,20 @@
+{
+	"item" : [
+		"weapons" : [
+			"sword" : [
+				{
+					"name" : "supersword",
+					"display" : "Super Sword of DOOM",
+					"class" : "sword"
+				}			
+			],
+			"blunt" : [
+				{
+					"name" : "superhammer",
+					"display" : "Super Hammer of DOOM",
+					"class" : "blunt"
+				}
+			]
+		]
+	]
+}
