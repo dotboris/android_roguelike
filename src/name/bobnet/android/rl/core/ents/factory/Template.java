@@ -7,6 +7,7 @@ package name.bobnet.android.rl.core.ents.factory;
 
 import java.util.Random;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import name.bobnet.android.rl.core.ents.Entity;
@@ -19,30 +20,46 @@ import name.bobnet.android.rl.core.ents.Entity;
 public abstract class Template {
 
 	// variables
-	protected int spawnOdd;
-	protected String name, entClass, entSubClass, entSpecClass;
+	private int spawnOdd;
+	private String name, entClass, entSubClass, entSpecClass;
 
 	/**
-	 * @param spawnOdd
-	 *            the chance of the entity being spawned
-	 * @param name
-	 *            the name of the entity
+	 * Create a template from the data in the JSON objects for the class, sub
+	 * class, spec class and template
+	 * 
 	 * @param entClass
-	 *            the class of the entity (item, monster, etc.)
+	 *            the JSON object holding the definition of the class
 	 * @param entSubClass
-	 *            the sub class of the entClass. e.g. Items can be weapons,
-	 *            armour, potions, etc.
+	 *            the JSON object holding the definition of the sub class
 	 * @param entSpecClass
-	 *            Specialisation class. e.g. Weapons can be swords, maces,
-	 *            staves
+	 *            the JSON object holding the definition of the spec class
+	 * @param self
+	 *            the JSON object holding the definition of the template
+	 * @throws JSONException
+	 *             Thrown when content has failed to load
+	 * @throws NullPointerException
+	 *             thrown if entClass, entSubClass or self are null
 	 */
-	public Template(int spawnOdd, String name, String entClass,
-			String entSubClass, String entSpecClass) {
-		setEntClass(entClass);
-		setEntSubClass(entSubClass);
-		setEntSpecClass(entSpecClass);
-		setSpawnOdd(spawnOdd);
-		setName(name);
+	public Template(JSONObject entClass, JSONObject entSubClass,
+			JSONObject entSpecClass, JSONObject self) throws JSONException,
+			NullPointerException {
+		// get the values from the JSON objects
+		
+		// load class name
+		setEntClass(entClass.getString("name"));
+		
+		// load subclass name
+		setEntSubClass(entSubClass.getString("name"));
+		
+		// load spec class name (if used)
+		if (entSpecClass != null)
+			setEntSpecClass(entSpecClass.getString("name"));
+		
+		// load spawning odds
+		setSpawnOdd(self.getInt("spawnodds"));
+		
+		// load the name of the object
+		setName(self.getString("name"));
 	}
 
 	/**
@@ -64,21 +81,6 @@ public abstract class Template {
 	 * @return the entity generated from the template
 	 */
 	public abstract Entity generate(Random rnd);
-
-	/**
-	 * Load our own content using the JSON data
-	 * 
-	 * @param entClass
-	 *            the JSON object representing the class
-	 * @param entSubClass
-	 *            the JSON object representing the subclass
-	 * @param entSpecClass
-	 *            the JSON object representing the specialisation class
-	 * @param self
-	 *            the JSON object representing ourselves
-	 */
-	public abstract void loadContent(JSONObject entClass,
-			JSONObject entSubClass, JSONObject entSpecClass, JSONObject self);
 
 	/**
 	 * @return the entClass

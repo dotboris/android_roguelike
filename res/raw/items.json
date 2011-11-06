@@ -5,14 +5,14 @@
 				{
 					"name" : "supersword",
 					"display" : "Super Sword of DOOM",
-					"class" : "sword"
+					"spawnodds" : 75
 				}			
 			],
 			"blunt" : [
 				{
 					"name" : "superhammer",
 					"display" : "Super Hammer of DOOM",
-					"class" : "blunt"
+					"spawnodds" : 25
 				}
 			]
 		]

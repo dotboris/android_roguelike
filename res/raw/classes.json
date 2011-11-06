@@ -2,7 +2,6 @@
 	"classes" : [
 		{
 			"name" : "item",
-			"file" : "items.json",
 			"sub_classes" : [
 				{
 					"name" : "weapon",
