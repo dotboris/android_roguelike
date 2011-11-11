@@ -20,8 +20,10 @@ public class TreeNode {
 	/**
 	 * Create a tree node with a value
 	 * 
-	 * @param the
-	 *            value of the tree node
+	 * @param value
+	 *            the value of the tree node
+	 * @param name
+	 *            the name of the node
 	 */
 	public TreeNode(Object value, String name) {
 		this(name);
