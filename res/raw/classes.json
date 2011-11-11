@@ -5,7 +5,7 @@
 			"sub_classes" : [
 				{
 					"name" : "weapon",
-					"spec_classes" : [
+					"sub_classes" : [
 						{
 							"name" : "sword",
 							"display" : "Swords"
