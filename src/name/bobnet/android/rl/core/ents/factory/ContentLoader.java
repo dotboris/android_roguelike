@@ -19,6 +19,9 @@ import name.bobnet.android.rl.core.util.TreeNode;
 
 public class ContentLoader {
 
+	// constants
+	private static final int[] C_HOLDERS = { R.raw.items };
+
 	// singleton
 	private static ContentLoader contentLoader;
 
@@ -50,11 +53,9 @@ public class ContentLoader {
 	 * 
 	 * @param context
 	 *            the context of the application to that data can be loaded
-	 * @return true if loading was successful false if it failed
 	 */
-	public boolean loadContent(Context context) {
+	public void loadContent(Context context) {
 		// variables
-		JSONObject tmpJson;
 		JSONArray tmpJsonArray;
 
 		// create the tree of classes
@@ -69,33 +70,98 @@ public class ContentLoader {
 			loadClasses(tmpJsonArray, classTree, "classes");
 		} catch (NotFoundException e) {
 			Log.d("RL", "Classes file not found, can't load content");
-			return false;
 		} catch (JSONException e) {
 			Log.d("RL", "Classes file malformed, can't load content");
-			return false;
 		}
 
-		// load items
-		try {
-			tmpJsonArray = ((JSONObject) new JSONTokener(context.getResources()
-					.openRawResource(R.raw.items).toString()).nextValue())
-					.getJSONArray("item");
-		} catch (NotFoundException e) {
-			// Items file not found aborting load
-			Log.d("RL", "Items file not found, can't load content");
-		} catch (JSONException e) {
-			// Items file malformed aborting load
-			Log.d("RL", "Items file malformed, can't load content");
+		// load content
+		for (int contentID : C_HOLDERS) {
+			try {
+				// get the templates array from the file
+				tmpJsonArray = ((JSONObject) new JSONTokener(context
+						.getResources().openRawResource(contentID).toString())
+						.nextValue()).getJSONArray("templates");
+				
+				// Load content HERE
+				
+				
+			} catch (NotFoundException e) {
+				// Items file not found aborting load
+				Log.d("RL", "Items file not found, can't load content");
+			} catch (JSONException e) {
+				// Items file malformed aborting load
+				Log.d("RL", "Items file malformed, can't load content");
+			}
 		}
-
-		// success
-		return true;
 	}
 
 	// load templates form file
-	private <T extends Template> void loadTemplates(JSONObject root,
-			String[] path) {
+	private <T extends Template> void loadTemplates(Class<T> templateClass,
+			JSONArray root, String[] path, int pathOffset) {
+		// variables
+		String[] nPath;
+		JSONObject tObject;
+		JSONArray tArray = root;
 
+		// navigate to the path
+		for (int o = pathOffset; o < root.length(); o++) {
+			String cName = path[o];
+
+			// variables
+			boolean success = false;
+
+			// search for the name
+			for (int i = 0; i < tArray.length(); i++) {
+				try {
+					tObject = tArray.getJSONObject(i);
+					if (tObject.getString("name").equals(cName)
+							&& tObject.getString("type").equals("class")) {
+						tArray = tObject.getJSONArray("members");
+						success = true;
+						break;
+					}
+				} catch (JSONException e) {
+					// bad object ignore it
+				}
+			}
+
+			if (!success)
+				// couln't find the class (bas path)
+				return;
+		}
+
+		// go thought the JSONArray
+		for (int i = 0; i < tArray.length(); i++) {
+			try {
+				// try to get an object
+				tObject = tArray.getJSONObject(i);
+
+				// check it's type
+				if (tObject.getString("type").equals("template")) {
+					// create a template from said object
+					Template t = templateClass.newInstance();
+					t.load(tObject);
+					factory.addTemplate(path, t);
+				} else if (tObject.getString("type").equals("class")) {
+					// create a new path
+					nPath = new String[path.length + 1];
+
+					// fill the old values
+					for (int j = 0; j < path.length; j++) {
+						nPath[j] = path[j];
+					}
+
+					// add the new name to the path
+					nPath[nPath.length + 1] = tObject.getString("name");
+
+					// search the new path
+					loadTemplates(templateClass,
+							tObject.getJSONArray("members"), nPath, path.length);
+				}
+			} catch (Exception e) {
+				// Abandon ship
+			}
+		}
 	}
 
 	// load classes into the tree
