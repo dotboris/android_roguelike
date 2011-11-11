@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.util.Log;
 
@@ -52,10 +52,10 @@ public class ContentLoader {
 	/**
 	 * Load the content from file and give it to the Factory
 	 * 
-	 * @param context
+	 * @param res
 	 *            the context of the application to that data can be loaded
 	 */
-	public void loadContent(Context context) {
+	public void loadContent(Resources res) {
 		// variables
 		JSONArray tmpJsonArray;
 
@@ -64,8 +64,8 @@ public class ContentLoader {
 
 		// load the classes into the tree
 		try {
-			tmpJsonArray = ((JSONObject) new JSONTokener(context.getResources()
-					.openRawResource(R.raw.classes).toString()).nextValue())
+			tmpJsonArray = ((JSONObject) new JSONTokener(res.openRawResource(
+					R.raw.classes).toString()).nextValue())
 					.getJSONArray("classes");
 			loadClasses(tmpJsonArray, classTree, "classes");
 		} catch (NotFoundException e) {
@@ -78,9 +78,9 @@ public class ContentLoader {
 		for (int contentID : C_HOLDERS) {
 			try {
 				// get the templates array from the file
-				tmpJsonArray = ((JSONObject) new JSONTokener(context
-						.getResources().openRawResource(contentID).toString())
-						.nextValue()).getJSONArray("templates");
+				tmpJsonArray = ((JSONObject) new JSONTokener(res
+						.openRawResource(contentID).toString()).nextValue())
+						.getJSONArray("templates");
 
 				// Load content HERE
 
