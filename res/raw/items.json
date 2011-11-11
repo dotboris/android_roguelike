@@ -16,11 +16,57 @@
 							
 							"members" : [
 								{
+									"name" : "dummy_sword",
+									"type" : "template",
+									"spawnodds" : 0,
+									
+									"display" : "A Dummy Sword",
+									
+									"req_int" : 0,
+									"req_dex" : 0,
+									"req_str" : 0,
+									
+									"dmg_low_min" : 3,
+									"dmg_low_max" : 4,
+									
+									"dmg_high_min" : 5,
+									"dmg_high_max" : 7,
+									
+									"skills" : [
+										"slash",
+										"stab"
+									],
+									
+									"allow_band" : true,
+									"allow_enchant" : true,
+									"allow_curse" : true
+								},
+								{
 									"name" : "supersword",
 									"type" : "template",
+									"spawnodds" : 75,
 									
 									"display" : "Super Sword of DOOM",
-									"spawnodds" : 75
+									
+									"req_int" : 10,
+									"req_str" : 10,
+									"req_dex" : 10,
+									
+									"dmg_low_min" : 3,
+									"dmg_low_max" : 4,
+									
+									"dmg_high_min" : 5,
+									"dmg_high_max" : 7,
+									
+									"skills" : [
+										"slash",
+										"stab"
+									],
+									
+									"allow_band" : true,
+									"allow_enchant" : true,
+									"allow_curse" : true
+									
 								}							
 							]
 						},
@@ -32,9 +78,28 @@
 								{
 									"name" : "superhammer",
 									"type" : "template",
+									"spawnodds" : 25,
 									
 									"display" : "Super Hammer of DOOM",
-									"spawnodds" : 25
+									
+									"req_int" : 10,
+									"req_str" : 10,
+									"req_dex" : 10,
+									
+									"dmg_low_min" : 3,
+									"dmg_low_max" : 4,
+									
+									"dmg_high_min" : 5,
+									"dmg_high_max" : 7,
+									
+									"skills" : [
+										"slash",
+										"stab"
+									],
+									
+									"allow_band" : true,
+									"allow_enchant" : true,
+									"allow_curse" : true
 								}
 							]
 						}
