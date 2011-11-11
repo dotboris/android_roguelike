@@ -41,20 +41,18 @@ public class EntityFactory {
 	/**
 	 * Add a template to the factory
 	 * 
+	 * @param path
+	 *            The location of the template
 	 * @param t
 	 *            the template to add
 	 */
-	public void addTemplate(Template t) {
+	public void addTemplate(String[] path, Template t) {
 		// variables
 		TreeNode cNode = templates;
-		String[] classes = new String[3];
-		classes[0] = t.getEntClass();
-		classes[1] = t.getEntSubClass();
-		classes[2] = t.getEntSpecClass();
 
 		// get to the right place in the tree to add the template
 		// create nodes if needed
-		for (String cClass : classes)
+		for (String cClass : path)
 			if (cClass != null) {
 				// check if the class exists
 				if (cNode.getChild(cClass) == null) {
@@ -78,44 +76,28 @@ public class EntityFactory {
 	 * The class subclass and specclass need to be specified for the template to
 	 * be found
 	 * 
-	 * @param eClass
-	 *            the class of the entity
-	 * @param eSubClass
-	 *            the subclass of the entity
-	 * @param eSpecClass
-	 *            the specfication class of the entity
-	 * @param name
-	 *            the name of the entity
+	 * @param path
+	 *            the path of the template
+	 * @param tName
+	 *            the name of the template
 	 * @return the entity to be generated or <code>null</code> if the entity
 	 *         cannot be found
 	 */
-	public Entity getEntity(String eClass, String eSubClass, String eSpecClass,
-			String name, Random rnd) {
+	public Entity getEntity(String[] path, String tName, Random rnd) {
 		// variables
 		TreeNode cNode = templates;
-		String[] classes = new String[3];
-		classes[0] = eClass;
-		classes[1] = eSubClass;
-		classes[2] = eSpecClass;
 		TreeNode templateNode;
 
 		// get to the right place in the tree
-		for (String cClass : classes)
-			if (cClass != null) {
-				// check if the class exists
-				if (cNode.getChild(cClass) == null) {
-					// class doesn't exist return null
-					return null;
-				}
+		cNode = templates.getChild(path);
 
-				// set that as the current node
-				cNode = cNode.getChild(cClass);
-			} else
-				// hit a null class stop searching
-				break;
+		// make sure the path is good
+		if (cNode == null)
+			// bad path
+			return null;
 
 		// generate the entity
-		templateNode = cNode.getChild(name);
+		templateNode = cNode.getChild(tName);
 		if (templateNode != null)
 			return ((Template) templateNode.getValue()).generate(rnd);
 		else
@@ -133,31 +115,19 @@ public class EntityFactory {
 	 *            the Specialisation class to filter by
 	 * @return the entity generated or null if the filtering failed
 	 */
-	public Entity getRndEntity(String eClass, String eSubClass,
-			String eSpecClass, Random rnd) {
+	public Entity getRndEntity(String[] path, Random rnd) {
 		// variables
 		TreeNode cNode = templates;
-		String[] classes = new String[3];
-		classes[0] = eClass;
-		classes[1] = eSubClass;
-		classes[2] = eSpecClass;
 		int roll;
 		ArrayList<Template> goodTemplate;
 
 		// get to the right place in the tree
-		for (String cClass : classes)
-			if (cClass != null) {
-				// check if the class exists
-				if (cNode.getChild(cClass) == null) {
-					// class doesn't exist return null
-					return null;
-				}
-
-				// set that as the current node
-				cNode = cNode.getChild(cClass);
-			} else
-				// hit a null class stop searching
-				break;
+		cNode = templates.getChild(path);
+		
+		// check path
+		if (cNode == null) {
+			return null;
+		}
 
 		// get a random Entity
 		do {
