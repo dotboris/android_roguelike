@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class TreeNode {
+
 	// variables
 	private Map<String, TreeNode> children;
 	private Object value;
@@ -85,6 +86,37 @@ public class TreeNode {
 	 */
 	public TreeNode getChild(String name) {
 		return children.get(name);
+	}
+
+	/**
+	 * Navigate to a child in the tree and return it
+	 * 
+	 * @param path
+	 *            an array specifying the path of the child { "node1", "node2",
+	 *            "node3" }
+	 * @return the node at the specified path or null if noting was found
+	 */
+	public TreeNode getChild(String[] path) {
+		// variables
+		TreeNode cNode = this, nNode = null;
+
+		// navigate the tree
+		for (String sNode : path) {
+			// get the new node
+			nNode = cNode.getChild(sNode);
+
+			// check if it's good
+			if (nNode == null) {
+				// bad path
+				return null;
+			} else {
+				// move on
+				cNode = nNode;
+			}
+		}
+
+		// return the node
+		return cNode;
 	}
 
 	/**
