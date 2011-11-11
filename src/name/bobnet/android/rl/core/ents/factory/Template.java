@@ -23,6 +23,10 @@ public abstract class Template {
 	private int spawnOdd;
 	private String name;
 
+	protected int rndIntRange(Random rnd, int min, int max) {
+		return rnd.nextInt(min - max) + min + 1;
+	}
+
 	/**
 	 * Check whether the entity can be created randomly with the given roll
 	 * 

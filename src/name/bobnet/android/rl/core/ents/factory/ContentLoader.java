@@ -21,6 +21,7 @@ public class ContentLoader {
 
 	// constants
 	private static final int[] C_HOLDERS = { R.raw.items };
+	public static final String[] P_WEPAONS = { "item", "weapon" };
 
 	// singleton
 	private static ContentLoader contentLoader;
@@ -66,7 +67,6 @@ public class ContentLoader {
 			tmpJsonArray = ((JSONObject) new JSONTokener(context.getResources()
 					.openRawResource(R.raw.classes).toString()).nextValue())
 					.getJSONArray("classes");
-
 			loadClasses(tmpJsonArray, classTree, "classes");
 		} catch (NotFoundException e) {
 			Log.d("RL", "Classes file not found, can't load content");
@@ -81,10 +81,12 @@ public class ContentLoader {
 				tmpJsonArray = ((JSONObject) new JSONTokener(context
 						.getResources().openRawResource(contentID).toString())
 						.nextValue()).getJSONArray("templates");
-				
+
 				// Load content HERE
-				
-				
+
+				// weapons
+				loadTemplates(WeaponTemplate.class, tmpJsonArray, P_WEPAONS, 0);
+
 			} catch (NotFoundException e) {
 				// Items file not found aborting load
 				Log.d("RL", "Items file not found, can't load content");
