@@ -1,20 +1,46 @@
 {
-	"item" : [
-		"weapons" : [
-			"sword" : [
+	"templates" : [
+		{
+			"name" : "item",
+			"type" : "class",
+			
+			"members" : [
 				{
-					"name" : "supersword",
-					"display" : "Super Sword of DOOM",
-					"spawnodds" : 75
-				}			
-			],
-			"blunt" : [
-				{
-					"name" : "superhammer",
-					"display" : "Super Hammer of DOOM",
-					"spawnodds" : 25
+					"name" : "weapon",
+					"type" : "class",
+					
+					"members" : [
+						{
+							"name" : "sword",
+							"type" : "class",
+							
+							"members" : [
+								{
+									"name" : "supersword",
+									"type" : "template",
+									
+									"display" : "Super Sword of DOOM",
+									"spawnodds" : 75
+								}							
+							]
+						},
+						{
+							"name" : "blunt",
+							"type" : "class",
+							
+							"members" : [
+								{
+									"name" : "superhammer",
+									"type" : "template",
+									
+									"display" : "Super Hammer of DOOM",
+									"spawnodds" : 25
+								}
+							]
+						}
+					]
 				}
 			]
-		]
+		}
 	]
 }
