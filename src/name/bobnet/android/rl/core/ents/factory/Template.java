@@ -24,26 +24,6 @@ public abstract class Template {
 	private String name;
 
 	/**
-	 * Create a template from the data in the JSON object for the template
-	 * 
-	 * @param self
-	 *            the JSON object holding the definition of the template
-	 * @throws JSONException
-	 *             Thrown when content has failed to load
-	 * @throws NullPointerException
-	 *             thrown if self is null
-	 */
-	public Template(JSONObject self) throws JSONException, NullPointerException {
-		// get the values from the JSON object
-
-		// load spawning odds
-		setSpawnOdd(self.getInt("spawnodds"));
-
-		// load the name of the object
-		setName(self.getString("name"));
-	}
-
-	/**
 	 * Check whether the entity can be created randomly with the given roll
 	 * 
 	 * @param roll
@@ -62,6 +42,27 @@ public abstract class Template {
 	 * @return the entity generated from the template
 	 */
 	public abstract Entity generate(Random rnd);
+
+	/**
+	 * Create a template from the data in the JSON object for the template
+	 * 
+	 * @param self
+	 *            the JSON object holding the definition of the template
+	 * @throws JSONException
+	 *             Thrown when content has failed to load
+	 * @throws NullPointerException
+	 *             thrown if self is null
+	 */
+	public void load(JSONObject self) throws JSONException,
+			NullPointerException {
+		// get the values from the JSON object
+
+		// load spawning odds
+		setSpawnOdd(self.getInt("spawnodds"));
+
+		// load the name of the object
+		setName(self.getString("name"));
+	}
 
 	/**
 	 * @return the spawnOdd
