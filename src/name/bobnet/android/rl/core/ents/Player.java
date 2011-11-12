@@ -1,5 +1,6 @@
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.message.Message;
 
 /**
@@ -24,6 +25,9 @@ public class Player extends Creature {
 
 		// set experience values
 		setLevel(1);
+
+		// make sure we tick
+		GameEngine.getEngine().regEntTick(this);
 	}
 
 	@Override
@@ -37,6 +41,11 @@ public class Player extends Creature {
 			Object oXP = message.getArgument("xp");
 			if (oXP != null && oXP instanceof Integer)
 				giveXP((Integer) oXP);
+			break;
+		case M_DESTROY:
+			// unregister from ticks (not that it matters since the game stops
+			// when the player dies, but better be sure)
+			GameEngine.getEngine().unregEntTick(this);
 			break;
 		}
 	}
