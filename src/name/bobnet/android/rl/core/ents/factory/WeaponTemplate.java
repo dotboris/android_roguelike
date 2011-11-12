@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import name.bobnet.android.rl.core.ents.Entity;
-import name.bobnet.android.rl.core.ents.tiles.Weapon;
+import name.bobnet.android.rl.core.ents.Weapon;
 
 public class WeaponTemplate extends Template {
 

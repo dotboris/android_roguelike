@@ -3,9 +3,8 @@
  * Class Purpose:		A template generated weapon
  * Created by:			boris on 2011-11-11
  */
-package name.bobnet.android.rl.core.ents.tiles;
+package name.bobnet.android.rl.core.ents;
 
-import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.message.Message;
 
 public class Weapon implements Entity {
