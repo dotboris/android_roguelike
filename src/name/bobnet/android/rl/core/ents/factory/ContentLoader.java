@@ -5,6 +5,12 @@
  */
 package name.bobnet.android.rl.core.ents.factory;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +19,6 @@ import org.json.JSONTokener;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.util.Log;
-
 import name.bobnet.android.rl.R;
 import name.bobnet.android.rl.core.util.TreeNode;
 
@@ -64,9 +69,8 @@ public class ContentLoader {
 
 		// load the classes into the tree
 		try {
-			tmpJsonArray = ((JSONObject) new JSONTokener(res.openRawResource(
-					R.raw.classes).toString()).nextValue())
-					.getJSONArray("classes");
+			tmpJsonArray = ((JSONObject) (readJSON(res, R.raw.classes))
+					.nextValue()).getJSONArray("classes");
 			loadClasses(tmpJsonArray, classTree, "classes");
 		} catch (NotFoundException e) {
 			Log.d("RL", "Classes file not found, can't load content");
@@ -78,9 +82,8 @@ public class ContentLoader {
 		for (int contentID : C_HOLDERS) {
 			try {
 				// get the templates array from the file
-				tmpJsonArray = ((JSONObject) new JSONTokener(res
-						.openRawResource(contentID).toString()).nextValue())
-						.getJSONArray("templates");
+				tmpJsonArray = ((JSONObject) readJSON(res, contentID)
+						.nextValue()).getJSONArray("templates");
 
 				// Load content HERE
 
@@ -197,4 +200,31 @@ public class ContentLoader {
 
 	}
 
+	// get a JSONTokener from file
+	private JSONTokener readJSON(Resources res, int id) {
+		// variables
+		JSONTokener out;
+		StringBuilder builder;
+		BufferedReader reader;
+
+		// get the stream
+		reader = new BufferedReader(new InputStreamReader(
+				res.openRawResource(id)));
+
+		// build the string
+		builder = new StringBuilder();
+		try {
+			for (String line = null; (line = reader.readLine()) != null;)
+				builder.append(line);
+
+			// create the new tokener
+			out = new JSONTokener(builder.toString());
+		} catch (IOException e) {
+			// something failed
+			return null;
+		}
+
+		// return the tokener
+		return out;
+	}
 }
