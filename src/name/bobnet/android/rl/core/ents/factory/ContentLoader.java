@@ -5,10 +5,8 @@
  */
 package name.bobnet.android.rl.core.ents.factory;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.json.JSONArray;
