@@ -9,6 +9,15 @@ import name.bobnet.android.rl.core.message.Message;
  */
 public class Creature implements Entity {
 
+	/**
+	 * Types of elemental damage to be used with the M_DO_DAMAGE Message
+	 * 
+	 * @author boris
+	 */
+	public enum Elements {
+		FROST, FIRE, AIR, EARTH, HOLY, EVIL
+	}
+
 	// variables
 	protected int health, mana;
 	protected int strength, intellect, dexterity, vitality;
@@ -39,6 +48,7 @@ public class Creature implements Entity {
 	public Creature(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
 			int res_holy, int res_evil) {
+		// set attributes
 		this.strength = strength;
 		this.intellect = intellect;
 		this.dexterity = dexterity;
@@ -49,6 +59,8 @@ public class Creature implements Entity {
 		this.res_earth = res_earth;
 		this.res_holy = res_holy;
 		this.res_evil = res_evil;
+		
+		// TODO: set ration of vitality to health and intellect to mana
 	}
 
 	/* (non-Javadoc)
@@ -65,8 +77,73 @@ public class Creature implements Entity {
 	 */
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// process damage messages
+		switch (message.getMessageType()) {
+		case M_DO_DAMAGE:
+			// elemental damage
+			try {
+				// get damage
+				Object oDmg = message.getArgument("elemental_dmg");
+				
+				// check if we have elemental damage
+				if (oDmg != null && oDmg instanceof Integer) {
+					// get magic damage
+					int eDmg = (Integer) oDmg;
+					int nDmg = 0;
 
+					// add damage to resistance
+					switch ((Elements) message
+							.getArgument("elemental_dmg_type")) {
+					case AIR:
+						nDmg = (int) (eDmg - ((float) res_air / 100) * eDmg);
+						break;
+					case EARTH:
+						nDmg = (int) (eDmg - ((float) res_earth / 100) * eDmg);
+						break;
+					case EVIL:
+						nDmg = (int) (eDmg - ((float) res_evil / 100) * eDmg);
+						break;
+					case FIRE:
+						nDmg = (int) (eDmg - ((float) res_fire / 100) * eDmg);
+						break;
+					case FROST:
+						nDmg = (int) (eDmg - ((float) res_frost / 100) * eDmg);
+						break;
+					case HOLY:
+						nDmg = (int) (eDmg - ((float) res_holy / 100) * eDmg);
+						break;
+					}
+					
+					// do elemental damage
+					if (nDmg > 0) {
+						health -= nDmg;
+					}
+					
+				}
+			} catch (Exception e) {
+				// No elemental damage
+			}
+
+			// normal damage
+			
+			// get damage
+			Object oDmg = message.getArgument("dmg");
+			
+			// TODO: Implement defence
+			
+			// check if it's good
+			if (oDmg != null && oDmg instanceof Integer) {
+				// get the damage value
+				int dmg = (Integer) oDmg;
+				
+				// do damage
+				if (dmg > 0) {
+					health -= dmg;
+				}
+			}
+			
+			break;
+		}
 	}
 
 	/**
