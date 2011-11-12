@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.util.Log;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
+import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
 import name.bobnet.android.rl.core.gen.Generator.DungeonType;
@@ -26,6 +27,7 @@ public class GameEngine {
 	private MessageManager messageManager;
 	private Dungeon currentDungeon;
 	private ActionsManager actionsManager;
+	private ContentLoader contentLoader;
 	private Thread gameRunnerThread;
 	private Queue<String> actionsQueue;
 	private volatile boolean gameRunnerRunning;
@@ -57,6 +59,11 @@ public class GameEngine {
 		messageManager = MessageManager.getMessageManager();
 		Log.d("RL", "Created MessageManager: " + messageManager.toString());
 
+		// load content from JSON
+		contentLoader = ContentLoader.getContentLoader();
+		contentLoader.loadContent(res);
+		Log.d("RL", "Loaded Resources from JSON files");
+		
 		// create a new dungeon (for testing)
 		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
 				TileStyle.ROCK);
