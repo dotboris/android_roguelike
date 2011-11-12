@@ -1,5 +1,7 @@
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.message.Message;
+
 /**
  * The player
  * 
@@ -18,10 +20,36 @@ public class Player extends Creature {
 			int res_frost, int res_fire, int res_air, int res_earth,
 			int res_holy, int res_evil) {
 		super(strength, intellect, dexterity, vitality, res_frost, res_fire,
-				res_air, res_earth, res_holy, res_evil);
+				res_air, res_earth, res_holy, res_evil, 0);
 
 		// set experience values
 		setLevel(1);
+	}
+
+	@Override
+	public void processMessage(Message message) {
+		super.processMessage(message);
+
+		// parse messages
+		switch (message.getMessageType()) {
+		case M_KILLED:
+			// get xp
+			Object oXP = message.getArgument("xp");
+			if (oXP != null && oXP instanceof Integer)
+				giveXP((Integer) oXP);
+			break;
+		}
+	}
+
+	public void giveXP(int amount) {
+		// add to the pool
+		experience += amount;
+
+		// hit new level
+		if (experience >= nextLevelXP) {
+			// set the new level
+			setLevel(level + 1);
+		}
 	}
 
 	private void setLevel(int level) {

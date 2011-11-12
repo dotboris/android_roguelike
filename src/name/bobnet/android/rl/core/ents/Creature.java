@@ -1,6 +1,8 @@
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.message.Message;
+import name.bobnet.android.rl.core.message.Message.MessageType;
 
 /**
  * A creature that can move and take damage
@@ -22,6 +24,7 @@ public class Creature implements Entity {
 	protected int health, mana;
 	protected int strength, intellect, dexterity, vitality;
 	protected int res_frost, res_fire, res_air, res_earth, res_holy, res_evil;
+	protected int xpWorth;
 
 	/**
 	 * @param strength
@@ -44,10 +47,12 @@ public class Creature implements Entity {
 	 *            the creature's resistance to holy damage
 	 * @param res_evil
 	 *            the creature's resistance to evil damage
+	 * @param xpWorth
+	 *            how much XP this creature is worth
 	 */
 	public Creature(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
-			int res_holy, int res_evil) {
+			int res_holy, int res_evil, int xpWorth) {
 		// set attributes
 		this.strength = strength;
 		this.intellect = intellect;
@@ -59,7 +64,8 @@ public class Creature implements Entity {
 		this.res_earth = res_earth;
 		this.res_holy = res_holy;
 		this.res_evil = res_evil;
-		
+		this.xpWorth = xpWorth;
+
 		// TODO: set ration of vitality to health and intellect to mana
 	}
 
@@ -84,7 +90,7 @@ public class Creature implements Entity {
 			try {
 				// get damage
 				Object oDmg = message.getArgument("elemental_dmg");
-				
+
 				// check if we have elemental damage
 				if (oDmg != null && oDmg instanceof Integer) {
 					// get magic damage
@@ -113,37 +119,61 @@ public class Creature implements Entity {
 						nDmg = (int) (eDmg - ((float) res_holy / 100) * eDmg);
 						break;
 					}
-					
+
 					// do elemental damage
 					if (nDmg > 0) {
 						health -= nDmg;
 					}
-					
+
 				}
 			} catch (Exception e) {
 				// No elemental damage
 			}
 
 			// normal damage
-			
+
 			// get damage
 			Object oDmg = message.getArgument("dmg");
-			
+
 			// TODO: Implement defence
-			
+
 			// check if it's good
 			if (oDmg != null && oDmg instanceof Integer) {
 				// get the damage value
 				int dmg = (Integer) oDmg;
-				
+
 				// do damage
 				if (dmg > 0) {
 					health -= dmg;
 				}
 			}
-			
+
+			// check if we died
+			if (health <= 0) {
+				// send a message to the killer with the XP they got
+				Message m = new Message(this, message.getSender(),
+						MessageType.M_KILLED);
+				m.setArgument("xp", xpWorth);
+				MessageManager.getMessenger().sendMessage(m);
+			}
+
 			break;
 		}
+	}
+
+	/**
+	 * @return the xpWorth
+	 */
+	public int getXpWorth() {
+		return xpWorth;
+	}
+
+	/**
+	 * @param xpWorth
+	 *            the xpWorth to set
+	 */
+	public void setXpWorth(int xpWorth) {
+		this.xpWorth = xpWorth;
 	}
 
 	/**
