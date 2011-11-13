@@ -136,7 +136,10 @@ public class Tile extends Entity {
 	public void addSuperEntity(Entity supEnt) {
 		if (supEnt == null)
 			throw new NullPointerException("proj cannot be null");
-
+		
+		// set the parent
+		supEnt.setParent(this);
+		
 		// add the superEnt
 		superEnts.add(supEnt);
 	}
@@ -156,6 +159,9 @@ public class Tile extends Entity {
 		if (item == null)
 			throw new NullPointerException("item cannot be null");
 
+		// set the parent
+		item.setParent(this);
+		
 		// add the item
 		items.push(item);
 	}
@@ -174,9 +180,12 @@ public class Tile extends Entity {
 	 *             thrown when there's already a mob on the tile
 	 */
 	public void setMob(Entity mob) {
-		if (mob != null)
+		if (this.mob != null)
 			throw new RuntimeException("Mob already exists");
 
+		// set the parent
+		mob.setParent(this);
+		
 		// set the new mob
 		this.mob = mob;
 	}
@@ -210,6 +219,9 @@ public class Tile extends Entity {
 		if (tileType == null)
 			throw new NullPointerException("tileType cannot be null");
 
+		// set the parent
+		tileType.setParent(this);
+		
 		// set the tile type
 		this.tileType = tileType;
 	}
