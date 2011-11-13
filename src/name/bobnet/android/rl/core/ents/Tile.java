@@ -215,6 +215,18 @@ public class Tile implements Entity {
 	}
 
 	/**
+	 * @return whether or not a creature can go in the tile
+	 */
+	public boolean isPassthrough() {
+		// check if there's a creature there
+		if (mob != null)
+			return false;
+		else
+			// use the tileType to determine
+			return tileType.isPassThrough();
+	}
+	
+	/**
 	 * @return the visible
 	 */
 	public boolean isVisible() {

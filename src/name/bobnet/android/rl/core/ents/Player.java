@@ -1,5 +1,6 @@
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.message.Message;
 
@@ -16,6 +17,10 @@ public class Player extends Creature {
 
 	// variables
 	private int level, experience, nextLevelXP;
+	private String cAction;
+	private int cActionTime;
+	private int tickCount;
+	private Entity aEnt;
 
 	public Player(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
@@ -26,8 +31,99 @@ public class Player extends Creature {
 		// set experience values
 		setLevel(1);
 
+		// set tick management
+		tickCount = 0;
+		cActionTime = 0;
+		cAction = null;
+
 		// make sure we tick
 		GameEngine.getEngine().regEntTick(this);
+
+	}
+
+	/**
+	 * Get the number of ticks an action will take
+	 * 
+	 * @param actionName
+	 *            the string name of the action
+	 * @return the time it takes to do said action
+	 */
+	public int getActionTicks(String actionName) {
+		// get the base ticks for the action
+		int bTicks = ActionsManager.getActionManager().getActionTicks(
+				actionName);
+
+		// TODO: change speed depending on stats
+
+		// return the ticks to use
+		return bTicks;
+	}
+
+	public boolean setNextAction(String aName, int aTicks, Entity aEnt) {
+		// check if we can do the action
+		if (aName.equals("A_WALK")) {
+			if (!(aEnt != null && aEnt instanceof Tile && ((Tile) aEnt)
+					.isPassthrough())) {
+				return false;
+			}
+		} else if (aName.equals("A_ATTACK")) {
+
+		} else if (aName.equals("A_PICKUP")) {
+
+		} else if (aName.equals("A_EAT")) {
+
+		} else if (aName.equals("A_READ")) {
+
+		} else if (aName.equals("A_WAIT")) {
+
+		} else
+			// I don't know how to do this
+			return false;
+
+		// set action information
+		cAction = aName;
+		cActionTime = aTicks;
+		this.aEnt = aEnt;
+
+		// everything checks in start ticking
+		return true;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		// check if we are doing anything
+		if (cAction != null) {
+			// update the counter
+			tickCount++;
+
+			// check if we waited long enough
+			if (tickCount >= cActionTime) {
+				// reset the counter and action
+				tickCount = 0;
+				cActionTime = 0;
+				cAction = null;
+
+				// TODO: Do the action
+				if (cAction.equals("A_WALK")) {
+					
+				} else if (cAction.equals("A_ATTACK")) {
+
+				} else if (cAction.equals("A_PICKUP")) {
+
+				} else if (cAction.equals("A_EAT")) {
+
+				} else if (cAction.equals("A_READ")) {
+					
+				} else if (cAction.equals("A_WAIT")) {
+					// don't do anything
+				}				
+				
+				// clear the tile
+				aEnt = null;
+			}
+		}
 	}
 
 	@Override

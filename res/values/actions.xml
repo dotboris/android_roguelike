@@ -27,10 +27,11 @@
      	<item>A_DUMMY_40 40</item>
      	
      	<!-- actions -->
-     	<item>A_MOVE_TILE 10</item>
+     	<item>A_WALK 10</item>
      	<item>A_ATTACK 15</item>
      	<item>A_PICKUP 7</item>
      	<item>A_EAT 25</item>
      	<item>A_READ 20</item>
+     	<item>A_WAIT 30</item>
     </string-array>
 </resources>
