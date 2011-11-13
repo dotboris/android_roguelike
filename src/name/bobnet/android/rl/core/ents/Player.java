@@ -1,5 +1,6 @@
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.Action;
 import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.message.Message;
@@ -59,31 +60,31 @@ public class Player extends Creature {
 		return bTicks;
 	}
 
-	public boolean setNextAction(String aName, int aTicks, Entity aEnt) {
+	public boolean setNextAction(Action a) {
 		// check if we can do the action
-		if (aName.equals("A_WALK")) {
-			if (!(aEnt != null && aEnt instanceof Tile && ((Tile) aEnt)
+		if (a.name.equals("A_WALK")) {
+			if (!(a.ent != null && a.ent instanceof Tile && ((Tile) a.ent)
 					.isPassthrough())) {
 				return false;
 			}
-		} else if (aName.equals("A_ATTACK")) {
+		} else if (a.name.equals("A_ATTACK")) {
 
-		} else if (aName.equals("A_PICKUP")) {
+		} else if (a.name.equals("A_PICKUP")) {
 
-		} else if (aName.equals("A_EAT")) {
+		} else if (a.name.equals("A_EAT")) {
 
-		} else if (aName.equals("A_READ")) {
+		} else if (a.name.equals("A_READ")) {
 
-		} else if (aName.equals("A_WAIT")) {
+		} else if (a.name.equals("A_WAIT")) {
 
 		} else
 			// I don't know how to do this
 			return false;
 
 		// set action information
-		cAction = aName;
-		cActionTime = aTicks;
-		this.aEnt = aEnt;
+		cAction = a.name;
+		cActionTime = a.ticks;
+		this.aEnt = a.ent;
 
 		// everything checks in start ticking
 		return true;
@@ -103,7 +104,6 @@ public class Player extends Creature {
 				// reset the counter and action
 				tickCount = 0;
 				cActionTime = 0;
-				cAction = null;
 
 				// TODO: Do the action
 				if (cAction.equals("A_WALK")) {
@@ -123,6 +123,7 @@ public class Player extends Creature {
 
 				// clear the tile
 				aEnt = null;
+				cAction = null;
 			}
 		}
 	}

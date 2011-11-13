@@ -63,6 +63,10 @@ public class Tile extends Entity {
 		superEnts = new ArrayList<Entity>();
 		items = new Stack<Entity>();
 
+		// set position
+		setX(x);
+		setY(y);
+		
 		// set fields
 		setVisible(false);
 		setGenUsed(false);
@@ -196,8 +200,8 @@ public class Tile extends Entity {
 	 * 
 	 * @return the mob that was deleted
 	 */
-	public Entity delMob() {
-		Entity tMob = mob;
+	public Creature delMob() {
+		Creature tMob = mob;
 		mob = null;
 		return tMob;
 	}

@@ -12,6 +12,7 @@ import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.ents.Dummy;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
+import name.bobnet.android.rl.core.ents.Player;
 import name.bobnet.android.rl.core.ents.tiles.Wall;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
@@ -21,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -34,8 +36,49 @@ public class TestView extends View {
 		super(context);
 		pActivity = (Activity) context;
 		engine = GameEngine.getEngine();
+		
+		setFocusable(true);
+		setFocusableInTouchMode(true);
 
-		engine.getCurrentDungeon().getTile(10, 10).addSuperEntity(new Dummy());
+//		engine.getCurrentDungeon().getTile(10, 10).addSuperEntity(new Dummy());
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		// check the key
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_1:
+			engine.doMoveAction(-1, -1);
+			break;
+		case KeyEvent.KEYCODE_2:
+			engine.doMoveAction(0, -1);
+			break;
+		case KeyEvent.KEYCODE_3:
+			engine.doMoveAction(1, -1);
+			break;
+		case KeyEvent.KEYCODE_4:
+			engine.doMoveAction(-1, 0);
+			break;
+		case KeyEvent.KEYCODE_6:
+			engine.doMoveAction(1, 0);
+			break;
+		case KeyEvent.KEYCODE_7:
+			engine.doMoveAction(-1, 1);
+			break;
+		case KeyEvent.KEYCODE_8:
+			engine.doMoveAction(0, 1);
+			break;
+		case KeyEvent.KEYCODE_9:
+			engine.doMoveAction(1, 1);
+			break;
+		default:
+			break;
+		}
+
+		// redraw
+		invalidate();
+		
+		return true;
 	}
 
 	@Override
@@ -43,28 +86,27 @@ public class TestView extends View {
 		// TODO Auto-generated method stub
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// generate a new dungeon and redraw
-			engine.genDugeon();
+//			engine.genDugeon();
 			invalidate();
-			
-			
-			for (int i = 0; i < 10; i++)
-				engine.doAction("A_DUMMY_10");
-			try {
-				// delete the dummy ent
-				Iterator<Entity> i = engine.getCurrentDungeon().getTile(10, 10)
-						.getSuperEntsIterator();
-				Entity dummy = i.next();
 
-				// send destroy message
-				MessageManager.getMessenger().sendMessage(
-						new Message(null, engine.getCurrentDungeon().getTile(
-								10, 10), MessageType.M_DESTROY));
-
-				// remove it from the tile
-//				i.remove();
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
+//			for (int i = 0; i < 10; i++)
+//				engine.doAction("A_DUMMY_10", null);
+//			try {
+//				// delete the dummy ent
+//				Iterator<Entity> i = engine.getCurrentDungeon().getTile(10, 10)
+//						.getSuperEntsIterator();
+//				Entity dummy = i.next();
+//
+//				// send destroy message
+//				MessageManager.getMessenger().sendMessage(
+//						new Message(null, engine.getCurrentDungeon().getTile(
+//								10, 10), MessageType.M_DESTROY));
+//
+//				// remove it from the tile
+//				// i.remove();
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
 		}
 		return true;
 	}
@@ -74,7 +116,7 @@ public class TestView extends View {
 		super.onDraw(canvas);
 
 		Log.d("RL", "Started drawing");
-		
+
 		// values
 		float tW, tH;
 		tW = 3.0f;
@@ -83,22 +125,27 @@ public class TestView extends View {
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
 		// paints
-		Paint pBlue, pRed;
+		Paint pBlue, pRed, pGreen;
 		pBlue = new Paint();
 		pRed = new Paint();
+		pGreen = new Paint();
 		pRed.setColor(Color.RED);
 		pBlue.setColor(Color.BLUE);
+		pGreen.setColor(Color.GREEN);
 
 		for (int x = 0; x < Dungeon.D_WIDTH; x++)
 			for (int y = 0; y < Dungeon.D_HEIGHT; y++) {
 				if (engine.getCurrentDungeon().getTile(x, y).getTileType() instanceof Wall)
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pRed);
+				else if (engine.getCurrentDungeon().getTile(x, y).getMob() instanceof Player)
+					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
+							pGreen);
 				else
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pBlue);
 			}
-		
+
 		Log.d("RL", "done drawing");
 	}
 }

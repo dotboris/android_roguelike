@@ -54,7 +54,7 @@ public class Dungeon extends Entity {
 		enterMessage = new Message(c, dest, MessageType.M_ENT_LEAVE_TILE);
 		
 		// remove the mob from the old tile
-		start.setMob(null);
+		start.delMob();
 		
 		// put the mob in the new tile
 		dest.setMob(c);

@@ -13,6 +13,8 @@ import android.content.res.Resources;
 import android.util.Log;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
+import name.bobnet.android.rl.core.ents.Player;
+import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
@@ -29,13 +31,14 @@ public class GameEngine {
 	private ActionsManager actionsManager;
 	private ContentLoader contentLoader;
 	private Thread gameRunnerThread;
-	private Queue<String> actionsQueue;
+	private Queue<Action> actionsQueue;
 	private volatile boolean gameRunnerRunning;
 	private LinkedList<Entity> tickList;
+	private Player player;
 
 	private GameEngine() {
 		// create the actions queue
-		actionsQueue = new LinkedList<String>();
+		actionsQueue = new LinkedList<Action>();
 
 		// create the list of entities to tick
 		tickList = new LinkedList<Entity>();
@@ -63,10 +66,15 @@ public class GameEngine {
 		contentLoader = ContentLoader.getContentLoader();
 		contentLoader.loadContent(res);
 		Log.d("RL", "Loaded Resources from JSON files");
-		
+
 		// create a new dungeon (for testing)
 		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
 				TileStyle.ROCK);
+
+		// create a player and put him in the middle of the dungeon
+		player = new Player(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		currentDungeon.getTile(40, 40).setMob(player);
+		Log.d("RL", "Created player");
 
 	}
 
@@ -105,48 +113,78 @@ public class GameEngine {
 	 * @param name
 	 *            the name of the action to be performed
 	 */
-	public void doAction(String name) {
+	public void doAction(String name, Entity aEnt) {
+		// get tick number from player
+		int ticks = player.getActionTicks(name);
+
+		// construct Action
+		Action a = new Action();
+		a.ent = aEnt;
+		a.name = name;
+		a.ticks = ticks;
+
 		// queue the action to be done
-		actionsQueue.add(name);
+		actionsQueue.add(a);
 
 		// process the queue
 		processActions();
 	}
 
+	public void doMoveAction(int x, int y) {
+		// get the tile for the action
+		Tile cTile = (Tile) player.getParent();
+		Tile nTile = currentDungeon.getTile(cTile.getX() + x, cTile.getY() - y);
+
+		// check the new tile and determine what to do
+		if (nTile.isPassthrough() && nTile.getMob() == null) {
+			doAction("A_WALK", nTile);
+		} else if (nTile.getMob() != null) {
+			doAction("A_ATTACK", nTile.getMob());
+		}
+	}
+
 	private synchronized void processActions() {
 		if (!gameRunnerRunning && !actionsQueue.isEmpty()) {
 			// variables
-			String aName;
+			Action a;
 			int aTicks;
 
 			// try to process the action in the queue
 			while (true) {
-				// get the action name
-				aName = actionsQueue.poll();
+				// get the action
+				a = actionsQueue.poll();
 
-				try {
-					// get the ticks for the action
-					aTicks = actionsManager.getActionTicks(aName);
+				if (a != null) {
+					// give the action to the player
+					boolean res = player.setNextAction(a);
 
-					// validate the tick
-					if (aTicks > 0) {
-						// do the action
-						gameRunnerThread = new Thread(new GameRunner(aTicks),
-								"Game Runner");
-						gameRunnerThread.start();
+					if (res)
+						try {
+							// get the ticks for the action
+							aTicks = a.ticks;
 
-						// exit the method to prevent looping
-						return;
-					} else
-						// display error
-						Log.d("RL", "Couldn't do action " + aName
-								+ ". Number of ticks is invalid.");
+							// validate the tick
+							if (aTicks > 0) {
+								// do the action
+								gameRunnerThread = new Thread(new GameRunner(
+										aTicks), "Game Runner");
+								gameRunnerThread.start();
 
-				} catch (Exception e) {
-					// display error
-					Log.d("RL", "Couldn't do action " + aName
-							+ ". Action doesn't doesn't exist.");
-				}
+								// exit the method to prevent looping
+								return;
+							} else
+								// display error
+								Log.d("RL", "Couldn't do action " + a.name
+										+ ". Number of ticks is invalid.");
+
+						} catch (Exception e) {
+							// display error
+							Log.d("RL", "Couldn't do action " + a.name
+									+ ". Action doesn't doesn't exist.");
+						}
+				} else
+					// queue is empty
+					return;
 			}
 		}
 	}
