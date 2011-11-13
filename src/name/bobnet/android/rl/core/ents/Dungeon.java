@@ -8,7 +8,7 @@ package name.bobnet.android.rl.core.ents;
 import name.bobnet.android.rl.core.ents.tiles.TileType;
 import name.bobnet.android.rl.core.message.Message;
 
-public class Dungeon implements Entity {
+public class Dungeon extends Entity {
 
 	// constants
 	public final static int D_WIDTH = 80;

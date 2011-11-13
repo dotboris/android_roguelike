@@ -7,7 +7,7 @@ package name.bobnet.android.rl.core.ents;
 
 import name.bobnet.android.rl.core.message.Message;
 
-public class Weapon implements Entity {
+public class Weapon extends Entity {
 
 	// variables
 	private int dmg_low, dmg_high;

@@ -7,7 +7,7 @@ import name.bobnet.android.rl.core.ents.Entity;
  * 
  * @author boris
  */
-public abstract class TileType implements Entity, Cloneable {
+public abstract class TileType extends Entity implements Cloneable {
 
 	/**
 	 * The style of the tile

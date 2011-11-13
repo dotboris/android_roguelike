@@ -14,7 +14,7 @@ import name.bobnet.android.rl.core.ents.tiles.Wall;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.message.Message;
 
-public class Tile implements Entity {
+public class Tile extends Entity {
 
 	/*
 	 * Entities that can be on the tile

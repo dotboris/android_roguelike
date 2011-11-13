@@ -9,7 +9,7 @@ import name.bobnet.android.rl.core.message.Message.MessageType;
  * 
  * @author boris
  */
-public class Creature implements Entity {
+public class Creature extends Entity {
 
 	/**
 	 * Types of elemental damage to be used with the M_DO_DAMAGE Message

@@ -9,7 +9,7 @@ import name.bobnet.android.rl.core.message.Message;
  * 
  * @author boris
  */
-public class Dummy implements Entity {
+public class Dummy extends Entity {
 
 	public Dummy() {
 		// register

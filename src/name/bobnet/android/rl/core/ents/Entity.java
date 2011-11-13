@@ -7,12 +7,36 @@ package name.bobnet.android.rl.core.ents;
 
 import name.bobnet.android.rl.core.message.Message;
 
-public interface Entity {
+public abstract class Entity {
+
+	// variables
+	protected Entity parent;
+
+	/**
+	 * @return the parent
+	 */
+	public Entity getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent
+	 *            the parent to set
+	 */
+	public void setParent(Entity parent) {
+		this.parent = parent;
+	}
 
 	/**
 	 * Called whenever the game ticks
 	 */
-	public void tick();
+	public abstract void tick();
 
-	public void processMessage(Message message);
+	/**
+	 * Called whenever a message is sent to the entity
+	 * 
+	 * @param message
+	 *            the message in question
+	 */
+	public abstract void processMessage(Message message);
 }
