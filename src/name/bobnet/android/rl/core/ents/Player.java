@@ -107,7 +107,8 @@ public class Player extends Creature {
 
 				// TODO: Do the action
 				if (cAction.equals("A_WALK")) {
-					
+					GameEngine.getEngine().getCurrentDungeon()
+							.moveCreature((Tile) aEnt, this);
 				} else if (cAction.equals("A_ATTACK")) {
 
 				} else if (cAction.equals("A_PICKUP")) {
@@ -115,11 +116,11 @@ public class Player extends Creature {
 				} else if (cAction.equals("A_EAT")) {
 
 				} else if (cAction.equals("A_READ")) {
-					
+
 				} else if (cAction.equals("A_WAIT")) {
 					// don't do anything
-				}				
-				
+				}
+
 				// clear the tile
 				aEnt = null;
 			}

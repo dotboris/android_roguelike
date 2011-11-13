@@ -5,8 +5,10 @@
  */
 package name.bobnet.android.rl.core.ents;
 
+import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.ents.tiles.TileType;
 import name.bobnet.android.rl.core.message.Message;
+import name.bobnet.android.rl.core.message.Message.MessageType;
 
 public class Dungeon extends Entity {
 
@@ -26,6 +28,40 @@ public class Dungeon extends Entity {
 			for (int y = 0; y < D_HEIGHT; y++) {
 				tiles[x][y] = new Tile(x, y);
 			}
+	}
+
+	/**
+	 * Moves a creature from one tile to the other (sends the right messages to
+	 * the tiles)
+	 * 
+	 * This method doesn't check if it's possible to go to that destination.
+	 * 
+	 * @param dest
+	 *            where the creature is going to go
+	 * @param c
+	 *            the creature
+	 */
+	public void moveCreature(Tile dest, Creature c) {
+		// variables
+		Tile start;
+		Message leaveMessage, enterMessage;
+
+		// get the start tile
+		start = (Tile) c.getParent();
+		
+		// construct both messages
+		leaveMessage = new Message(c, start, MessageType.M_ENT_LEAVE_TILE);
+		enterMessage = new Message(c, dest, MessageType.M_ENT_LEAVE_TILE);
+		
+		// remove the mob from the old tile
+		start.setMob(null);
+		
+		// put the mob in the new tile
+		dest.setMob(c);
+		
+		// send the messages
+		MessageManager.getMessenger().sendMessage(enterMessage);
+		MessageManager.getMessenger().sendMessage(leaveMessage);
 	}
 
 	/**
@@ -82,7 +118,7 @@ public class Dungeon extends Entity {
 			for (int cy = y; cy < y + h; cy++) {
 				// set the tile type of the cell
 				this.getTile(cx, cy).setTileType((TileType) tileType.clone());
-				
+
 				// set the generation flag
 				if (genFlag)
 					getTile(cx, cy).setGenUsed(true);

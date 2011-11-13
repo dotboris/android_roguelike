@@ -26,7 +26,7 @@ public class Tile extends Entity {
 	 * 		(Floor, Wall, Stairs, Shallow Water, Deep Water, Lava, etc.)
 	 */
 	private ArrayList<Entity> superEnts;
-	private Entity mob;
+	private Creature mob;
 	private Stack<Entity> items;
 	private TileType tileType;
 	private boolean visible;
@@ -62,7 +62,7 @@ public class Tile extends Entity {
 		// create the items stack
 		superEnts = new ArrayList<Entity>();
 		items = new Stack<Entity>();
-		
+
 		// set fields
 		setVisible(false);
 		setGenUsed(false);
@@ -136,10 +136,10 @@ public class Tile extends Entity {
 	public void addSuperEntity(Entity supEnt) {
 		if (supEnt == null)
 			throw new NullPointerException("proj cannot be null");
-		
+
 		// set the parent
 		supEnt.setParent(this);
-		
+
 		// add the superEnt
 		superEnts.add(supEnt);
 	}
@@ -161,7 +161,7 @@ public class Tile extends Entity {
 
 		// set the parent
 		item.setParent(this);
-		
+
 		// add the item
 		items.push(item);
 	}
@@ -169,7 +169,7 @@ public class Tile extends Entity {
 	/**
 	 * @return the mob
 	 */
-	public Entity getMob() {
+	public Creature getMob() {
 		return mob;
 	}
 
@@ -179,13 +179,14 @@ public class Tile extends Entity {
 	 * @throws RuntimeException
 	 *             thrown when there's already a mob on the tile
 	 */
-	public void setMob(Entity mob) {
+	public void setMob(Creature mob) {
 		if (this.mob != null)
 			throw new RuntimeException("Mob already exists");
 
-		// set the parent
-		mob.setParent(this);
-		
+		if (mob != null)
+			// set the parent
+			mob.setParent(this);
+
 		// set the new mob
 		this.mob = mob;
 	}
@@ -221,7 +222,7 @@ public class Tile extends Entity {
 
 		// set the parent
 		tileType.setParent(this);
-		
+
 		// set the tile type
 		this.tileType = tileType;
 	}
@@ -237,7 +238,7 @@ public class Tile extends Entity {
 			// use the tileType to determine
 			return tileType.isPassThrough();
 	}
-	
+
 	/**
 	 * @return the visible
 	 */
