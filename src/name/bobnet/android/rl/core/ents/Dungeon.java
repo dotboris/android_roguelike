@@ -31,34 +31,45 @@ public class Dungeon extends Entity {
 	}
 
 	/**
-	 * Moves a creature from one tile to the other (sends the right messages to
+	 * Moves an entity from one tile to the other (sends the right messages to
 	 * the tiles)
 	 * 
-	 * This method doesn't check if it's possible to go to that destination.
-	 * 
 	 * @param dest
-	 *            where the creature is going to go
-	 * @param c
-	 *            the creature
+	 *            where the entity is going to go
+	 * @param ent
+	 *            the entity to move
 	 */
-	public void moveCreature(Tile dest, Creature c) {
+	private void moveEntity(Tile dest, Entity ent) {
 		// variables
 		Tile start;
 		Message leaveMessage, enterMessage;
 
 		// get the start tile
-		start = (Tile) c.getParent();
-		
+		start = (Tile) ent.getParent();
+
 		// construct both messages
-		leaveMessage = new Message(c, start, MessageType.M_ENT_LEAVE_TILE);
-		enterMessage = new Message(c, dest, MessageType.M_ENT_LEAVE_TILE);
-		
-		// remove the mob from the old tile
-		start.delMob();
-		
-		// put the mob in the new tile
-		dest.setMob(c);
-		
+		leaveMessage = new Message(ent, start, MessageType.M_ENT_LEAVE_TILE);
+		enterMessage = new Message(ent, dest, MessageType.M_ENT_LEAVE_TILE);
+		enterMessage.setArgument("what", ent);
+		leaveMessage.setArgument("what", ent);
+
+		// check what entity we have
+		if (ent instanceof Creature) {
+			Creature c = (Creature) ent;
+			// check if we can put the entity
+			if (dest.getMob() == null) {
+				// remove the mob from the old tile
+				start.delMob();
+
+				// put the mob in the new tile
+				dest.setMob(c);
+			}
+		} else if (ent instanceof Entity) {
+			// we have a super entity
+		} else
+			// abort
+			return;
+
 		// send the messages
 		MessageManager.getMessenger().sendMessage(enterMessage);
 		MessageManager.getMessenger().sendMessage(leaveMessage);
@@ -135,10 +146,13 @@ public class Dungeon extends Entity {
 
 	@Override
 	public void processMessage(Message message) {
-		// send message to all children
-		for (int x = 0; x < D_WIDTH; x++)
-			for (int y = 0; y < D_HEIGHT; y++)
-				tiles[x][y].processMessage(message);
+		// parse messages
+		switch (message.getMessageType()) {
+		case M_MOVE_ENT:
+			moveEntity((Tile) message.getArgument("dest"),
+					(Entity) message.getArgument("what"));
+			break;
+		}
 
 	}
 
