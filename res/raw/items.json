@@ -20,6 +20,8 @@
 									"type" : "template",
 									"spawnodds" : 0,
 									
+									"weight" : 10,
+									
 									"display" : "A Dummy Sword",
 									
 									"req_int" : 0,
@@ -45,6 +47,8 @@
 									"name" : "supersword",
 									"type" : "template",
 									"spawnodds" : 75,
+									
+									"weight" : 30,
 									
 									"display" : "Super Sword of DOOM",
 									
@@ -79,6 +83,8 @@
 									"name" : "superhammer",
 									"type" : "template",
 									"spawnodds" : 25,
+									
+									"weight" : 20,
 									
 									"display" : "Super Hammer of DOOM",
 									

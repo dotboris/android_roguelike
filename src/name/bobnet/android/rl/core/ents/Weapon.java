@@ -7,7 +7,7 @@ package name.bobnet.android.rl.core.ents;
 
 import name.bobnet.android.rl.core.message.Message;
 
-public class Weapon extends Entity {
+public class Weapon extends Item {
 
 	// variables
 	private int dmg_low, dmg_high;
@@ -27,8 +27,9 @@ public class Weapon extends Entity {
 	 * @param req_dex
 	 *            the dexterity required to use this weapon
 	 */
-	public Weapon(int dmg_low, int dmg_high, int req_str, int req_int,
-			int req_dex) {
+	public Weapon(int weight, String display, int dmg_low, int dmg_high,
+			int req_str, int req_int, int req_dex) {
+		super(weight, display);
 		this.dmg_low = dmg_low;
 		this.dmg_high = dmg_high;
 		this.req_str = req_str;
