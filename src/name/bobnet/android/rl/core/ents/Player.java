@@ -28,8 +28,9 @@ public class Player extends Creature {
 	public Player(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
 			int res_holy, int res_evil) {
-		super(strength, intellect, dexterity, vitality, res_frost, res_fire,
-				res_air, res_earth, res_holy, res_evil, 0, 200);
+		super("Uhm... You", "player", strength, intellect, dexterity, vitality,
+				res_frost, res_fire, res_air, res_earth, res_holy, res_evil, 0,
+				200);
 
 		// set experience values
 		setLevel(1);

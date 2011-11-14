@@ -13,14 +13,11 @@ import org.json.JSONObject;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Weapon;
 
-public class WeaponTemplate extends Template {
+public class WeaponTemplate extends ItemTemplate {
 
-	// variables
-	private int weight;
 	private int dmg_low_min, dmg_low_max, dmg_high_min, dmg_high_max;
 	private int req_int, req_dex, req_str;
 	private boolean allow_curse, allow_band, allow_enchant;
-	private String display;
 
 	/* (non-Javadoc)
 	 * @see name.bobnet.android.rl.core.ents.factory.Template#generate(java.util.Random)
@@ -38,8 +35,8 @@ public class WeaponTemplate extends Template {
 		dmg_high = rndIntRange(rnd, dmg_high_min, dmg_high_max);
 
 		// create new weapon
-		res = new Weapon(weight, display, dmg_low, dmg_high, req_str, req_int,
-				req_dex);
+		res = new Weapon(weight, display, name, dmg_low, dmg_high, req_str,
+				req_int, req_dex);
 
 		// return the weapon
 		return res;

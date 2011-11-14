@@ -20,8 +20,9 @@ import name.bobnet.android.rl.core.ents.Entity;
 public abstract class Template {
 
 	// variables
-	private int spawnOdd;
-	private String name;
+	protected int spawnOdd;
+	protected String name;
+	protected String display;
 
 	protected int rndIntRange(Random rnd, int min, int max) {
 		return rnd.nextInt(max - min) + min + 1;
@@ -66,6 +67,9 @@ public abstract class Template {
 
 		// load the name of the object
 		setName(self.getString("name"));
+
+		// load display name
+		display = self.getString("display");
 	}
 
 	/**

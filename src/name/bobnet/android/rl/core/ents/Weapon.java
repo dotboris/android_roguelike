@@ -27,9 +27,9 @@ public class Weapon extends Item {
 	 * @param req_dex
 	 *            the dexterity required to use this weapon
 	 */
-	public Weapon(int weight, String display, int dmg_low, int dmg_high,
+	public Weapon(int weight, String display, String name, int dmg_low, int dmg_high,
 			int req_str, int req_int, int req_dex) {
-		super(weight, display);
+		super(weight, display, name);
 		this.dmg_low = dmg_low;
 		this.dmg_high = dmg_high;
 		this.req_str = req_str;

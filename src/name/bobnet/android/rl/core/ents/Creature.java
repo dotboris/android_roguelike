@@ -13,7 +13,7 @@ import name.bobnet.android.rl.core.message.Message.MessageType;
  * 
  * @author boris
  */
-public class Creature extends Entity {
+public class Creature extends TemplateEntity {
 
 	/**
 	 * Types of elemental damage to be used with the M_DO_DAMAGE Message
@@ -56,9 +56,12 @@ public class Creature extends Entity {
 	 * @param xpWorth
 	 *            how much XP this creature is worth
 	 */
-	public Creature(int strength, int intellect, int dexterity, int vitality,
-			int res_frost, int res_fire, int res_air, int res_earth,
-			int res_holy, int res_evil, int xpWorth, int invSize) {
+	public Creature(String display, String name, int strength, int intellect,
+			int dexterity, int vitality, int res_frost, int res_fire,
+			int res_air, int res_earth, int res_holy, int res_evil,
+			int xpWorth, int invSize) {
+		super(display, name);
+		
 		// set attributes
 		this.strength = strength;
 		this.intellect = intellect;
@@ -259,6 +262,13 @@ public class Creature extends Entity {
 	 */
 	public void addToInventory(Item item) {
 		inventory.add(item);
+	}
+
+	/**
+	 * @return the iterator for the inventory
+	 */
+	public Iterator<Item> getInventoryIterator() {
+		return inventory.iterator();
 	}
 
 	/**

@@ -5,29 +5,14 @@
  */
 package name.bobnet.android.rl.core.ents;
 
-public abstract class Item extends Entity {
+public abstract class Item extends TemplateEntity {
 
 	// variables
 	private int weight;
-	private String display;
 
-	public Item(int weight, String display) {
+	public Item(int weight, String display, String name) {
+		super(display, name);
 		this.weight = weight;
-		this.display = display;
-	}
-
-	/**
-	 * @return the display
-	 */
-	public String getDisplay() {
-		return display;
-	}
-
-	/**
-	 * @param display
-	 *            the display to set
-	 */
-	public void setDisplay(String display) {
 		this.display = display;
 	}
 

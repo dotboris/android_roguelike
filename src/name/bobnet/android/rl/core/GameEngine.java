@@ -17,6 +17,7 @@ import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Player;
+import name.bobnet.android.rl.core.ents.TemplateEntity;
 import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.factory.EntityFactory;
@@ -88,7 +89,9 @@ public class GameEngine {
 		currentDungeon.getTile(40, 41).addItem(i);
 
 		// create a creature and put it in the dungeon
-		Creature c = new Creature(1, 3, 5, 6, 0, 0, 0, 0, 0, 0, 10, 100);
+		Creature c = new Creature("dummy",
+				"The one looking for a can of whoopass", 1, 3, 5, 6, 0, 0, 0,
+				0, 0, 0, 10, 100);
 		currentDungeon.getTile(40, 42).setMob(c);
 
 	}
@@ -106,7 +109,7 @@ public class GameEngine {
 		// find the first item on the floor
 		Iterator<Item> it = t.getItemsIterator();
 		if (it.hasNext()) {
-			Item i = (Item) it.next();
+			Item i = it.next();
 			Message m = new Message(player, player, MessageType.M_PICKUP_ENT);
 			m.setArgument("what", i);
 			messageManager.sendMessage(m);
@@ -119,7 +122,7 @@ public class GameEngine {
 		// get the first item in the inventory
 		Iterator<Item> it = player.getInventoryIterator();
 		if (it.hasNext()) {
-			TemplateEntity i = it.next();
+			Item i = it.next();
 			Message m = new Message(player, player, MessageType.M_DROP_ENT);
 			m.setArgument("what", i);
 			messageManager.sendMessage(m);
