@@ -107,7 +107,7 @@ public class ContentLoader {
 		JSONArray tArray = root;
 
 		// navigate to the path
-		for (int o = pathOffset; o < root.length(); o++) {
+		for (int o = pathOffset; o < path.length; o++) {
 			String cName = path[o];
 
 			// variables
@@ -155,14 +155,14 @@ public class ContentLoader {
 					}
 
 					// add the new name to the path
-					nPath[nPath.length + 1] = tObject.getString("name");
+					nPath[nPath.length - 1] = tObject.getString("name");
 
 					// search the new path
-					loadTemplates(templateClass,
-							tObject.getJSONArray("members"), nPath, path.length);
+					loadTemplates(templateClass, tArray, nPath, path.length);
 				}
 			} catch (Exception e) {
 				// Abandon ship
+				Log.d("RL", "Error loading content: " + e.getMessage());
 			}
 		}
 	}

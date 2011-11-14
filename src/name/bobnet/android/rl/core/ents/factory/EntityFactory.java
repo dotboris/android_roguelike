@@ -140,7 +140,7 @@ public class EntityFactory {
 			// get templates
 			findGoodTemplates(cNode, roll, goodTemplate);
 
-		} while (!goodTemplate.isEmpty());
+		} while (goodTemplate.isEmpty());
 
 		// pick a random template out of the good ones
 		roll = rnd.nextInt(goodTemplate.size());

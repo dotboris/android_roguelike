@@ -24,7 +24,7 @@ public abstract class Template {
 	private String name;
 
 	protected int rndIntRange(Random rnd, int min, int max) {
-		return rnd.nextInt(min - max) + min + 1;
+		return rnd.nextInt(max - min) + min + 1;
 	}
 
 	/**
