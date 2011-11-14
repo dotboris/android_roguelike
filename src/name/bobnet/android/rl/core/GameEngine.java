@@ -116,7 +116,16 @@ public class GameEngine {
 	}
 
 	public void dropItem() {
+		// get the first item in the inventory
+		Iterator<Item> it = player.getInventoryIterator();
+		if (it.hasNext()) {
+			TemplateEntity i = it.next();
+			Message m = new Message(player, player, MessageType.M_DROP_ENT);
+			m.setArgument("what", i);
+			messageManager.sendMessage(m);
 
+			Log.d("RL", "Dropped item: " + i);
+		}
 	}
 
 	/**

@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,6 +76,9 @@ public class TestView extends View {
 			break;
 		case KeyEvent.KEYCODE_P:
 			engine.pickUpItem();
+			break;
+		case KeyEvent.KEYCODE_D:
+			engine.dropItem();
 			break;
 		default:
 			break;
