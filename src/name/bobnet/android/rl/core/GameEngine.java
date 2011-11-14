@@ -17,15 +17,12 @@ import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Player;
-import name.bobnet.android.rl.core.ents.TemplateEntity;
 import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.factory.EntityFactory;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
 import name.bobnet.android.rl.core.gen.Generator.DungeonType;
-import name.bobnet.android.rl.core.message.Message;
-import name.bobnet.android.rl.core.message.Message.MessageType;
 
 public class GameEngine {
 
@@ -110,9 +107,7 @@ public class GameEngine {
 		Iterator<Item> it = t.getItemsIterator();
 		if (it.hasNext()) {
 			Item i = it.next();
-			Message m = new Message(player, player, MessageType.M_PICKUP_ENT);
-			m.setArgument("what", i);
-			messageManager.sendMessage(m);
+			doAction("A_PICKUP", i);
 
 			Log.d("RL", "Picked up item " + i);
 		}
@@ -123,9 +118,7 @@ public class GameEngine {
 		Iterator<Item> it = player.getInventoryIterator();
 		if (it.hasNext()) {
 			Item i = it.next();
-			Message m = new Message(player, player, MessageType.M_DROP_ENT);
-			m.setArgument("what", i);
-			messageManager.sendMessage(m);
+			doAction("A_DROP", i);
 
 			Log.d("RL", "Dropped item: " + i);
 		}
@@ -180,7 +173,7 @@ public class GameEngine {
 	public void doMoveAction(int x, int y) {
 		// get the tile for the action
 		Tile cTile = (Tile) player.getParent();
-		Tile nTile = currentDungeon.getTile(cTile.getX() + x, cTile.getY() - y);
+		Tile nTile = currentDungeon.getRelativeTile(cTile, x, -y);
 
 		// check the new tile and determine what to do
 		if (nTile.isPassthrough() && nTile.getMob() == null) {

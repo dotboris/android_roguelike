@@ -39,7 +39,7 @@ public class Dungeon extends Entity {
 	 * @param ent
 	 *            the entity to move
 	 */
-	private void moveEntity(Tile dest, Entity ent) {
+	public void moveEntity(Tile dest, Entity ent) {
 		// variables
 		Tile start;
 		Message leaveMessage, enterMessage;
@@ -146,13 +146,6 @@ public class Dungeon extends Entity {
 
 	@Override
 	public void processMessage(Message message) {
-		// parse messages
-		switch (message.getMessageType()) {
-		case M_MOVE_ENT:
-			moveEntity((Tile) message.getArgument("dest"),
-					(Entity) message.getArgument("what"));
-			break;
-		}
 
 	}
 

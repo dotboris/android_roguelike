@@ -74,7 +74,13 @@ public class Player extends Creature {
 			if (!(a.ent != null && a.ent instanceof Creature))
 				return false;
 		} else if (a.name.equals("A_PICKUP")) {
-
+			if (!(a.ent != null && a.ent instanceof Item)) {
+				return false;
+			}
+		} else if (a.name.equals("A_DROP")) {
+			if (!(a.ent != null && a.ent instanceof Item)) {
+				return false;
+			}
 		} else if (a.name.equals("A_EAT")) {
 
 		} else if (a.name.equals("A_READ")) {
@@ -111,14 +117,9 @@ public class Player extends Creature {
 
 				// TODO: Do the action
 				if (cAction.equals("A_WALK")) {
-					// create a message for the movement
-					Message m = new Message(this, GameEngine.getEngine()
-							.getCurrentDungeon(), MessageType.M_MOVE_ENT);
-					m.setArgument("what", this);
-					m.setArgument("dest", aEnt);
-
-					// send the message
-					MessageManager.getMessenger().sendMessage(m);
+					// move ourselves
+					GameEngine.getEngine().getCurrentDungeon()
+							.moveEntity((Tile) aEnt, this);
 				} else if (cAction.equals("A_ATTACK")) {
 					// create a message to do damage
 					Message aMessage = new Message(this, aEnt,
@@ -128,7 +129,11 @@ public class Player extends Creature {
 					// send the message
 					MessageManager.getMessenger().sendMessage(aMessage);
 				} else if (cAction.equals("A_PICKUP")) {
-
+					// pick up the item
+					pickUpItem((Item) aEnt);
+				} else if (cAction.equals("A_DROP")) {
+					// drop the item
+					dropItem((Item) aEnt);
 				} else if (cAction.equals("A_EAT")) {
 
 				} else if (cAction.equals("A_READ")) {

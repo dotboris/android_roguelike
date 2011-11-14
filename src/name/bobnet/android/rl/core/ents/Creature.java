@@ -61,7 +61,7 @@ public class Creature extends TemplateEntity {
 			int res_air, int res_earth, int res_holy, int res_evil,
 			int xpWorth, int invSize) {
 		super(display, name);
-		
+
 		// set attributes
 		this.strength = strength;
 		this.intellect = intellect;
@@ -84,12 +84,70 @@ public class Creature extends TemplateEntity {
 		this.invSize = invSize;
 	}
 
+	public void pickUpItem(Item i) {
+		// variables
+		Tile tile = (Tile) getParent();
+		boolean res = false;
+
+		// check if we can pick up the item
+		Iterator<Item> it = tile.getItemsIterator();
+		while (it.hasNext()) {
+			if (it.next() == i) {
+				// found it
+				res = true;
+				break;
+			}
+		}
+
+		if (res) {
+			// add it to our inventory
+			inventory.add(i);
+
+			// remove the item from the tile
+			it.remove();
+
+			// inform that tile that we removed the object
+			Message m = new Message(this, tile, MessageType.M_ENT_LEAVE_TILE);
+			m.setArgument("what", i);
+			MessageManager.getMessenger().sendMessage(m);
+		}
+	}
+
+	public void dropItem(Item i) {
+		// variables
+		Tile tile = (Tile) getParent();
+		boolean good = false;
+
+		// check if the item exists
+		Iterator<Item> it = inventory.iterator();
+		while (it.hasNext()) {
+			if (it.next() == i) {
+				// it's there
+				good = true;
+				break;
+			}
+		}
+
+		if (good) {
+			// add the item to the tile
+			tile.addItem(i);
+
+			// remove the item from the inventory
+			it.remove();
+
+			// inform that tile of the new item
+			Message m = new Message(this, tile, MessageType.M_ENT_ENTER_TILE);
+			m.setArgument("what", i);
+			MessageManager.getMessenger().sendMessage(m);
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see name.bobnet.android.rl.core.ents.Entity#tick()
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		// TODO Do AI stuff
 
 	}
 
@@ -185,66 +243,6 @@ public class Creature extends TemplateEntity {
 					+ getMaxHealth());
 
 			break;
-		case M_PICKUP_ENT:
-			// get the arguments
-			Item what = (Item) message.getArgument("what");
-			Tile tile = (Tile) getParent();
-			boolean res = false;
-
-			// check if we can pick up the item
-			Iterator<Item> it = tile.getItemsIterator();
-			while (it.hasNext()) {
-				if (it.next() == what) {
-					// found it
-					res = true;
-					break;
-				}
-			}
-			if (res) {
-				// add it to our inventory
-				inventory.add(what);
-
-				// remove the item from the tile
-				it.remove();
-
-				// inform that tile that we removed the object
-				Message m = new Message(this, tile,
-						MessageType.M_ENT_LEAVE_TILE);
-				m.setArgument("what", what);
-				MessageManager.getMessenger().sendMessage(m);
-			}
-
-			break;
-		case M_DROP_ENT:
-			// get arguments
-			Item dropItem = (Item) message.getArgument("what");
-			Tile dropTile = (Tile) getParent();
-			boolean good = false;
-
-			// check if the item exists
-			Iterator<Item> iIt = inventory.iterator();
-			while (iIt.hasNext()) {
-				if (iIt.next() == dropItem) {
-					// it's there
-					good = true;
-					break;
-				}
-			}
-
-			if (good) {
-				// add the item to the tile
-				dropTile.addItem(dropItem);
-
-				// remove the item from the inventory
-				iIt.remove();
-
-				// inform that tile of the new item
-				Message m = new Message(this, dropTile,
-						MessageType.M_ENT_ENTER_TILE);
-				m.setArgument("what", dropItem);
-				MessageManager.getMessenger().sendMessage(m);
-			}
-
 		}
 	}
 
