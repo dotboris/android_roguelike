@@ -1,5 +1,7 @@
 package name.bobnet.android.rl.core.ents;
 
+import java.util.ArrayList;
+
 import android.util.Log;
 import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.message.Message;
@@ -26,6 +28,8 @@ public class Creature extends Entity {
 	protected int strength, intellect, dexterity, vitality;
 	protected int res_frost, res_fire, res_air, res_earth, res_holy, res_evil;
 	protected int xpWorth;
+	protected ArrayList<Item> inventory;
+	protected int invSize;
 
 	/**
 	 * @param strength
@@ -53,7 +57,7 @@ public class Creature extends Entity {
 	 */
 	public Creature(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
-			int res_holy, int res_evil, int xpWorth) {
+			int res_holy, int res_evil, int xpWorth, int invSize) {
 		// set attributes
 		this.strength = strength;
 		this.intellect = intellect;
@@ -69,6 +73,11 @@ public class Creature extends Entity {
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
 
+		// create inventory
+		inventory = new ArrayList<Item>();
+
+		// set the size
+		this.invSize = invSize;
 	}
 
 	/* (non-Javadoc)
@@ -173,6 +182,22 @@ public class Creature extends Entity {
 
 			break;
 		}
+	}
+
+	/**
+	 * @param size
+	 *            the size of the inventory
+	 */
+	public void setInventorySize(int size) {
+		invSize = size;
+	}
+
+	/**
+	 * @param item
+	 *            item to be added to the in inventory
+	 */
+	public void addToInventory(Item item) {
+		inventory.add(item);
 	}
 
 	/**

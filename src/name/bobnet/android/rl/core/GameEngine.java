@@ -78,7 +78,7 @@ public class GameEngine {
 		Log.d("RL", "Created player");
 
 		// create a creature and put it in the dungeon
-		Creature c = new Creature(1, 3, 5, 6, 0, 0, 0, 0, 0, 0, 10);
+		Creature c = new Creature(1, 3, 5, 6, 0, 0, 0, 0, 0, 0, 10, 100);
 		currentDungeon.getTile(40, 42).setMob(c);
 
 	}
