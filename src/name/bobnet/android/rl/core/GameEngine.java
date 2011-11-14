@@ -8,18 +8,23 @@ package name.bobnet.android.rl.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 import android.content.res.Resources;
 import android.util.Log;
 import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
+import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Player;
 import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
+import name.bobnet.android.rl.core.ents.factory.EntityFactory;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
 import name.bobnet.android.rl.core.gen.Generator.DungeonType;
+import name.bobnet.android.rl.core.message.Message;
+import name.bobnet.android.rl.core.message.Message.MessageType;
 
 public class GameEngine {
 
@@ -77,6 +82,11 @@ public class GameEngine {
 		currentDungeon.getTile(40, 40).setMob(player);
 		Log.d("RL", "Created player");
 
+		// create an item on the floor
+		Item i = (Item) EntityFactory.getEntityFactory().getRndEntity(
+				ContentLoader.P_WEPAONS, new Random());
+		currentDungeon.getTile(40, 41).addItem(i);
+
 		// create a creature and put it in the dungeon
 		Creature c = new Creature(1, 3, 5, 6, 0, 0, 0, 0, 0, 0, 10, 100);
 		currentDungeon.getTile(40, 42).setMob(c);
@@ -87,6 +97,26 @@ public class GameEngine {
 	public void genDugeon() {
 		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
 				TileStyle.ROCK);
+	}
+
+	public void pickUpItem() {
+		// get player tile
+		Tile t = (Tile) player.getParent();
+
+		// find the first item on the floor
+		Iterator<Item> it = t.getItemsIterator();
+		if (it.hasNext()) {
+			Item i = (Item) it.next();
+			Message m = new Message(player, player, MessageType.M_PICKUP_ENT);
+			m.setArgument("what", i);
+			messageManager.sendMessage(m);
+
+			Log.d("RL", "Picked up item " + i);
+		}
+	}
+
+	public void dropItem() {
+
 	}
 
 	/**

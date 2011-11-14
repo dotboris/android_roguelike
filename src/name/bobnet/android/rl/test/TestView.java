@@ -73,6 +73,9 @@ public class TestView extends View {
 		case KeyEvent.KEYCODE_9:
 			engine.doMoveAction(1, 1);
 			break;
+		case KeyEvent.KEYCODE_P:
+			engine.pickUpItem();
+			break;
 		default:
 			break;
 		}
@@ -127,15 +130,17 @@ public class TestView extends View {
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
 		// paints
-		Paint pBlue, pRed, pGreen, pYellow;
+		Paint pBlue, pRed, pGreen, pYellow, pWhile;
 		pBlue = new Paint();
 		pRed = new Paint();
 		pGreen = new Paint();
 		pYellow = new Paint();
+		pWhile = new Paint();
 		pRed.setColor(Color.RED);
 		pBlue.setColor(Color.BLUE);
 		pGreen.setColor(Color.GREEN);
 		pYellow.setColor(Color.YELLOW);
+		pWhile.setColor(Color.WHITE);
 
 		for (int x = 0; x < Dungeon.D_WIDTH; x++)
 			for (int y = 0; y < Dungeon.D_HEIGHT; y++) {
@@ -148,7 +153,11 @@ public class TestView extends View {
 				else if (engine.getCurrentDungeon().getTile(x, y).getMob() instanceof Creature)
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pYellow);
-				else
+				else if (engine.getCurrentDungeon().getTile(x, y)
+						.getItemsIterator().hasNext()) {
+					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
+							pWhile);
+				} else
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pBlue);
 			}

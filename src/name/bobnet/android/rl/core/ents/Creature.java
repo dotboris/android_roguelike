@@ -185,7 +185,7 @@ public class Creature extends Entity {
 		case M_PICKUP_ENT:
 			// get the arguments
 			Item what = (Item) message.getArgument("what");
-			Tile tile = (Tile) message.getArgument("tile");
+			Tile tile = (Tile) getParent();
 			boolean res = false;
 
 			// check if we can pick up the item
