@@ -27,7 +27,7 @@ public class Tile extends Entity {
 	 */
 	private ArrayList<Entity> superEnts;
 	private Creature mob;
-	private Stack<Entity> items;
+	private Stack<Item> items;
 	private TileType tileType;
 	private boolean visible;
 	private boolean genUsed;
@@ -61,12 +61,12 @@ public class Tile extends Entity {
 
 		// create the items stack
 		superEnts = new ArrayList<Entity>();
-		items = new Stack<Entity>();
+		items = new Stack<Item>();
 
 		// set position
 		setX(x);
 		setY(y);
-		
+
 		// set fields
 		setVisible(false);
 		setGenUsed(false);
@@ -77,12 +77,12 @@ public class Tile extends Entity {
 		// call the tick method of our children
 
 		// general purpose iterator
-		Iterator<Entity> it;
+		Iterator<Entity> eIt;
 
 		// super ents
-		it = superEnts.iterator();
-		while (it.hasNext()) {
-			it.next().tick();
+		eIt = superEnts.iterator();
+		while (eIt.hasNext()) {
+			eIt.next().tick();
 		}
 
 		// mob
@@ -90,9 +90,9 @@ public class Tile extends Entity {
 			mob.tick();
 
 		// items
-		it = items.iterator();
-		while (it.hasNext())
-			it.next().tick();
+		Iterator<Item> iIt = items.iterator();
+		while (iIt.hasNext())
+			iIt.next().tick();
 
 		// tileType
 		tileType.tick();
@@ -116,9 +116,9 @@ public class Tile extends Entity {
 			mob.processMessage(message);
 
 		// items
-		it = items.iterator();
-		while (it.hasNext())
-			it.next().processMessage(message);
+		Iterator<Item> iIt = items.iterator();
+		while (iIt.hasNext())
+			iIt.next().processMessage(message);
 
 		// tileType
 		tileType.processMessage(message);
@@ -151,7 +151,7 @@ public class Tile extends Entity {
 	/**
 	 * @return the iterator of the items
 	 */
-	public Iterator<Entity> getItemsIterator() {
+	public Iterator<Item> getItemsIterator() {
 		return items.iterator();
 	}
 
@@ -159,7 +159,7 @@ public class Tile extends Entity {
 	 * @param item
 	 *            item to be added
 	 */
-	public void addItem(Entity item) {
+	public void addItem(Item item) {
 		if (item == null)
 			throw new NullPointerException("item cannot be null");
 
