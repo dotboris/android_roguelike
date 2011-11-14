@@ -1,0 +1,40 @@
+{
+	"templates" : [
+		{
+			"name" : "creature",
+			"type" : "class",
+			
+			"members" : [
+				{
+					"name" : "dummy_race",
+					"type" : "class",
+					
+					"members" : [
+						{
+							"name" : "dummy_creature",
+							"type" : "template",
+							"spawnodds" : 0,
+							
+							"display" : "Dummy Creature",
+							
+							"res_earth" : 10,
+							"res_air" : 20,
+							"res_fire" : 10,
+							"res_frost" : 20,
+							"res_evil" : 10,
+							"res_holy" : 20,
+							
+							"strenght" : 10,
+							"intellect" : 10,
+							"vitality" : 10,
+							"dexterity" : 10,
+							
+							"xpworth" : 100,
+							"invsize" : 50 
+						}
+					]
+				}
+			]
+		}
+	]
+}
