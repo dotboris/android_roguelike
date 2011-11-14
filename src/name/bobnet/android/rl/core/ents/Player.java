@@ -3,7 +3,9 @@ package name.bobnet.android.rl.core.ents;
 import name.bobnet.android.rl.core.Action;
 import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
+import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.message.Message;
+import name.bobnet.android.rl.core.message.Message.MessageType;
 
 /**
  * The player
@@ -68,7 +70,8 @@ public class Player extends Creature {
 				return false;
 			}
 		} else if (a.name.equals("A_ATTACK")) {
-
+			if (!(a.ent != null && a.ent instanceof Creature))
+				return false;
 		} else if (a.name.equals("A_PICKUP")) {
 
 		} else if (a.name.equals("A_EAT")) {
@@ -110,7 +113,13 @@ public class Player extends Creature {
 					GameEngine.getEngine().getCurrentDungeon()
 							.moveCreature((Tile) aEnt, this);
 				} else if (cAction.equals("A_ATTACK")) {
-
+					// create a message to do damage
+					Message aMessage = new Message(this, aEnt,
+							MessageType.M_DO_DAMAGE);
+					aMessage.setArgument("dmg", 5);
+					
+					// send the message
+					MessageManager.getMessenger().sendMessage(aMessage);
 				} else if (cAction.equals("A_PICKUP")) {
 
 				} else if (cAction.equals("A_EAT")) {

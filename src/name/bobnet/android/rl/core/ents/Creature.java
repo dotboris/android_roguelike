@@ -1,5 +1,6 @@
 package name.bobnet.android.rl.core.ents;
 
+import android.util.Log;
 import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
@@ -65,8 +66,9 @@ public class Creature extends Entity {
 		this.res_holy = res_holy;
 		this.res_evil = res_evil;
 		this.xpWorth = xpWorth;
+		this.health = getMaxHealth();
+		this.mana = getMaxMana();
 
-		// TODO: set ration of vitality to health and intellect to mana
 	}
 
 	/* (non-Javadoc)
@@ -155,7 +157,19 @@ public class Creature extends Entity {
 						MessageType.M_KILLED);
 				m.setArgument("xp", xpWorth);
 				MessageManager.getMessenger().sendMessage(m);
+
+				// remove ourselves from the tile
+				((Tile) getParent()).delMob();
+
+				// send a message saying that we left the tile
+				m = new Message(this, getParent(), MessageType.M_ENT_LEAVE_TILE);
+				m.setArgument("what", this);
+				MessageManager.getMessenger().sendMessage(m);
 			}
+
+			// debug messages
+			Log.d("RL", "Got hit health now: " + getHealth() + "/"
+					+ getMaxHealth());
 
 			break;
 		}
@@ -264,6 +278,20 @@ public class Creature extends Entity {
 	 */
 	public void setRes_evil(int res_evil) {
 		this.res_evil = res_evil;
+	}
+
+	/**
+	 * @return the maximum health of the creature
+	 */
+	public int getMaxHealth() {
+		return 2 + vitality * 2;
+	}
+
+	/**
+	 * @return the macimum mana of the creature
+	 */
+	public int getMaxMana() {
+		return intellect * 2;
 	}
 
 	/**

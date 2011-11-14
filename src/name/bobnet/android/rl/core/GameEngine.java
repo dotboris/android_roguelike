@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import android.content.res.Resources;
 import android.util.Log;
+import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Player;
@@ -75,6 +76,10 @@ public class GameEngine {
 		player = new Player(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		currentDungeon.getTile(40, 40).setMob(player);
 		Log.d("RL", "Created player");
+
+		// create a creature and put it in the dungeon
+		Creature c = new Creature(1, 3, 5, 6, 0, 0, 0, 0, 0, 0, 10);
+		currentDungeon.getTile(40, 42).setMob(c);
 
 	}
 
