@@ -10,6 +10,7 @@ import java.util.Random;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import name.bobnet.android.rl.core.ents.Creature.EquipSlots;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Weapon;
 
@@ -35,8 +36,8 @@ public class WeaponTemplate extends ItemTemplate {
 		dmg_high = rndIntRange(rnd, dmg_high_min, dmg_high_max);
 
 		// create new weapon
-		res = new Weapon(weight, display, name, dmg_low, dmg_high, req_str,
-				req_int, req_dex);
+		res = new Weapon(weight, display, name, EquipSlots.WEAPON, dmg_low,
+				dmg_high, req_str, req_int, req_dex);
 
 		// return the weapon
 		return res;

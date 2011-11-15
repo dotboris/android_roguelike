@@ -1,6 +1,7 @@
 package name.bobnet.android.rl.core.ents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import android.util.Log;
@@ -24,6 +25,15 @@ public class Creature extends TemplateEntity {
 		FROST, FIRE, AIR, EARTH, HOLY, EVIL
 	}
 
+	/**
+	 * The slot in which equipment can be put
+	 * 
+	 * @author boris
+	 */
+	public enum EquipSlots {
+		HEAD, CHEST, LEGS, BACK, HANDS, FEET, NECK, FINGERS, WEAPON, SHIELD
+	}
+
 	// variables
 	protected int health, mana;
 	protected int strength, intellect, dexterity, vitality;
@@ -31,6 +41,7 @@ public class Creature extends TemplateEntity {
 	protected int xpWorth;
 	protected ArrayList<Item> inventory;
 	protected int invSize;
+	protected HashMap<EquipSlots, Equipment> equipment;
 
 	/**
 	 * @param strength
@@ -208,13 +219,14 @@ public class Creature extends TemplateEntity {
 			// get damage
 			Object oDmg = message.getArgument("dmg");
 
-			// TODO: Implement defence
-
 			// check if it's good
 			if (oDmg != null && oDmg instanceof Integer) {
 				// get the damage value
 				int dmg = (Integer) oDmg;
 
+				// absorbs damage
+				dmg -= getDefence();
+				
 				// do damage
 				if (dmg > 0) {
 					health -= dmg;
@@ -244,6 +256,54 @@ public class Creature extends TemplateEntity {
 
 			break;
 		}
+	}
+
+	public int getDefence() {
+		// variables
+		int defence = 0;
+
+		// add up the defence
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.CHEST)).getDefence();
+		} catch (Exception e) {
+		}
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.BACK)).getDefence();
+		} catch (Exception e) {
+		}
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.FEET)).getDefence();
+		} catch (Exception e) {
+		}
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.HANDS)).getDefence();
+		} catch (Exception e) {
+		}
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.HEAD)).getDefence();
+		} catch (Exception e) {
+		}
+		try {
+			defence += ((Armor) getEquipment(EquipSlots.LEGS)).getDefence();
+		} catch (Exception e) {
+		}
+		
+		// return the defence
+		return defence;
+	}
+
+	/**
+	 * Get equipment in a slot
+	 */
+	public Equipment getEquipment(EquipSlots slot) {
+		return equipment.get(slot);
+	}
+
+	/**
+	 * Put a piece of equipment on
+	 */
+	public void putEquipment(EquipSlots slot, Equipment equipment) {
+		this.equipment.put(slot, equipment);
 	}
 
 	/**
