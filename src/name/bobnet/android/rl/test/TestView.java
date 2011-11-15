@@ -136,17 +136,17 @@ public class TestView extends View {
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
 		// paints
-		Paint pBlue, pRed, pGreen, pYellow, pWhile;
+		Paint pBlue, pRed, pGreen, pYellow, pPurple;
 		pBlue = new Paint();
 		pRed = new Paint();
 		pGreen = new Paint();
 		pYellow = new Paint();
-		pWhile = new Paint();
+		pPurple = new Paint();
 		pRed.setColor(Color.RED);
 		pBlue.setColor(Color.BLUE);
 		pGreen.setColor(Color.GREEN);
 		pYellow.setColor(Color.YELLOW);
-		pWhile.setColor(Color.WHITE);
+		pPurple.setColor(Color.MAGENTA);
 
 		for (int x = 0; x < Dungeon.D_WIDTH; x++)
 			for (int y = 0; y < Dungeon.D_HEIGHT; y++) {
@@ -162,7 +162,7 @@ public class TestView extends View {
 				else if (engine.getCurrentDungeon().getTile(x, y)
 						.getItemsIterator().hasNext()) {
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pWhile);
+							pPurple);
 				} else
 					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
 							pBlue);

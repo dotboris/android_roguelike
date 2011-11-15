@@ -4,6 +4,7 @@ import java.util.Random;
 
 import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dungeon;
+import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.factory.EntityFactory;
 import name.bobnet.android.rl.core.ents.tiles.Floor;
@@ -139,8 +140,35 @@ public class SquareRoom extends Feature {
 
 	@Override
 	public int genItems(int itemNum, int itemMax) {
-		// TODO Auto-generated method stub
-		return 0;
+		// variable
+		int count = 0;
+
+		// determine how many items we make
+		for (int i = 0; i < rnd.nextInt(I_MAX + 1); i++) {
+			// check if we can place a creature
+			if (itemNum + count < itemMax) {
+				// pick a random position
+				int x = rnd.nextInt(w) + x1;
+				int y = rnd.nextInt(h) + y1;
+
+				// get a random creature
+				Item item = (Item) EntityFactory.getEntityFactory()
+						.getRndEntity(ContentLoader.P_ITEMS, rnd);
+
+				// check if we actually got a creature
+				if (item != null) {
+					// place it
+					d.getTile(x, y).addItem(item);
+
+					// update the counter
+					count++;
+				}
+
+			}
+		}
+
+		// return the count
+		return count;
 	}
 
 	@Override
@@ -148,7 +176,6 @@ public class SquareRoom extends Feature {
 		// variable
 		int count = 0;
 
-		// check if we have creatures
 		// determine how many creatures we make
 		for (int i = 0; i < rnd.nextInt(C_MAX + 1); i++) {
 			// check if we can place a creature

@@ -24,6 +24,7 @@ public class ContentLoader {
 
 	// constants
 	private static final int[] C_HOLDERS = { R.raw.items, R.raw.creatures };
+	public static final String[] P_ITEMS = { "item" };
 	public static final String[] P_WEPAONS = { "item", "weapon" };
 	public static final String[] P_CREATURES = { "creature" };
 
