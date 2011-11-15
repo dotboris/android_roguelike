@@ -23,8 +23,9 @@ import name.bobnet.android.rl.core.util.TreeNode;
 public class ContentLoader {
 
 	// constants
-	private static final int[] C_HOLDERS = { R.raw.items };
+	private static final int[] C_HOLDERS = { R.raw.items, R.raw.creatures };
 	public static final String[] P_WEPAONS = { "item", "weapon" };
+	public static final String[] P_CREATURES = { "creature" };
 
 	// singleton
 	private static ContentLoader contentLoader;
@@ -88,6 +89,10 @@ public class ContentLoader {
 				// weapons
 				loadTemplates(WeaponTemplate.class, tmpJsonArray, P_WEPAONS, 0);
 
+				// creatures
+				loadTemplates(CreatureTemplate.class, tmpJsonArray,
+						P_CREATURES, 0);
+
 			} catch (NotFoundException e) {
 				// Items file not found aborting load
 				Log.d("RL", "Items file not found, can't load content");
@@ -145,6 +150,8 @@ public class ContentLoader {
 					Template t = templateClass.newInstance();
 					t.load(tObject);
 					factory.addTemplate(path, t);
+
+					Log.d("RL", "Loaded " + tObject.getString("name"));
 				} else if (tObject.getString("type").equals("class")) {
 					// create a new path
 					nPath = new String[path.length + 1];
