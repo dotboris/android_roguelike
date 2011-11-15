@@ -57,6 +57,28 @@ public abstract class Feature {
 	public abstract void generate(int x, int y, Side s);
 
 	/**
+	 * Generate the items in the feature
+	 * 
+	 * @param itemNum
+	 *            the current count of items
+	 * @param itemMax
+	 *            the maximum number of items
+	 * @return the number of items created
+	 */
+	public abstract int genItems(int itemNum, int itemMax);
+
+	/**
+	 * Generate the creatures in the feature
+	 * 
+	 * @param creatureNum
+	 *            the current count of creatures
+	 * @param creatureMax
+	 *            the maximum number of creatures
+	 * @return the number of creatures created
+	 */
+	public abstract int genCreatures(int creatureNum, int creatureMax);
+
+	/**
 	 * Determine if the room can be placed inside the dungeon
 	 * 
 	 * @return true if the feature can be placed false otherwise

@@ -33,6 +33,57 @@
 							"invsize" : 50 
 						}
 					]
+				},
+				{
+					"name" : "orc",
+					"type" : "class",
+					
+					"members" : [
+						{
+							"name" : "orc_peon",
+							"type" : "template",
+							"spawnodds" : 50,
+							
+							"display" : "Orc Peon",
+							
+							"res_earth" : 00,
+							"res_air" : 00,
+							"res_fire" : 00,
+							"res_frost" : 00,
+							"res_evil" : 00,
+							"res_holy" : 00,
+							
+							"strength" : 4,
+							"intellect" : 2,
+							"vitality" : 5,
+							"dexterity" : 3,
+							
+							"xpworth" : 10,
+							"invsize" : 50 
+						},
+						{
+							"name" : "orc_fighter",
+							"type" : "template",
+							"spawnodds" : 30,
+							
+							"display" : "Orc Fighter",
+							
+							"res_earth" : 00,
+							"res_air" : 00,
+							"res_fire" : 00,
+							"res_frost" : 00,
+							"res_evil" : 00,
+							"res_holy" : 00,
+							
+							"strength" : 6,
+							"intellect" : 2,
+							"vitality" : 10,
+							"dexterity" : 4,
+							
+							"xpworth" : 30,
+							"invsize" : 50 
+						}
+					]
 				}
 			]
 		}

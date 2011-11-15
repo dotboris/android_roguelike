@@ -65,7 +65,7 @@ public abstract class Generator {
 			// check the dungeon
 			genGood = gen.checkDungeon();
 
-		} while (genGood);
+		} while (!genGood);
 
 		// return the generated dungeon
 		return dungeon;

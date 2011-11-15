@@ -159,4 +159,15 @@ public class Corridor extends Feature {
 		return vert;
 	}
 
+	@Override
+	public int genItems(int itemNum, int itemMax) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int genCreatures(int creatureNum, int creatureMax) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

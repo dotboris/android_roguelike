@@ -18,6 +18,8 @@ public class StandardGen extends Generator {
 	// constants
 	public static final int F_MAX = 100;
 	public static final int LOOP_NUM = 1000;
+	public static final int I_MAX = 100;
+	public static final int C_MAX = 150;
 
 	// variables
 	private Feature features[];
@@ -111,8 +113,22 @@ public class StandardGen extends Generator {
 	 */
 	@Override
 	protected void genItems() {
-		// TODO Auto-generated method stub
+		// variables
+		int itemCount = 0;
 
+		// tell all the features to gen items
+		for (Feature f : features) {
+			if (f != null) {
+				// create items
+				itemCount += f.genItems(itemCount, I_MAX);
+
+				// check if we hit the limit
+				if (itemCount >= I_MAX)
+					break;
+			} else
+				// we started hitting nulls, give up
+				break;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -120,8 +136,22 @@ public class StandardGen extends Generator {
 	 */
 	@Override
 	protected void genMobs() {
-		// TODO Auto-generated method stub
+		// variables
+		int creatureCount = 0;
 
+		// tell all the features to gen creatures
+		for (Feature f : features) {
+			if (f != null) {
+				// create creatures
+				creatureCount += f.genCreatures(creatureCount, C_MAX);
+
+				// check if we hit the limit
+				if (creatureCount >= C_MAX)
+					break;
+			} else
+				// we started hitting nulls, give up
+				break;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -130,7 +160,7 @@ public class StandardGen extends Generator {
 	@Override
 	protected boolean checkDungeon() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
