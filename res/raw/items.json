@@ -110,6 +110,92 @@
 							]
 						}
 					]
+				},
+				{
+					"name" : "armor",
+					"type" : "class",
+					
+					"members" : [
+						{
+							"name" : "head",
+							"type" : "class",
+							
+							"members" :  [
+								{
+									"name" : "dummy_helm",
+									"type" : "template",
+									"spawnodds" : 0,
+									
+									"weight" : 0,
+									
+									"display" : "Dummy Helm",
+									
+									"min_defence" : 0,
+									"max_defence" : 0
+								},
+								{
+									"name" : "cap",
+									"type" : "template",
+									"spawnodds" : 50,
+									
+									"weight" : 10,
+									
+									"display" : "Leather Cap",
+									
+									"min_defence" : 1,
+									"max_defence" : 3
+								}
+							]
+						},
+						{
+							"name" : "chest",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						},	
+						{
+							"name" : "legs",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						},	
+						{
+							"name" : "hands",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						},	
+						{
+							"name" : "feet",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						},	
+						{
+							"name" : "back",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						},	
+						{
+							"name" : "shield",
+							"type" : "class",
+							
+							"members" :  [
+							
+							]
+						}
+					]
 				}
 			]
 		}
