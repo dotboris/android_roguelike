@@ -14,9 +14,9 @@ public abstract class ItemTemplate extends Template {
 	protected int weight;
 
 	@Override
-	public void load(JSONObject self) throws JSONException,
+	public void load(JSONObject self, String[] path) throws JSONException,
 			NullPointerException {
-		super.load(self);
+		super.load(self, path);
 
 		// load weight
 		weight = self.getInt("weight");

@@ -131,7 +131,7 @@
 									"display" : "Dummy Helm",
 									
 									"min_defence" : 0,
-									"max_defence" : 0
+									"max_defence" : 3
 								},
 								{
 									"name" : "cap",

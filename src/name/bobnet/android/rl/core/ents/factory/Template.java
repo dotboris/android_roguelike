@@ -58,7 +58,7 @@ public abstract class Template {
 	 * @throws NullPointerException
 	 *             thrown if self is null
 	 */
-	public void load(JSONObject self) throws JSONException,
+	public void load(JSONObject self, String[] path) throws JSONException,
 			NullPointerException {
 		// get the values from the JSON object
 

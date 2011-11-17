@@ -26,6 +26,7 @@ public class ContentLoader {
 	private static final int[] C_HOLDERS = { R.raw.items, R.raw.creatures };
 	public static final String[] P_ITEMS = { "item" };
 	public static final String[] P_WEPAONS = { "item", "weapon" };
+	public static final String[] P_ARMOR = { "item", "armor" };
 	public static final String[] P_CREATURES = { "creature" };
 
 	// singleton
@@ -90,6 +91,9 @@ public class ContentLoader {
 				// weapons
 				loadTemplates(WeaponTemplate.class, tmpJsonArray, P_WEPAONS, 0);
 
+				// armor
+				loadTemplates(ArmorTemplate.class, tmpJsonArray, P_ARMOR, 0);
+
 				// creatures
 				loadTemplates(CreatureTemplate.class, tmpJsonArray,
 						P_CREATURES, 0);
@@ -149,7 +153,7 @@ public class ContentLoader {
 				if (tObject.getString("type").equals("template")) {
 					// create a template from said object
 					Template t = templateClass.newInstance();
-					t.load(tObject);
+					t.load(tObject, path);
 					factory.addTemplate(path, t);
 
 					Log.d("RL", "Loaded " + tObject.getString("name"));

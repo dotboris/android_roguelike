@@ -20,9 +20,9 @@ public class CreatureTemplate extends Template {
 	protected int xpWorth, invSize;
 
 	@Override
-	public void load(JSONObject self) throws JSONException,
+	public void load(JSONObject self, String[] path) throws JSONException,
 			NullPointerException {
-		super.load(self);
+		super.load(self, path);
 
 		// load content
 

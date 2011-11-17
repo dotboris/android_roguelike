@@ -44,9 +44,9 @@ public class WeaponTemplate extends ItemTemplate {
 	}
 
 	@Override
-	public void load(JSONObject self) throws JSONException,
+	public void load(JSONObject self, String[] path) throws JSONException,
 			NullPointerException {
-		super.load(self);
+		super.load(self, path);
 
 		// get all the fields
 
