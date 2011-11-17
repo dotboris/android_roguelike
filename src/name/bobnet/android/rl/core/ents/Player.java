@@ -1,5 +1,7 @@
 package name.bobnet.android.rl.core.ents;
 
+import java.util.Random;
+
 import name.bobnet.android.rl.core.Action;
 import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
@@ -124,7 +126,9 @@ public class Player extends Creature {
 					// create a message to do damage
 					Message aMessage = new Message(this, aEnt,
 							MessageType.M_DO_DAMAGE);
-					aMessage.setArgument("dmg", 5);
+
+					// set damage
+					aMessage.setArgument("dmg", getDamage());
 
 					// send the message
 					MessageManager.getMessenger().sendMessage(aMessage);

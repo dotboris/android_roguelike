@@ -3,6 +3,7 @@ package name.bobnet.android.rl.core.ents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import android.util.Log;
 import name.bobnet.android.rl.core.MessageManager;
@@ -290,6 +291,22 @@ public class Creature extends TemplateEntity {
 		
 		// return the defence
 		return defence;
+	}
+	
+	public int getDamage() {
+		// figure out how much damage we should do
+		Random rnd = new Random();
+		int dmg = (int) (strength * 0.5);
+
+		// weapon damage
+		Weapon w = (Weapon) getEquipment(EquipSlots.WEAPON);
+		if (w != null) {
+			dmg += rnd
+					.nextInt(w.getDmg_high() - w.getDmg_low())
+					+ w.getDmg_low() + 1;
+		}
+		
+		return dmg;
 	}
 
 	/**
