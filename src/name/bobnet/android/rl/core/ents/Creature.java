@@ -35,6 +35,9 @@ public class Creature extends TemplateEntity {
 		HEAD, CHEST, LEGS, BACK, HANDS, FEET, NECK, FINGERS, WEAPON, SHIELD
 	}
 
+	// constants
+	public static final int LOS_SIZE = 10;
+
 	// variables
 	protected int health, mana;
 	protected int strength, intellect, dexterity, vitality;
@@ -43,6 +46,7 @@ public class Creature extends TemplateEntity {
 	protected ArrayList<Item> inventory;
 	protected int invSize;
 	protected HashMap<EquipSlots, Equipment> equipment;
+	protected Tile[][] lineOfSight;
 
 	/**
 	 * @param strength
@@ -91,6 +95,9 @@ public class Creature extends TemplateEntity {
 
 		// create inventory
 		inventory = new ArrayList<Item>();
+		
+		// create equipment
+		equipment = new HashMap<Creature.EquipSlots, Equipment>();
 
 		// set the size
 		this.invSize = invSize;
@@ -227,7 +234,7 @@ public class Creature extends TemplateEntity {
 
 				// absorbs damage
 				dmg -= getDefence();
-				
+
 				// do damage
 				if (dmg > 0) {
 					health -= dmg;
@@ -259,6 +266,19 @@ public class Creature extends TemplateEntity {
 		}
 	}
 
+	/**
+	 * Calculate the Line of sight with shadow casting
+	 */
+	public void calcLOS() {
+		// variables
+		int cx, cy, x, y;
+		
+		// create a new LOS array
+		lineOfSight = new Tile[LOS_SIZE][LOS_SIZE];
+		
+		
+	}
+
 	public int getDefence() {
 		// variables
 		int defence = 0;
@@ -288,24 +308,24 @@ public class Creature extends TemplateEntity {
 			defence += ((Armor) getEquipment(EquipSlots.LEGS)).getDefence();
 		} catch (Exception e) {
 		}
-		
+
 		// return the defence
 		return defence;
 	}
-	
+
 	public int getDamage() {
 		// figure out how much damage we should do
 		Random rnd = new Random();
-		int dmg = (int) (strength * 0.5);
+		int dmg = (int) (strength / 2);
 
 		// weapon damage
-		Weapon w = (Weapon) getEquipment(EquipSlots.WEAPON);
-		if (w != null) {
-			dmg += rnd
-					.nextInt(w.getDmg_high() - w.getDmg_low())
+		Equipment e = getEquipment(EquipSlots.WEAPON);
+		if (e != null) {
+			Weapon w = (Weapon) e;
+			dmg += rnd.nextInt(w.getDmg_high() - w.getDmg_low())
 					+ w.getDmg_low() + 1;
 		}
-		
+
 		return dmg;
 	}
 

@@ -1,7 +1,5 @@
 package name.bobnet.android.rl.core.ents;
 
-import java.util.Random;
-
 import name.bobnet.android.rl.core.Action;
 import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;

@@ -76,7 +76,7 @@ public class GameEngine {
 				TileStyle.ROCK);
 
 		// create a player and put him in the middle of the dungeon
-		player = new Player(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		player = new Player(3, 3, 3, 0, 0, 0, 0, 0, 0, 0);
 		currentDungeon.getTile(40, 40).setMob(player);
 		Log.d("RL", "Created player");
 
