@@ -9,7 +9,7 @@ import name.bobnet.android.rl.core.message.Message;
  */
 public class Wall extends TileType {
 
-	private boolean seeThrough, breakable;
+	private boolean breakable;
 
 	/**
 	 * @param style
@@ -19,14 +19,13 @@ public class Wall extends TileType {
 	 * @param breakable
 	 *            is the wall breakable (diggable)
 	 */
-	public Wall(TileStyle style, boolean seeThrough, boolean breakable) {
-		super(style, false);
-		this.seeThrough = seeThrough;
+	public Wall(TileStyle style, boolean breakable) {
+		super(style, false, false);
 		this.breakable = breakable;
 	}
 
 	public Wall(TileStyle style) {
-		this(style, true, true);
+		this(style, false);
 	}
 
 	/**

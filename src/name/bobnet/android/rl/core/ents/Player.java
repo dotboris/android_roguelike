@@ -147,6 +147,9 @@ public class Player extends Creature {
 				// clear the tile
 				aEnt = null;
 				cAction = null;
+				
+				// update LOS
+				calcLOS();
 			}
 		}
 	}

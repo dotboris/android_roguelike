@@ -8,18 +8,15 @@ package name.bobnet.android.rl.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 import android.content.res.Resources;
 import android.util.Log;
-import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Player;
 import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.factory.ContentLoader;
-import name.bobnet.android.rl.core.ents.factory.EntityFactory;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
 import name.bobnet.android.rl.core.gen.Generator.DungeonType;
@@ -77,20 +74,11 @@ public class GameEngine {
 
 		// create a player and put him in the middle of the dungeon
 		player = new Player(3, 3, 3, 0, 0, 0, 0, 0, 0, 0);
+		if (currentDungeon.getTile(40, 40).getMob() != null)
+			currentDungeon.getTile(40, 40).delMob();
 		currentDungeon.getTile(40, 40).setMob(player);
+		player.calcLOS();
 		Log.d("RL", "Created player");
-
-		// create an item on the floor
-		Item i = (Item) EntityFactory.getEntityFactory().getRndEntity(
-				ContentLoader.P_WEPAONS, new Random());
-		currentDungeon.getTile(40, 41).addItem(i);
-
-		// create a creature and put it in the dungeon
-		Creature c = new Creature("dummy",
-				"The one looking for a can of whoopass", 1, 3, 5, 6, 0, 0, 0,
-				0, 0, 0, 10, 100);
-		currentDungeon.getTile(40, 42).setMob(c);
-
 	}
 
 	// TESTING generate a new dungeon and set it as the current dungeon
@@ -234,6 +222,13 @@ public class GameEngine {
 	 */
 	public Dungeon getCurrentDungeon() {
 		return currentDungeon;
+	}
+
+	/**
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		return player;
 	}
 
 	/**

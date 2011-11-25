@@ -244,6 +244,13 @@ public class Tile extends Entity {
 	}
 
 	/**
+	 * @return the seeThrough
+	 */
+	public boolean isSeeThrough() {
+		return tileType.isSeeThrough();
+	}
+
+	/**
 	 * @return the visible
 	 */
 	public boolean isVisible() {
@@ -312,5 +319,4 @@ public class Tile extends Entity {
 	public void setGenUsed(boolean genUsed) {
 		this.genUsed = genUsed;
 	}
-
 }

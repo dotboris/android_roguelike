@@ -14,6 +14,7 @@ import name.bobnet.android.rl.core.ents.Dummy;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Player;
+import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.ents.tiles.Wall;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
@@ -32,6 +33,8 @@ public class TestView extends View {
 	// variables
 	private Activity pActivity;
 	private GameEngine engine;
+	private Player p;
+	private Paint pBlue, pRed, pGreen, pYellow, pPurple, pGray;
 
 	public TestView(Context context) {
 		super(context);
@@ -40,6 +43,24 @@ public class TestView extends View {
 
 		setFocusable(true);
 		setFocusableInTouchMode(true);
+
+		// paints
+		pBlue = new Paint();
+		pRed = new Paint();
+		pGreen = new Paint();
+		pYellow = new Paint();
+		pPurple = new Paint();
+		pGray = new Paint();
+		pRed.setColor(Color.RED);
+		pBlue.setColor(Color.BLUE);
+		pGreen.setColor(Color.GREEN);
+		pYellow.setColor(Color.YELLOW);
+		pPurple.setColor(Color.MAGENTA);
+		pGray.setColor(Color.DKGRAY);
+		pGray.setAlpha(180);
+
+		// get player
+		p = engine.getPlayer();
 
 		// engine.getCurrentDungeon().getTile(10, 10).addSuperEntity(new
 		// Dummy());
@@ -130,42 +151,57 @@ public class TestView extends View {
 
 		// values
 		float tW, tH;
-		tW = 3.0f;
-		tH = 3.0f;
+		tW = 5.0f;
+		tH = 5.0f;
 
 		Log.d("RL", "w: " + tW + " h: " + tH);
 
-		// paints
-		Paint pBlue, pRed, pGreen, pYellow, pPurple;
-		pBlue = new Paint();
-		pRed = new Paint();
-		pGreen = new Paint();
-		pYellow = new Paint();
-		pPurple = new Paint();
-		pRed.setColor(Color.RED);
-		pBlue.setColor(Color.BLUE);
-		pGreen.setColor(Color.GREEN);
-		pYellow.setColor(Color.YELLOW);
-		pPurple.setColor(Color.MAGENTA);
-
 		for (int x = 0; x < Dungeon.D_WIDTH; x++)
 			for (int y = 0; y < Dungeon.D_HEIGHT; y++) {
-				if (engine.getCurrentDungeon().getTile(x, y).getTileType() instanceof Wall)
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pRed);
-				else if (engine.getCurrentDungeon().getTile(x, y).getMob() instanceof Player)
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pGreen);
-				else if (engine.getCurrentDungeon().getTile(x, y).getMob() instanceof Creature)
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pYellow);
-				else if (engine.getCurrentDungeon().getTile(x, y)
-						.getItemsIterator().hasNext()) {
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pPurple);
-				} else
-					canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1) * tH,
-							pBlue);
+				// get the player tile
+				int pX, pY;
+				boolean useLOS = true;
+				pX = x
+						- (((Tile) p.getParent()).getX() - Creature.LOS_SIZE / 2);
+				pY = y
+						- (((Tile) p.getParent()).getY() - Creature.LOS_SIZE / 2);
+				Tile pTile = null;
+				try {
+					pTile = p.getLOSTile(pX, pY);
+				} catch (Exception e) {
+					// out of bounds don't use LOS
+					useLOS = false;
+				}
+				if (pTile == null)
+					// tile isn't seen by the player don't use LOS
+					useLOS = false;
+
+				Tile t;
+				if (useLOS)
+					t = pTile;
+				else
+					t = engine.getCurrentDungeon().getTile(x, y);
+
+				if (t.isVisible()) {
+					if (t.getTileType() instanceof Wall)
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pRed);
+					else if (useLOS && t.getMob() instanceof Player)
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pGreen);
+					else if (useLOS && t.getMob() instanceof Creature)
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pYellow);
+					else if (useLOS && t.getItemsIterator().hasNext()) {
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pPurple);
+					} else
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pBlue);
+					if (!useLOS)
+						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
+								* tH, pGray);
+				}
 			}
 
 		Log.d("RL", "done drawing");

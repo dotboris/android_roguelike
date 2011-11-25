@@ -22,11 +22,12 @@ public abstract class TileType extends Entity implements Cloneable {
 
 	// variables
 	protected TileStyle style;
-	protected boolean passThrough;
+	protected boolean passThrough, seeThrough;
 
-	public TileType(TileStyle style, boolean passThrough) {
+	public TileType(TileStyle style, boolean passThrough, boolean seeThrough) {
 		setStyle(style);
 		setPassThrough(passThrough);
+		setSeeThrough(seeThrough);
 	}
 
 	/**
@@ -63,6 +64,20 @@ public abstract class TileType extends Entity implements Cloneable {
 	 */
 	public void setPassThrough(boolean passThrough) {
 		this.passThrough = passThrough;
+	}
+
+	/**
+	 * @return the seeThrough
+	 */
+	public boolean isSeeThrough() {
+		return seeThrough;
+	}
+
+	/**
+	 * @param seeThrough the seeThrough to set
+	 */
+	public void setSeeThrough(boolean seeThrough) {
+		this.seeThrough = seeThrough;
 	}
 
 	@Override

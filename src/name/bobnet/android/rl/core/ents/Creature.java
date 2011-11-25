@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 import android.util.Log;
+import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
@@ -95,12 +96,15 @@ public class Creature extends TemplateEntity {
 
 		// create inventory
 		inventory = new ArrayList<Item>();
-		
+
 		// create equipment
 		equipment = new HashMap<Creature.EquipSlots, Equipment>();
 
 		// set the size
 		this.invSize = invSize;
+
+		// create a new LOS array
+		lineOfSight = new Tile[LOS_SIZE][LOS_SIZE];
 	}
 
 	public void pickUpItem(Item i) {
@@ -271,12 +275,138 @@ public class Creature extends TemplateEntity {
 	 */
 	public void calcLOS() {
 		// variables
-		int cx, cy, x, y;
-		
-		// create a new LOS array
-		lineOfSight = new Tile[LOS_SIZE][LOS_SIZE];
-		
-		
+		int originX, originY;
+
+		// get origin
+		Tile t = (Tile) getParent();
+		originX = t.getX();
+		originY = t.getY();
+
+		// empty the LOS matrix
+		for (int x = 0; x < LOS_SIZE; x++)
+			for (int y = 0; y < LOS_SIZE; y++)
+				lineOfSight[x][y] = null;
+
+		// loop through all the direction
+		for (int dirX = -1; dirX < 2; dirX += 2)
+			for (int dirY = -1; dirY < 2; dirY += 2) {
+				// set the slopes
+				float slope = dirX * -dirY;
+
+				// scan the vertical ones
+				scanSector(slope, 0, 0, originX, originY, dirX, dirY, true);
+
+				// scan the horizontal one
+				scanSector(slope, 0, 0, originX, originY, dirX, dirY, false);
+			}
+
+	}
+
+	private void scanSector(double slope1, double slope2, int startX,
+			int originX, int originY, int dirX, int dirY, boolean scanVert) {
+		// variables
+		Tile cTile;
+		boolean lastLine = false;
+		boolean s1Set, s2Set;
+		int tX = 0, tY = 0;
+
+		// loop through the tiles to scan
+		for (int x = startX; x < LOS_SIZE / 2 && x > -LOS_SIZE / 2 && !lastLine; x += dirX) {
+			// set a few things for the new row
+			s1Set = false;
+			s2Set = false;
+			double nSlope1 = slope1, nSlope2 = slope2;
+
+			// loop in the row
+			for (int y = (int) (dirY == -1 ? Math.ceil(x * slope1) : Math
+					.floor(x * slope1)); y != (int) (x * slope2) + dirY; y += dirY) {
+				// find the actual x and y pos
+				int gX, gY, lX, lY;
+
+				if (!scanVert) {
+					// swap x and y
+					tX = y;
+					tY = x;
+				} else {
+					// standard x/y
+					tX = x;
+					tY = y;
+				}
+
+				// figure out global values
+				gX = tX + originX;
+				gY = tY + originY;
+				lX = LOS_SIZE / 2 + tX;
+				lY = LOS_SIZE / 2 + tY;
+
+				try {
+					// get the tile
+					cTile = GameEngine.getEngine().getCurrentDungeon()
+							.getTile(gX, gY);
+				} catch (Exception e) {
+					// out of bound get out
+					continue;
+				}
+
+				// add it to our LOS
+				lineOfSight[lX][lY] = cTile;
+
+				// set the tile to visible
+				cTile.setVisible(true);
+
+				// check if we're done scanning
+				if (!cTile.isSeeThrough())
+					lastLine = true;
+
+				// rules for tile hit
+				if (!s1Set && cTile.isSeeThrough()) {
+					// get the start slope
+
+					// get the offset point (top left corner)
+					float sX, sY;
+					sX = x + dirX * 0.5f;
+					sY = y - dirY * 0.5f;
+
+					// find the new slope
+					nSlope1 = sY / sX;
+
+					// first slope set
+					s1Set = true;
+				} else if (!s2Set && s1Set && !cTile.isSeeThrough()) {
+					// get the end slope
+
+					// get the offset point (top left corner)
+					float sX, sY;
+					sX = x - dirX * 0.5f;
+					sY = y - dirY * 0.5f;
+
+					// find the new slope
+					nSlope2 = sY / sX;
+
+					// second slope set
+					s2Set = true;
+
+					// search the new area
+					scanSector(nSlope1, nSlope2, x + dirX, originX, originY,
+							dirX, dirY, scanVert);
+
+					// unset slope flags
+					s1Set = false;
+					s2Set = false;
+				}
+			}
+
+			// no last slope
+			if (lastLine && s1Set && !s2Set) {
+				// search the new area
+				scanSector(nSlope1, slope2, x + dirX, originX, originY, dirX,
+						dirY, scanVert);
+
+				// unset slope flags
+				s1Set = false;
+				s2Set = false;
+			}
+		}
 	}
 
 	public int getDefence() {
@@ -573,6 +703,10 @@ public class Creature extends TemplateEntity {
 	 */
 	public void setVitality(int vitality) {
 		this.vitality = vitality;
+	}
+
+	public Tile getLOSTile(int x, int y) {
+		return lineOfSight[x][y];
 	}
 
 }

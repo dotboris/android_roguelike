@@ -10,7 +10,7 @@ import name.bobnet.android.rl.core.message.Message;
 public class Floor extends TileType {
 
 	public Floor(TileStyle style) {
-		super(style, true);
+		super(style, true, true);
 	}
 
 	/* (non-Javadoc)
