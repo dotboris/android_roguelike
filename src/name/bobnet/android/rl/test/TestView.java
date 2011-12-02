@@ -33,7 +33,7 @@ public class TestView extends View {
 	// variables
 	private Activity pActivity;
 	private GameEngine engine;
-	private Player p;
+	private Creature p;
 	private Paint pBlue, pRed, pGreen, pYellow, pPurple, pGray;
 
 	public TestView(Context context) {

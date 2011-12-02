@@ -6,8 +6,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 import android.util.Log;
+import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.MessageManager;
+import name.bobnet.android.rl.core.ai.AI;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
 
@@ -48,6 +50,7 @@ public class Creature extends TemplateEntity {
 	protected int invSize;
 	protected HashMap<EquipSlots, Equipment> equipment;
 	protected Tile[][] lineOfSight;
+	protected AI ai;
 
 	/**
 	 * @param strength
@@ -76,7 +79,7 @@ public class Creature extends TemplateEntity {
 	public Creature(String display, String name, int strength, int intellect,
 			int dexterity, int vitality, int res_frost, int res_fire,
 			int res_air, int res_earth, int res_holy, int res_evil,
-			int xpWorth, int invSize) {
+			int xpWorth, int invSize, AI ai) {
 		super(display, name);
 
 		// set attributes
@@ -105,6 +108,12 @@ public class Creature extends TemplateEntity {
 
 		// create a new LOS array
 		lineOfSight = new Tile[LOS_SIZE][LOS_SIZE];
+
+		// set the ai
+		this.ai = ai;
+
+		// init the ai
+		ai.init(this);
 	}
 
 	public void pickUpItem(Item i) {
@@ -165,13 +174,31 @@ public class Creature extends TemplateEntity {
 		}
 	}
 
+	/**
+	 * Get the number of ticks an action will take
+	 * 
+	 * @param actionName
+	 *            the string name of the action
+	 * @return the time it takes to do said action
+	 */
+	public int getActionTicks(String actionName) {
+		// get the base ticks for the action
+		int bTicks = ActionsManager.getActionManager().getActionTicks(
+				actionName);
+
+		// TODO: change speed depending on stats
+
+		// return the ticks to use
+		return bTicks;
+	}
+
 	/* (non-Javadoc)
 	 * @see name.bobnet.android.rl.core.ents.Entity#tick()
 	 */
 	@Override
 	public void tick() {
-		// TODO Do AI stuff
-
+		// let the AI tick
+		ai.tick();
 	}
 
 	/* (non-Javadoc)
@@ -407,6 +434,21 @@ public class Creature extends TemplateEntity {
 				s2Set = false;
 			}
 		}
+	}
+
+	/**
+	 * @return the ai
+	 */
+	public AI getAi() {
+		return ai;
+	}
+
+	/**
+	 * @param ai
+	 *            the ai to set
+	 */
+	public void setAi(AI ai) {
+		this.ai = ai;
 	}
 
 	public int getDefence() {

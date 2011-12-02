@@ -11,6 +11,7 @@ import java.util.Queue;
 
 import android.content.res.Resources;
 import android.util.Log;
+import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dungeon;
 import name.bobnet.android.rl.core.ents.Entity;
 import name.bobnet.android.rl.core.ents.Item;
@@ -184,7 +185,7 @@ public class GameEngine {
 
 				if (a != null) {
 					// give the action to the player
-					boolean res = player.setNextAction(a);
+					boolean res = player.getAi().setNextAction(a);
 
 					if (res)
 						try {
@@ -227,7 +228,7 @@ public class GameEngine {
 	/**
 	 * @return the player
 	 */
-	public Player getPlayer() {
+	public Creature getPlayer() {
 		return player;
 	}
 

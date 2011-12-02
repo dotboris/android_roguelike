@@ -10,6 +10,7 @@ import java.util.Random;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import name.bobnet.android.rl.core.ai.HumanoidAI;
 import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Entity;
 
@@ -52,7 +53,7 @@ public class CreatureTemplate extends Template {
 	public Entity generate(Random rnd) {
 		return new Creature(display, name, strength, intellect, dexterity,
 				vitality, res_frost, res_fire, res_air, res_earth, res_holy,
-				res_evil, xpWorth, invSize);
+				res_evil, xpWorth, invSize, new HumanoidAI());
 	}
 
 }
