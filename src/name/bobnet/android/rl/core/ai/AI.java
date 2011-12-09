@@ -36,7 +36,7 @@ public abstract class AI {
 				return false;
 			}
 		} else if (a.name.equals("A_ATTACK")) {
-			if (!(a.ent != null && a.ent instanceof Creature))
+			if (!(a.ent != null && a.ent instanceof Tile))
 				return false;
 		} else if (a.name.equals("A_PICKUP")) {
 			if (!(a.ent != null && a.ent instanceof Item)) {
@@ -70,7 +70,7 @@ public abstract class AI {
 	public void init(Creature parent) {
 		// set the parent
 		this.parent = parent;
-		
+
 		// register the parent for ticking
 		GameEngine.getEngine().regEntTick(parent);
 	}
@@ -101,15 +101,18 @@ public abstract class AI {
 					GameEngine.getEngine().getCurrentDungeon()
 							.moveEntity((Tile) currAction.ent, parent);
 				} else if (currAction.name.equals("A_ATTACK")) {
-					// create a message to do damage
-					Message aMessage = new Message(parent, currAction.ent,
-							MessageType.M_DO_DAMAGE);
+					// check if the entity has a creature in it
+					if (currAction.ent != null) {
+						// create a message to do damage
+						Message aMessage = new Message(parent, currAction.ent,
+								MessageType.M_DO_DAMAGE);
 
-					// set damage
-					aMessage.setArgument("dmg", parent.getDamage());
+						// set damage
+						aMessage.setArgument("dmg", parent.getDamage());
 
-					// send the message
-					MessageManager.getMessenger().sendMessage(aMessage);
+						// send the message
+						MessageManager.getMessenger().sendMessage(aMessage);
+					}
 				} else if (currAction.name.equals("A_PICKUP")) {
 					// pick up the item
 					parent.pickUpItem((Item) currAction.ent);
@@ -123,14 +126,19 @@ public abstract class AI {
 				} else if (currAction.name.equals("A_WAIT")) {
 					// don't do anything
 				}
-				
+
 				// update LOS
 				parent.calcLOS();
-				
+
+				// set the next action to null
+				currAction = null;
+
 				// pick the next action
 				nextAction();
 			}
-		}
+		} else
+			// we don't have an action, see what we can do
+			nextAction();
 	}
 
 }

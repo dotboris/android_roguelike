@@ -74,7 +74,7 @@ public class GameEngine {
 				TileStyle.ROCK);
 
 		// create a player and put him in the middle of the dungeon
-		player = new Player(3, 3, 3, 0, 0, 0, 0, 0, 0, 0);
+		player = new Player(10, 10, 10, 10, 0, 0, 0, 0, 0, 0);
 		if (currentDungeon.getTile(40, 40).getMob() != null)
 			currentDungeon.getTile(40, 40).delMob();
 		currentDungeon.getTile(40, 40).setMob(player);
@@ -168,7 +168,7 @@ public class GameEngine {
 		if (nTile.isPassthrough() && nTile.getMob() == null) {
 			doAction("A_WALK", nTile);
 		} else if (nTile.getMob() != null) {
-			doAction("A_ATTACK", nTile.getMob());
+			doAction("A_ATTACK", nTile);
 		}
 	}
 
