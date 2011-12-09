@@ -25,8 +25,7 @@ public class Armor extends Equipment {
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
-
+		// do nothing
 	}
 
 	/* (non-Javadoc)
@@ -34,7 +33,7 @@ public class Armor extends Equipment {
 	 */
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// We don't deal with messages
 
 	}
 

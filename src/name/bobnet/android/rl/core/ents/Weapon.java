@@ -78,7 +78,7 @@ public class Weapon extends Equipment {
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		// don't tick
 
 	}
 
@@ -87,7 +87,7 @@ public class Weapon extends Equipment {
 	 */
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// don't deal with messages
 
 	}
 

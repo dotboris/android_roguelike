@@ -18,7 +18,7 @@ public class Floor extends TileType {
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		// do nothing
 
 	}
 
@@ -27,7 +27,7 @@ public class Floor extends TileType {
 	 */
 	@Override
 	public void processMessage(Message message) {
-		// TODO Auto-generated method stub
+		// No messages to handle
 
 	}
 

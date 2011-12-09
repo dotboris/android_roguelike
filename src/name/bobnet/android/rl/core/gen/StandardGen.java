@@ -159,7 +159,7 @@ public class StandardGen extends Generator {
 	 */
 	@Override
 	protected boolean checkDungeon() {
-		// TODO Auto-generated method stub
+		// It should always be good
 		return true;
 	}
 

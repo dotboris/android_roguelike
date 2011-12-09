@@ -23,7 +23,6 @@ public class Dummy extends Entity {
 	 */
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
 		Log.d("RL", "Ticking Dummy Entity: " + this);
 	}
 
