@@ -10,6 +10,7 @@ import name.bobnet.android.rl.core.ActionsManager;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.ai.AI;
+import name.bobnet.android.rl.core.ai.PathNode;
 import name.bobnet.android.rl.core.message.Message;
 import name.bobnet.android.rl.core.message.Message.MessageType;
 
@@ -49,7 +50,7 @@ public class Creature extends TemplateEntity {
 	protected ArrayList<Item> inventory;
 	protected int invSize;
 	protected HashMap<EquipSlots, Equipment> equipment;
-	protected Tile[][] lineOfSight;
+	protected PathNode[][] lineOfSight;
 	protected AI ai;
 
 	/**
@@ -107,7 +108,12 @@ public class Creature extends TemplateEntity {
 		this.invSize = invSize;
 
 		// create a new LOS array
-		lineOfSight = new Tile[LOS_SIZE][LOS_SIZE];
+		lineOfSight = new PathNode[LOS_SIZE][LOS_SIZE];
+		for (int x = 0; x < lineOfSight.length; x++) {
+			for (int y = 0; y < lineOfSight[x].length; y++) {
+				lineOfSight[x][y] = new PathNode();
+			}
+		}
 
 		// set the ai
 		this.ai = ai;
@@ -312,7 +318,7 @@ public class Creature extends TemplateEntity {
 		// empty the LOS matrix
 		for (int x = 0; x < LOS_SIZE; x++)
 			for (int y = 0; y < LOS_SIZE; y++)
-				lineOfSight[x][y] = null;
+				lineOfSight[x][y].setTile(null);
 
 		// loop through all the direction
 		for (int dirX = -1; dirX < 2; dirX += 2)
@@ -376,7 +382,7 @@ public class Creature extends TemplateEntity {
 				}
 
 				// add it to our LOS
-				lineOfSight[lX][lY] = cTile;
+				lineOfSight[lX][lY].setTile(cTile);
 
 				// set the tile to visible
 				cTile.setVisible(true);
@@ -748,7 +754,7 @@ public class Creature extends TemplateEntity {
 	}
 
 	public Tile getLOSTile(int x, int y) {
-		return lineOfSight[x][y];
+		return lineOfSight[x][y].getTile();
 	}
 
 }
