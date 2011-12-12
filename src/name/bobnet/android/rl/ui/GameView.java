@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
@@ -24,19 +25,22 @@ import android.view.SurfaceView;
  * 
  * @author boris
  */
-public class GameView extends SurfaceView {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 	// constants
 	public static final int TILE_SHEETS[] = { R.drawable.ts1 };
 	public static final int TILE_SIZE = 32;
 	public static final int SHEET_TILES_X = 20;
 	public static final int SHEET_TILES_Y = 10;
+	public static final int S_OFFSET = 10;
+	public static final int S_WIDTH = 150;
+	public static final int S_HEIGHT = 20;
 
 	// variables
 	private GameEngine engine;
 	private Player player;
 	private Bitmap[] tileSheets;
-	private int colorShadow;
+	private int colorShadow, colorHealth, colorMana;
 	private int w, h;
 	private int minx, miny, maxx, maxy, cx, cy, tx, ty;
 	private Paint paint;
@@ -52,6 +56,9 @@ public class GameView extends SurfaceView {
 		// get the holder
 		holder = getHolder();
 
+		// listen to holder callbacks
+		holder.addCallback(this);
+		
 		// get engine
 		engine = GameEngine.getEngine();
 
@@ -66,6 +73,8 @@ public class GameView extends SurfaceView {
 
 		// load colours
 		colorShadow = getResources().getColor(R.color.shadow);
+		colorHealth = getResources().getColor(R.color.health);
+		colorMana = getResources().getColor(R.color.mana);
 
 		// set the paint
 		paint = new Paint();
@@ -139,6 +148,32 @@ public class GameView extends SurfaceView {
 		return true;
 	}
 
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		// set the holder
+		this.holder = holder;
+
+		// set window dimentions
+		w = width;
+		h = height;
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		// set the holder
+		this.holder = holder;
+
+		// draw ourselves 
+		paintSelf();
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		// set the holder
+		this.holder = holder;
+	}
+
 	private class GameDrawer implements Runnable {
 
 		@Override
@@ -148,8 +183,6 @@ public class GameView extends SurfaceView {
 				Canvas canvas = holder.lockCanvas();
 
 				// figure out the range of tiles to draw
-				w = getWidth();
-				h = getHeight();
 				cx = ((Tile) player.getParent()).getX();
 				cy = ((Tile) player.getParent()).getY();
 				minx = cx - (w / 2 / TILE_SIZE);
@@ -178,6 +211,7 @@ public class GameView extends SurfaceView {
 
 						// reset the paint
 						paint.setAlpha(255);
+						paint.setStyle(Style.FILL_AND_STROKE);
 
 						// check if the tile is in the player's LOS
 						try {
@@ -234,6 +268,33 @@ public class GameView extends SurfaceView {
 
 						}
 					}
+
+				// draw the health and mana bars
+
+				// outside
+				paint.setStyle(Style.STROKE);
+				paint.setColor(colorHealth);
+				canvas.drawRect(w - S_OFFSET - S_WIDTH, S_OFFSET, w - S_OFFSET,
+						S_OFFSET + S_HEIGHT, paint);
+				paint.setColor(colorMana);
+				canvas.drawRect(w - S_OFFSET - S_WIDTH,
+						2 * S_OFFSET + S_HEIGHT, w - S_OFFSET, 2 * S_OFFSET + 2
+								* S_HEIGHT, paint);
+
+				// inside
+				paint.setStyle(Style.FILL);
+				if (player.getHealth() > 0) {
+					paint.setColor(colorHealth);
+					canvas.drawRect(w - S_OFFSET - S_WIDTH * player.getHealth()
+							/ player.getMaxHealth(), S_OFFSET, w - S_OFFSET,
+							S_OFFSET + S_HEIGHT, paint);
+				}
+				if (player.getMana() > 0) {
+					paint.setColor(colorMana);
+					canvas.drawRect(w - S_OFFSET - S_WIDTH * player.getMana()
+							/ player.getMaxMana(), 2 * S_OFFSET + S_HEIGHT, w
+							- S_OFFSET, 2 * S_OFFSET + 2 * S_HEIGHT, paint);
+				}
 
 				// release the canvas
 				holder.unlockCanvasAndPost(canvas);

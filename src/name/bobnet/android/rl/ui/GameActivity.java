@@ -29,8 +29,5 @@ public class GameActivity extends Activity {
 
 		// show the view
 		setContentView(gameView);
-		
-		// paint the view
-		gameView.paintSelf();
 	}
 }
