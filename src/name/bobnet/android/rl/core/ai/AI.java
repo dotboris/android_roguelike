@@ -100,6 +100,9 @@ public abstract class AI {
 					// move ourselves
 					GameEngine.getEngine().getCurrentDungeon()
 							.moveEntity((Tile) currAction.ent, parent);
+
+					// update LOS
+					parent.calcLOS();
 				} else if (currAction.name.equals("A_ATTACK")) {
 					// check if the entity has a creature in it
 					if (currAction.ent != null) {
@@ -126,9 +129,6 @@ public abstract class AI {
 				} else if (currAction.name.equals("A_WAIT")) {
 					// don't do anything
 				}
-
-				// update LOS
-				parent.calcLOS();
 
 				// set the next action to null
 				currAction = null;

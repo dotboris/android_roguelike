@@ -38,9 +38,37 @@ public class HumanoidAI extends AI {
 
 			// get the number of ticks
 			nextAction.ticks = parent.getActionTicks(nextAction.name);
-			
+
 			// set the next action
 			setNextAction(nextAction);
+		} else if (pTile.getX() - cTile.getX() >= -4
+				&& pTile.getX() - cTile.getX() <= 4
+				&& pTile.getY() - cTile.getY() >= -4
+				&& pTile.getY() - cTile.getY() <= 4) {
+			// check if the player is in sight
+			Tile t = parent.getLOSTile(pTile.getX() - (cTile.getX() - 5),
+					pTile.getY() - (cTile.getY() - 5));
+			if (t != null) {
+				// next action is to move towards the player
+
+				// set the name
+				nextAction.name = "A_WALK";
+
+				// set the number of ticks
+				nextAction.ticks = parent.getActionTicks(nextAction.name);
+
+				// calculate the path for the next tile
+				parent.calcPath(pTile);
+
+				// get the next tile
+				Tile next = parent.getPathIterator().next().getTile();
+
+				// set the tile to move to
+				nextAction.ent = next;
+
+				// set it as the next action
+				setNextAction(nextAction);
+			}
 		}
 	}
 }

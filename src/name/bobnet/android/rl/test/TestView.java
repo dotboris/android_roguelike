@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.MessageManager;
+import name.bobnet.android.rl.core.ai.PathNode;
 import name.bobnet.android.rl.core.ents.Creature;
 import name.bobnet.android.rl.core.ents.Dummy;
 import name.bobnet.android.rl.core.ents.Dungeon;
@@ -34,7 +35,8 @@ public class TestView extends View {
 	private Activity pActivity;
 	private GameEngine engine;
 	private Creature p;
-	private Paint pBlue, pRed, pGreen, pYellow, pPurple, pGray;
+	private Paint pBlue, pRed, pGreen, pOrange, pPurple, pGray, pWhite;
+	private Iterator<PathNode> path;
 
 	public TestView(Context context) {
 		super(context);
@@ -48,16 +50,19 @@ public class TestView extends View {
 		pBlue = new Paint();
 		pRed = new Paint();
 		pGreen = new Paint();
-		pYellow = new Paint();
+		pOrange = new Paint();
 		pPurple = new Paint();
 		pGray = new Paint();
+		pWhite = new Paint();
 		pRed.setColor(Color.RED);
 		pBlue.setColor(Color.BLUE);
 		pGreen.setColor(Color.GREEN);
-		pYellow.setColor(Color.YELLOW);
+		pOrange.setColor(Color.rgb(255, 127, 0));
 		pPurple.setColor(Color.MAGENTA);
 		pGray.setColor(Color.DKGRAY);
 		pGray.setAlpha(180);
+		pWhite.setColor(Color.WHITE);
+		pWhite.setAlpha(127);
 
 		// get player
 		p = engine.getPlayer();
@@ -100,6 +105,9 @@ public class TestView extends View {
 		case KeyEvent.KEYCODE_D:
 			engine.dropItem();
 			break;
+		case KeyEvent.KEYCODE_R:
+			invalidate();
+			break;
 		case KeyEvent.KEYCODE_DPAD_CENTER:
 			engine.genDugeon();
 			break;
@@ -116,28 +124,29 @@ public class TestView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			// generate a new dungeon and redraw
-			// engine.genDugeon();
-			invalidate();
+			try {
+				// null the path
+				path = null;
 
-			// for (int i = 0; i < 10; i++)
-			// engine.doAction("A_DUMMY_10", null);
-			// try {
-			// // delete the dummy ent
-			// Iterator<Entity> i = engine.getCurrentDungeon().getTile(10, 10)
-			// .getSuperEntsIterator();
-			// Entity dummy = i.next();
-			//
-			// // send destroy message
-			// MessageManager.getMessenger().sendMessage(
-			// new Message(null, engine.getCurrentDungeon().getTile(
-			// 10, 10), MessageType.M_DESTROY));
-			//
-			// // remove it from the tile
-			// // i.remove();
-			// } catch (Exception e) {
-			// // TODO: handle exception
-			// }
+				// pick a tile for path testing
+				int x, y;
+				x = (int) (event.getX() / 5);
+				y = (int) (event.getY() / 5);
+				Tile t = engine.getCurrentDungeon().getTile(x, y);
+
+				// calculate the path
+				p.calcPath(t);
+
+				// get the path
+				path = p.getPathIterator();
+
+				// redraw this
+				invalidate();
+
+			} catch (RuntimeException e) {
+				// something went wrong
+				Log.d("RL", "Something failed (on touch): " + e.getMessage());
+			}
 		}
 		return true;
 	}
@@ -190,7 +199,7 @@ public class TestView extends View {
 								* tH, pGreen);
 					else if (useLOS && t.getMob() instanceof Creature)
 						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
-								* tH, pYellow);
+								* tH, pOrange);
 					else if (useLOS && t.getItemsIterator().hasNext()) {
 						canvas.drawRect(x * tW, y * tW, (x + 1) * tW, (y + 1)
 								* tH, pPurple);
@@ -202,6 +211,18 @@ public class TestView extends View {
 								* tH, pGray);
 				}
 			}
+
+		// paint the path
+		if (path != null) {
+			for (; path.hasNext();) {
+				PathNode n = path.next();
+				int px = n.getTile().getX();
+				int py = n.getTile().getY();
+
+				canvas.drawRect(px * tW, py * tW, (px + 1) * tW, (py + 1) * tH,
+						pWhite);
+			}
+		}
 
 		Log.d("RL", "done drawing");
 	}

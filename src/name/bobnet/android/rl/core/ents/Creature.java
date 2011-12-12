@@ -3,6 +3,8 @@ package name.bobnet.android.rl.core.ents;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import android.util.Log;
@@ -52,6 +54,10 @@ public class Creature extends TemplateEntity {
 	protected HashMap<EquipSlots, Equipment> equipment;
 	protected PathNode[][] lineOfSight;
 	protected AI ai;
+	private boolean discoverer, firstTick;
+	private PriorityQueue<PathNode> open;
+	private ArrayList<PathNode> closed;
+	private LinkedList<PathNode> path;
 
 	/**
 	 * @param strength
@@ -115,9 +121,20 @@ public class Creature extends TemplateEntity {
 			}
 		}
 
+		// create open and closed sets and the path
+		open = new PriorityQueue<PathNode>();
+		closed = new ArrayList<PathNode>();
+		path = new LinkedList<PathNode>();
+
 		// set the ai
 		this.ai = ai;
 
+		// determine if we should mark discovered tiles
+		discoverer = this instanceof Player;
+
+		// set the first tick
+		firstTick = false;
+		
 		// init the ai
 		ai.init(this);
 	}
@@ -203,6 +220,15 @@ public class Creature extends TemplateEntity {
 	 */
 	@Override
 	public void tick() {
+		// first tick
+		if (!firstTick) {
+			// calculate the LOS for the first time
+			calcLOS();
+			
+			// set the flag
+			firstTick = true;
+		}
+		
 		// let the AI tick
 		ai.tick();
 	}
@@ -303,6 +329,119 @@ public class Creature extends TemplateEntity {
 		}
 	}
 
+	public void calcPath(Tile goal) {
+		// log start
+		Log.d("RL", "Starting path calculation");
+
+		// variables
+		PathNode goalNode, startNode, currNode, neighbourNode;
+		int gx, gy, ox, oy;
+		boolean stopShort;
+
+		// empty our sets
+		open.clear();
+		closed.clear();
+		path.clear();
+
+		// find the current node
+		startNode = lineOfSight[LOS_SIZE / 2][LOS_SIZE / 2];
+
+		// find the goal node
+		gx = goal.getX();
+		gy = goal.getY();
+		ox = startNode.getTile().getX() - LOS_SIZE / 2;
+		oy = startNode.getTile().getY() - LOS_SIZE / 2;
+		goalNode = lineOfSight[gx - ox][gy - oy];
+		stopShort = !goalNode.getTile().isPassthrough();
+
+		// add our node to open
+		open.add(startNode);
+
+		// start searching
+		search_loop: while (open.peek() != goalNode) {
+			// get the current node and add it to closed
+			currNode = open.poll();
+			closed.add(currNode);
+
+			// check the neighbours
+			for (int x = -1; x <= 1; x++)
+				for (int y = -1; y <= 1; y++) {
+					// don't do 0,0
+					if (x == 0 && y == 0)
+						continue;
+
+					// get the node
+					try {
+						neighbourNode = lineOfSight[(currNode.getTile().getX() + x)
+								- ox][(currNode.getTile().getY() + y) - oy];
+					} catch (Exception e) {
+						// bad node, skip it
+						continue;
+					}
+
+					// do a few checks
+					if (stopShort && neighbourNode == goalNode) {
+						// set the goal node to be the current node (we are
+						// stopping short)
+						goalNode = currNode;
+
+						// bail out
+						break search_loop;
+					}
+
+					if (neighbourNode.getTile() == null
+							|| !neighbourNode.getTile().isPassthrough())
+						continue;
+
+					if (open.contains(neighbourNode)
+							&& neighbourNode.getgScore() > PathNode.calcGScore(
+									neighbourNode, currNode)) {
+						// remove it from the open list as we have a better path
+						// It'll be added to open later
+						open.remove(neighbourNode);
+					}
+					if (closed.contains(neighbourNode)
+							&& neighbourNode.getgScore() > PathNode.calcGScore(
+									neighbourNode, currNode)) {
+						// remove it from the closed list as we have a better
+						// it'll be added to open later
+						closed.remove(neighbourNode);
+					}
+					if (!open.contains(neighbourNode)
+							&& !closed.contains(neighbourNode)) {
+						// set the new parent for the neighbour
+						neighbourNode.setParentNode(currNode);
+
+						// recalculate the scores
+						neighbourNode.calcScores(goalNode);
+
+						// add neighbour to open
+						open.add(neighbourNode);
+					}
+				}
+
+			// check for partial path
+			if (open.isEmpty()) {
+				// We couldn't make a path, abort
+				Log.d("RL", "Couldn't find path, aborting");
+				return;
+			}
+		}
+
+		// fill the path
+		currNode = goalNode;
+		while (currNode != startNode) {
+			// add from the begining
+			path.add(0, currNode);
+
+			// get the parent
+			currNode = currNode.getParentNode();
+		}
+
+		// log path end
+		Log.d("RL", "Stopped claculating path");
+	}
+
 	/**
 	 * Calculate the Line of sight with shadow casting
 	 */
@@ -385,7 +524,8 @@ public class Creature extends TemplateEntity {
 				lineOfSight[lX][lY].setTile(cTile);
 
 				// set the tile to visible
-				cTile.setVisible(true);
+				if (discoverer)
+					cTile.setVisible(true);
 
 				// check if we're done scanning
 				if (!cTile.isSeeThrough())
@@ -755,6 +895,10 @@ public class Creature extends TemplateEntity {
 
 	public Tile getLOSTile(int x, int y) {
 		return lineOfSight[x][y].getTile();
+	}
+
+	public Iterator<PathNode> getPathIterator() {
+		return path.iterator();
 	}
 
 }

@@ -7,37 +7,48 @@ import name.bobnet.android.rl.core.ents.Tile;
  * 
  * @author boris
  */
-public class PathNode {
+public class PathNode implements Comparable<PathNode> {
 
 	// constants
-	public static final int G_INC = 1;
+	public static final double G_INC = 1;
+	public static final double DIAG_BUMP = 0.1;
+	public static final double H_BUMP = 1.0001;
 
 	// variables
-	private int f, g, h;
+	private double f, g, h;
 	private Tile tile;
 	private PathNode parentNode;
 
 	/**
 	 * Calculate the fScore of the node
 	 * 
-	 * @param goal
-	 *            the end node
+	 * @param g
+	 *            the g score
+	 * @param h
+	 *            the h score
+	 * @return the f score
 	 */
-	public void calcFScore(PathNode goal) {
-		// calculate g and h
-		calcGScore();
-		calcHScore(goal);
-
+	public static double calcFScore(double g, double h) {
 		// calculate the fScore
-		f = g + h;
+		return g + h;
 	}
 
 	/**
 	 * Calculate the gScore of the node
+	 * 
+	 * @param parent
+	 *            the parent node
+	 * @return the g score
 	 */
-	public void calcGScore() {
+	public static double calcGScore(PathNode node, PathNode parent) {
 		// calculate the g score
-		g = parentNode.g + G_INC;
+		if (node.getTile().getX() - parent.getTile().getX() != 0
+				&& node.getTile().getY() - parent.getTile().getY() != 0)
+			// diagonal
+			return parent.g + G_INC + DIAG_BUMP;
+		else
+			// straight
+			return parent.g + G_INC;
 	}
 
 	/**
@@ -45,16 +56,35 @@ public class PathNode {
 	 * 
 	 * @param goal
 	 *            the end node
+	 * @param node
+	 *            the current node
+	 * @return the h score
 	 */
-	public void calcHScore(PathNode goal) {
-		h = Math.max(Math.abs(tile.getX() - parentNode.getTile().getX()),
-				Math.abs(tile.getY() - parentNode.getTile().getY()));
+	public static double calcHScore(PathNode node, PathNode goal) {
+		return Math.max(Math.abs(node.tile.getX() - goal.getTile().getX()),
+				Math.abs(node.tile.getY() - goal.getTile().getY()));
+	}
+
+	public void calcScores(PathNode goal) {
+		g = calcGScore(this, parentNode);
+		h = calcHScore(this, goal);
+		f = calcFScore(g, h);
+	}
+
+	@Override
+	public int compareTo(PathNode another) {
+		if (f == another.getfScore())
+			return 0;
+		else if (f > another.getfScore())
+			return 1;
+		else
+			return -1;
 	}
 
 	/**
 	 * @return the fScore
 	 */
-	public int getfScore() {
+	public double getfScore() {
 		return f;
 	}
 
@@ -62,14 +92,14 @@ public class PathNode {
 	 * @param fScore
 	 *            the fScore to set
 	 */
-	public void setfScore(int fScore) {
+	public void setfScore(double fScore) {
 		this.f = fScore;
 	}
 
 	/**
 	 * @return the gScore
 	 */
-	public int getgScore() {
+	public double getgScore() {
 		return g;
 	}
 
@@ -77,14 +107,14 @@ public class PathNode {
 	 * @param gScore
 	 *            the gScore to set
 	 */
-	public void setgScore(int gScore) {
+	public void setgScore(double gScore) {
 		this.g = gScore;
 	}
 
 	/**
 	 * @return the hScore
 	 */
-	public int gethScore() {
+	public double gethScore() {
 		return h;
 	}
 
@@ -92,7 +122,7 @@ public class PathNode {
 	 * @param hScore
 	 *            the hScore to set
 	 */
-	public void sethScore(int hScore) {
+	public void sethScore(double hScore) {
 		this.h = hScore;
 	}
 
