@@ -10,8 +10,9 @@ public abstract class Item extends TemplateEntity {
 	// variables
 	private int weight;
 
-	public Item(int weight, String display, String name) {
-		super(display, name);
+	public Item(int weight, String display, String name, int tileSheet,
+			int tileSheet_x, int tileSheet_y) {
+		super(display, name, tileSheet, tileSheet_x, tileSheet_y);
 		this.weight = weight;
 		this.display = display;
 	}

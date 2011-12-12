@@ -25,7 +25,7 @@ public class TestActivity extends Activity {
 		
 		Log.d("RL", "Created Engine: " + engine.toString());
 
-		engine.init(getResources());
+		engine.init(getResources(), null);
 		
 		Log.d("RL", "Inited Engine");
 		

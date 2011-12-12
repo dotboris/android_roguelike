@@ -23,6 +23,7 @@ public abstract class Template {
 	protected int spawnOdd;
 	protected String name;
 	protected String display;
+	protected int tileSheet, tileSheet_x, tileSheet_y;
 
 	protected int rndIntRange(Random rnd, int min, int max) {
 		return rnd.nextInt(max - min) + min + 1;
@@ -36,7 +37,7 @@ public abstract class Template {
 	 * @return whether or not this entity can be spawned
 	 */
 	public boolean checkRoll(int roll) {
-		return spawnOdd <= roll;
+		return spawnOdd <= roll && spawnOdd > 0;
 	}
 
 	/**
@@ -70,6 +71,11 @@ public abstract class Template {
 
 		// load display name
 		display = self.getString("display");
+
+		// load tilesheet data
+		tileSheet = self.getInt("tilesheet");
+		tileSheet_x = self.getInt("tilesheet_x");
+		tileSheet_y = self.getInt("tilesheet_y");
 	}
 
 	/**

@@ -29,6 +29,10 @@
 							"vitality" : 10,
 							"dexterity" : 10,
 							
+							"tilesheet" : 0,
+							"tilesheet_x" : 4,
+							"tilesheet_y" : 0,
+							
 							"xpworth" : 100,
 							"invsize" : 50 
 						}
@@ -58,6 +62,10 @@
 							"vitality" : 5,
 							"dexterity" : 3,
 							
+							"tilesheet" : 0,
+							"tilesheet_x" : 2,
+							"tilesheet_y" : 0,
+							
 							"xpworth" : 10,
 							"invsize" : 50 
 						},
@@ -79,6 +87,10 @@
 							"intellect" : 2,
 							"vitality" : 10,
 							"dexterity" : 4,
+							
+							"tilesheet" : 0,
+							"tilesheet_x" : 3,
+							"tilesheet_y" : 0,
 							
 							"xpworth" : 30,
 							"invsize" : 50 

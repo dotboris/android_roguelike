@@ -149,6 +149,13 @@ public class Tile extends Entity {
 	}
 
 	/**
+	 * @return the number of items on the floor
+	 */
+	public int getNumItems() {
+		return items.size();
+	}
+
+	/**
 	 * @return the iterator of the items
 	 */
 	public Iterator<Item> getItemsIterator() {

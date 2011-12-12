@@ -39,6 +39,10 @@
 										"stab"
 									],
 									
+									"tilesheet" : 0,
+									"tilesheet_x" : 7,
+									"tilesheet_y" : 0, 
+									
 									"allow_band" : true,
 									"allow_enchant" : true,
 									"allow_curse" : true
@@ -66,6 +70,10 @@
 										"slash",
 										"stab"
 									],
+									
+									"tilesheet" : 0,
+									"tilesheet_x" : 6,
+									"tilesheet_y" : 0,
 									
 									"allow_band" : true,
 									"allow_enchant" : true,
@@ -103,6 +111,10 @@
 										"stab"
 									],
 									
+									"tilesheet" : 0,
+									"tilesheet_x" : 5,
+									"tilesheet_y" : 0,
+									
 									"allow_band" : true,
 									"allow_enchant" : true,
 									"allow_curse" : true
@@ -130,6 +142,10 @@
 									
 									"display" : "Dummy Helm",
 									
+									"tilesheet" : 0,
+									"tilesheet_x" : 7,
+									"tilesheet_y" : 0,
+									
 									"min_defence" : 0,
 									"max_defence" : 3
 								},
@@ -141,6 +157,10 @@
 									"weight" : 10,
 									
 									"display" : "Leather Cap",
+									
+									"tilesheet" : 0,
+									"tilesheet_x" : 8,
+									"tilesheet_y" : 0,
 									
 									"min_defence" : 1,
 									"max_defence" : 3

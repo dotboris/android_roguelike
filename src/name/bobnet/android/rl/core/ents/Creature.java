@@ -83,11 +83,12 @@ public class Creature extends TemplateEntity {
 	 * @param xpWorth
 	 *            how much XP this creature is worth
 	 */
-	public Creature(String display, String name, int strength, int intellect,
+	public Creature(String display, String name, int tileSheet,
+			int tileSheet_x, int tileSheet_y, int strength, int intellect,
 			int dexterity, int vitality, int res_frost, int res_fire,
 			int res_air, int res_earth, int res_holy, int res_evil,
 			int xpWorth, int invSize, AI ai) {
-		super(display, name);
+		super(display, name, tileSheet, tileSheet_x, tileSheet_y);
 
 		// set attributes
 		this.strength = strength;
@@ -134,7 +135,7 @@ public class Creature extends TemplateEntity {
 
 		// set the first tick
 		firstTick = false;
-		
+
 		// init the ai
 		ai.init(this);
 	}
@@ -224,11 +225,11 @@ public class Creature extends TemplateEntity {
 		if (!firstTick) {
 			// calculate the LOS for the first time
 			calcLOS();
-			
+
 			// set the flag
 			firstTick = true;
 		}
-		
+
 		// let the AI tick
 		ai.tick();
 	}
@@ -675,6 +676,13 @@ public class Creature extends TemplateEntity {
 	 */
 	public void addToInventory(Item item) {
 		inventory.add(item);
+	}
+
+	/**
+	 * @return the number of item in the inventory
+	 */
+	public int getInventorySize() {
+		return inventory.size();
 	}
 
 	/**

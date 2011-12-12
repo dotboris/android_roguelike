@@ -36,8 +36,9 @@ public class WeaponTemplate extends ItemTemplate {
 		dmg_high = rndIntRange(rnd, dmg_high_min, dmg_high_max);
 
 		// create new weapon
-		res = new Weapon(weight, display, name, EquipSlots.WEAPON, dmg_low,
-				dmg_high, req_str, req_int, req_dex);
+		res = new Weapon(weight, display, name, tileSheet, tileSheet_x,
+				tileSheet_y, EquipSlots.WEAPON, dmg_low, dmg_high, req_str,
+				req_int, req_dex);
 
 		// return the weapon
 		return res;

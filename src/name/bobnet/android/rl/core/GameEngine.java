@@ -21,6 +21,7 @@ import name.bobnet.android.rl.core.ents.factory.ContentLoader;
 import name.bobnet.android.rl.core.ents.tiles.TileType.TileStyle;
 import name.bobnet.android.rl.core.gen.Generator;
 import name.bobnet.android.rl.core.gen.Generator.DungeonType;
+import name.bobnet.android.rl.ui.GameView;
 
 public class GameEngine {
 
@@ -37,6 +38,7 @@ public class GameEngine {
 	private volatile boolean gameRunnerRunning;
 	private LinkedList<Entity> tickList;
 	private Player player;
+	private GameView gameView;
 
 	private GameEngine() {
 		// create the actions queue
@@ -52,8 +54,9 @@ public class GameEngine {
 	/**
 	 * Starts the game
 	 */
-	public void init(Resources res) {
-		// TODO: Init engine
+	public void init(Resources res, GameView gameView) {
+		// set the game view
+		this.gameView = gameView;
 
 		// get an action manager
 		ActionsManager.initActionManager(res);
@@ -179,7 +182,7 @@ public class GameEngine {
 			int aTicks;
 
 			// try to process the action in the queue
-			while (true) {
+			while (!actionsQueue.isEmpty()) {
 				// get the action
 				a = actionsQueue.poll();
 
@@ -211,9 +214,7 @@ public class GameEngine {
 							Log.d("RL", "Couldn't do action " + a.name
 									+ ". Action doesn't doesn't exist.");
 						}
-				} else
-					// queue is empty
-					return;
+				}
 			}
 		}
 	}
@@ -285,6 +286,10 @@ public class GameEngine {
 			// set game runner to not running
 			gameRunnerRunning = false;
 
+			// redraw
+			if (gameView != null)
+				gameView.paintSelf();
+			
 			// continue to process the queue
 			processActions();
 		}

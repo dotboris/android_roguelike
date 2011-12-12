@@ -26,8 +26,8 @@ public class ArmorTemplate extends ItemTemplate {
 	@Override
 	public Entity generate(Random rnd) {
 		// generate a new armon piece
-		return new Armor(weight, display, name, slot, rndIntRange(rnd,
-				min_defence, max_defence));
+		return new Armor(weight, display, name, tileSheet, tileSheet_x,
+				tileSheet_y, slot, rndIntRange(rnd, min_defence, max_defence));
 	}
 
 	@Override

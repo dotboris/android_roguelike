@@ -51,9 +51,10 @@ public class CreatureTemplate extends Template {
 	 */
 	@Override
 	public Entity generate(Random rnd) {
-		return new Creature(display, name, strength, intellect, dexterity,
-				vitality, res_frost, res_fire, res_air, res_earth, res_holy,
-				res_evil, xpWorth, invSize, new HumanoidAI());
+		return new Creature(display, name, tileSheet, tileSheet_x, tileSheet_y,
+				strength, intellect, dexterity, vitality, res_frost, res_fire,
+				res_air, res_earth, res_holy, res_evil, xpWorth, invSize,
+				new HumanoidAI());
 	}
 
 }

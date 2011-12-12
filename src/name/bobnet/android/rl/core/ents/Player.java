@@ -17,12 +17,13 @@ public class Player extends Creature {
 
 	// variables
 	private int level, experience, nextLevelXP;
+
 	public Player(int strength, int intellect, int dexterity, int vitality,
 			int res_frost, int res_fire, int res_air, int res_earth,
 			int res_holy, int res_evil) {
-		super("Uhm... You", "player", strength, intellect, dexterity, vitality,
-				res_frost, res_fire, res_air, res_earth, res_holy, res_evil, 0,
-				200, new PlayerAI());
+		super("Uhm... You", "player", 0, 4, 0, strength, intellect, dexterity,
+				vitality, res_frost, res_fire, res_air, res_earth, res_holy,
+				res_evil, 0, 200, new PlayerAI());
 
 		// set experience values
 		setLevel(1);

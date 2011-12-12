@@ -13,9 +13,9 @@ public class Armor extends Equipment {
 	// variables
 	protected int defence;
 
-	public Armor(int weight, String display, String name, EquipSlots slot,
-			int defence) {
-		super(weight, display, name, slot);
+	public Armor(int weight, String display, String name, int tileSheet,
+			int tileSheet_x, int tileSheet_y, EquipSlots slot, int defence) {
+		super(weight, display, name, tileSheet, tileSheet_x, tileSheet_y, slot);
 
 		this.defence = defence;
 	}

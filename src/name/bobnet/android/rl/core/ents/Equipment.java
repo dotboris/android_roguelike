@@ -12,8 +12,9 @@ public abstract class Equipment extends Item {
 	// variables
 	protected EquipSlots slot;
 
-	public Equipment(int weight, String display, String name, EquipSlots slot) {
-		super(weight, display, name);
+	public Equipment(int weight, String display, String name, int tileSheet,
+			int tileSheet_x, int tileSheet_y, EquipSlots slot) {
+		super(weight, display, name, tileSheet, tileSheet_x, tileSheet_y);
 
 		this.slot = slot;
 	}
