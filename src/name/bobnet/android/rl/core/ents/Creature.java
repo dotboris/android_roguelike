@@ -313,12 +313,13 @@ public class Creature extends TemplateEntity {
 				m.setArgument("xp", xpWorth);
 				MessageManager.getMessenger().sendMessage(m);
 
-				// remove ourselves from the tile
-				((Tile) getParent()).delMob();
-
 				// send a message saying that we left the tile
 				m = new Message(this, getParent(), MessageType.M_ENT_LEAVE_TILE);
 				m.setArgument("what", this);
+				MessageManager.getMessenger().sendMessage(m);
+
+				// destroy ourselves
+				m = new Message(this, this, MessageType.M_DESTROY);
 				MessageManager.getMessenger().sendMessage(m);
 			}
 
@@ -326,6 +327,14 @@ public class Creature extends TemplateEntity {
 			Log.d("RL", "Got hit health now: " + getHealth() + "/"
 					+ getMaxHealth());
 
+			break;
+		case M_DESTROY:
+			// remove ourselves from the tile
+			((Tile) getParent()).delMob();
+			
+			// unregister for ticks
+			GameEngine.getEngine().unregEntTick(this);
+			
 			break;
 		}
 	}
