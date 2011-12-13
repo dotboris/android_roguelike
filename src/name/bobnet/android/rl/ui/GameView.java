@@ -1,8 +1,11 @@
 package name.bobnet.android.rl.ui;
 
+import java.util.Iterator;
+
 import name.bobnet.android.rl.R;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.ents.Creature;
+import name.bobnet.android.rl.core.ents.Equipment;
 import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Player;
 import name.bobnet.android.rl.core.ents.Tile;
@@ -39,17 +42,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public static final int S_OFFSET = 10;
 	public static final int S_WIDTH = 150;
 	public static final int S_HEIGHT = 20;
+	public static final int H_WIDTH = 352;
+	public static final int H_HEIGHT = 224;
+	public static final int H_PADDING = 5;
+	public static final int H_CONTROLS_WIDTH = 32;
 
 	// variables
 	private GameEngine engine;
 	private Player player;
 	private Bitmap[] tileSheets;
 	private Bitmap dpad;
-	private int colorShadow, colorHealth, colorMana;
+	private int colorShadow, colorHealth, colorMana, colorHUDItems,
+			colorHUDControls, colorHUDBack, colorEquipped;
 	private int w, h;
 	private int minx, miny, maxx, maxy, cx, cy, tx, ty;
+	private int hx, hy, hcx, hcy, hix, hiy;
 	private Paint paint;
 	private SurfaceHolder holder;
+	private boolean drawPickupHUD, drawInvHUD;
+	private int hudSelect;
 
 	public GameView(Context context) {
 		super(context);
@@ -87,6 +98,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		colorShadow = getResources().getColor(R.color.shadow);
 		colorHealth = getResources().getColor(R.color.health);
 		colorMana = getResources().getColor(R.color.mana);
+		colorHUDItems = getResources().getColor(R.color.HUD_items);
+		colorHUDControls = getResources().getColor(R.color.HUD_control);
+		colorHUDBack = getResources().getColor(R.color.HUD_back);
+		colorEquipped = getResources().getColor(R.color.equipped);
 
 		// set the paint
 		paint = new Paint();
@@ -97,6 +112,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		// get the player instance
 		player = (Player) engine.getPlayer();
+
+		// set if the huds should be drawn
+		drawInvHUD = false;
+		drawPickupHUD = false;
+
+		// set the hud selection
+		hudSelect = -1;
 	}
 
 	public void paintSelf() {
@@ -184,6 +206,106 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					engine.doAction("A_WAIT", null);
 				}
 
+			}
+			// check for the inventory button
+			else if (event.getX() >= w - 2 * D_OFFSET - 2 * TILE_SIZE
+					&& event.getX() <= w - 2 * D_OFFSET - TILE_SIZE
+					&& event.getY() >= h - D_OFFSET * 2 - D_HEIGHT - TILE_SIZE
+					&& event.getY() <= h - D_OFFSET * 2 - D_HEIGHT) {
+				// show / hide what is needed
+				drawPickupHUD = false;
+				drawInvHUD = !drawInvHUD;
+
+				// clear the selection
+				hudSelect = -1;
+
+				// redraw
+				paintSelf();
+			}
+			// check for the pickup button
+			else if (event.getX() >= w - 2 * D_OFFSET - TILE_SIZE
+					&& event.getX() <= w - 2 * D_OFFSET
+					&& event.getY() >= h - D_OFFSET * 2 - D_HEIGHT - TILE_SIZE
+					&& event.getY() <= h - D_OFFSET * 2 - D_HEIGHT) {
+				// show / hide what is needed
+				drawInvHUD = false;
+				drawPickupHUD = !drawPickupHUD;
+
+				// clear the selection
+				hudSelect = -1;
+
+				// redraw
+				paintSelf();
+			}
+			// checks for hud
+			else if (drawInvHUD || drawPickupHUD) {
+				// selecting items
+				if (event.getX() >= hix
+						&& event.getX() <= hix + H_WIDTH - H_CONTROLS_WIDTH
+						&& event.getY() >= hiy
+						&& event.getY() <= hiy + H_HEIGHT) {
+					// find the selected item
+					int sx = (int) Math.floor((event.getX() - hix) / TILE_SIZE);
+					int sy = (int) Math.floor((event.getY() - hiy) / TILE_SIZE);
+					hudSelect = sy * (H_WIDTH - H_CONTROLS_WIDTH) / TILE_SIZE
+							+ sx;
+
+					// redraw
+					paintSelf();
+				}
+				// selecting controls
+				else if (event.getX() >= hcx && event.getX() <= hcx + TILE_SIZE
+						&& event.getY() >= hcy
+						&& event.getY() <= hcy + H_HEIGHT + 2 * H_PADDING) {
+					// find the selected control
+					int cy = (int) Math.floor((event.getY() - hcy) / TILE_SIZE);
+
+					// do something about it
+					switch (cy) {
+					case 0:
+						// top most control
+						if (drawInvHUD) {
+							try {
+								// equip the item
+								Item i = player.getInventoryItem(hudSelect);
+
+								// only equip equipment
+								if (i instanceof Equipment) {
+									// put the equipment on
+									player.putEquipment((Equipment) i);
+
+									// redraw
+									paintSelf();
+								}
+							} catch (ArrayIndexOutOfBoundsException e) {
+							}
+						} else {
+							try {
+								// pickup the item
+								Item i = ((Tile) player.getParent())
+										.getItem(hudSelect);
+
+								// do the action
+								engine.doAction("A_PICKUP", i);
+							} catch (ArrayIndexOutOfBoundsException e) {
+							}
+						}
+						break;
+					case 1:
+						// second control
+						if (drawInvHUD) {
+							try {
+								// drop the item
+								Item i = player.getInventoryItem(hudSelect);
+
+								// do the action
+								engine.doAction("A_DROP", i);
+							} catch (ArrayIndexOutOfBoundsException e) {
+							}
+						}
+						break;
+					}
+				}
 			}
 
 		}
@@ -344,10 +466,103 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 						h - D_HEIGHT - D_OFFSET, w - D_OFFSET, h - D_OFFSET),
 						paint);
 
+				// draw buttons to display the hud
+				paint.setAlpha(200);
+				drawTile(canvas, 0, 10, 0, w - D_OFFSET - TILE_SIZE, h
+						- D_OFFSET * 2 - D_HEIGHT - TILE_SIZE);
+				drawTile(canvas, 0, 7, 0, w - 2 * D_OFFSET - 2 * TILE_SIZE, h
+						- D_OFFSET * 2 - D_HEIGHT - TILE_SIZE);
+
+				// draw the huds
+				if (drawInvHUD || drawPickupHUD) {
+					// determine the positions of elements
+					hx = (w - (H_WIDTH + H_PADDING * 2)) / 2;
+					hy = (h - (H_HEIGHT + H_PADDING * 2)) / 2;
+					hcx = hx + H_WIDTH + H_PADDING * 2 - H_CONTROLS_WIDTH;
+					hcy = hy;
+					hix = hx + H_PADDING;
+					hiy = hy + H_PADDING;
+
+					// draw the background
+					paint.setColor(colorHUDBack);
+					paint.setAlpha(255);
+					paint.setStyle(Style.FILL_AND_STROKE);
+					canvas.drawRect(hx, hy, hx + H_WIDTH + H_PADDING * 2, hy
+							+ H_HEIGHT + H_PADDING * 2, paint);
+
+					// draw the area for the items
+					paint.setColor(colorHUDItems);
+					canvas.drawRect(hix, hiy, hix + H_WIDTH - H_CONTROLS_WIDTH,
+							hiy + H_HEIGHT, paint);
+
+					// draw the area for the controls
+					paint.setColor(colorHUDControls);
+					canvas.drawRect(hcx, hcy, hcx + H_CONTROLS_WIDTH, hcy
+							+ H_HEIGHT + H_PADDING * 2, paint);
+
+					// draw the controls depending on the type of hud
+					if (drawInvHUD) {
+						drawTile(canvas, 0, 9, 0, hcx, hcy);
+						drawTile(canvas, 0, 10, 0, hcx, hcy + TILE_SIZE);
+					} else if (drawPickupHUD) {
+						drawTile(canvas, 0, 10, 0, hcx, hcy);
+					}
+
+					// draw the items
+					Iterator<Item> it;
+					Item i;
+
+					// get the iterator
+					if (drawInvHUD) {
+						it = player.getInventoryIterator();
+					} else {
+						it = ((Tile) player.getParent()).getItemsIterator();
+					}
+
+					// go through the items
+					int rowCount = 0;
+					int iCount = 0;
+					int sCount = 0;
+					while (it.hasNext()) {
+						// get an item
+						i = it.next();
+
+						// check if equipped
+						if (drawInvHUD && i instanceof Equipment
+								&& player.isEquipped((Equipment) i)) {
+							paint.setColor(colorEquipped);
+							paint.setAlpha(255);
+							canvas.drawRect(hix + TILE_SIZE * iCount, hiy
+									+ TILE_SIZE * rowCount, hix + TILE_SIZE
+									* iCount + TILE_SIZE, hiy + TILE_SIZE
+									* rowCount + TILE_SIZE, paint);
+						}
+
+						// draw the item
+						drawTile(canvas, i.getTileSheet(), i.getTileSheet_x(),
+								i.getTileSheet_y(), hix + TILE_SIZE * iCount,
+								hiy + TILE_SIZE * rowCount);
+
+						// check if selected
+						if (sCount == hudSelect) {
+							drawTile(canvas, 0, 0, 1, hix + TILE_SIZE * iCount,
+									hiy + TILE_SIZE * rowCount);
+						}
+
+						// update the counter
+						iCount++;
+						sCount++;
+						if (iCount >= (H_WIDTH - H_CONTROLS_WIDTH) / TILE_SIZE) {
+							// new row
+							iCount = 0;
+							rowCount++;
+						}
+					}
+				}
+
 				// release the canvas
 				holder.unlockCanvasAndPost(canvas);
 			}
-
 		}
 	}
 }

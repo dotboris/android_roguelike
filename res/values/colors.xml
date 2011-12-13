@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="shadow">#77000000</color>
-	<color name="health">#BBFF0000</color>
-	<color name="mana">#BB0000FF</color>
-    
+
+    <color name="shadow">#77000000</color>
+    <color name="health">#BBFF0000</color>
+    <color name="mana">#BB0000FF</color>
+    <color name="HUD_control">#FF7b5c2a</color>
+    <color name="HUD_items">#FF857864</color>
+    <color name="HUD_back">#FF666666</color>
+    <color name="equipped">#FF00FF00</color>
+
 </resources>

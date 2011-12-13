@@ -331,10 +331,10 @@ public class Creature extends TemplateEntity {
 		case M_DESTROY:
 			// remove ourselves from the tile
 			((Tile) getParent()).delMob();
-			
+
 			// unregister for ticks
 			GameEngine.getEngine().unregEntTick(this);
-			
+
 			break;
 		}
 	}
@@ -665,10 +665,19 @@ public class Creature extends TemplateEntity {
 	}
 
 	/**
+	 * @param equipment
+	 *            a piece of equipment
+	 * @return whether or not the piece is equipped
+	 */
+	public boolean isEquipped(Equipment equipment) {
+		return this.equipment.get(equipment.getSlot()) == equipment;
+	}
+
+	/**
 	 * Put a piece of equipment on
 	 */
-	public void putEquipment(EquipSlots slot, Equipment equipment) {
-		this.equipment.put(slot, equipment);
+	public void putEquipment(Equipment equipment) {
+		this.equipment.put(equipment.getSlot(), equipment);
 	}
 
 	/**
@@ -692,6 +701,15 @@ public class Creature extends TemplateEntity {
 	 */
 	public int getInventorySize() {
 		return inventory.size();
+	}
+
+	/**
+	 * @param pos
+	 *            the index of the item
+	 * @return the item requested
+	 */
+	public Item getInventoryItem(int pos) {
+		return inventory.get(pos);
 	}
 
 	/**

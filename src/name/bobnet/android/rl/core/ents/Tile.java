@@ -156,6 +156,15 @@ public class Tile extends Entity {
 	}
 
 	/**
+	 * @param index
+	 *            the index of the item
+	 * @return the item requested
+	 */
+	public Item getItem(int index) {
+		return items.get(index);
+	}
+
+	/**
 	 * @return the iterator of the items
 	 */
 	public Iterator<Item> getItemsIterator() {

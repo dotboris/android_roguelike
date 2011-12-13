@@ -19,4 +19,19 @@ public abstract class Equipment extends Item {
 		this.slot = slot;
 	}
 
+	/**
+	 * @return the slot
+	 */
+	public EquipSlots getSlot() {
+		return slot;
+	}
+
+	/**
+	 * @param slot
+	 *            the slot to set
+	 */
+	public void setSlot(EquipSlots slot) {
+		this.slot = slot;
+	}
+
 }
