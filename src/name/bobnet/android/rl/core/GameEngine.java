@@ -52,7 +52,7 @@ public class GameEngine {
 	}
 
 	/**
-	 * Starts the game
+	 * Init the engine
 	 */
 	public void init(Resources res, GameView gameView) {
 		// set the game view
@@ -71,8 +71,13 @@ public class GameEngine {
 		contentLoader = ContentLoader.getContentLoader();
 		contentLoader.loadContent(res);
 		Log.d("RL", "Loaded Resources from JSON files");
+	}
 
-		// create a new dungeon (for testing)
+	/**
+	 * Start the game
+	 */
+	public void startGame() {
+		// create a new dungeon
 		currentDungeon = Generator.GenerateDungeon(DungeonType.STANDARD,
 				TileStyle.ROCK);
 
@@ -83,6 +88,7 @@ public class GameEngine {
 		currentDungeon.getTile(40, 40).setMob(player);
 		player.calcLOS();
 		Log.d("RL", "Created player");
+
 	}
 
 	// TESTING generate a new dungeon and set it as the current dungeon
@@ -289,7 +295,7 @@ public class GameEngine {
 			// redraw
 			if (gameView != null)
 				gameView.paintSelf();
-			
+
 			// continue to process the queue
 			processActions();
 		}

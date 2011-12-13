@@ -8,5 +8,6 @@
     <color name="HUD_items">#FF857864</color>
     <color name="HUD_back">#FF666666</color>
     <color name="equipped">#FF00FF00</color>
+    <color name="dead">#55FF0000</color>
 
 </resources>

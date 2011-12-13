@@ -53,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private Bitmap[] tileSheets;
 	private Bitmap dpad;
 	private int colorShadow, colorHealth, colorMana, colorHUDItems,
-			colorHUDControls, colorHUDBack, colorEquipped;
+			colorHUDControls, colorHUDBack, colorEquipped, colorDead;
 	private int w, h;
 	private int minx, miny, maxx, maxy, cx, cy, tx, ty;
 	private int hx, hy, hcx, hcy, hix, hiy;
@@ -102,6 +102,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		colorHUDControls = getResources().getColor(R.color.HUD_control);
 		colorHUDBack = getResources().getColor(R.color.HUD_back);
 		colorEquipped = getResources().getColor(R.color.equipped);
+		colorDead = getResources().getColor(R.color.dead);
 
 		// set the paint
 		paint = new Paint();
@@ -109,6 +110,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		// init the engine
 		engine.init(getResources(), this);
+
+		// start the game
+		startGame();
+	}
+
+	private void startGame() {
+		// start the game
+		engine.startGame();
 
 		// get the player instance
 		player = (Player) engine.getPlayer();
@@ -119,6 +128,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		// set the hud selection
 		hudSelect = -1;
+
 	}
 
 	public void paintSelf() {
@@ -139,41 +149,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		// check the key
 		switch (keyCode) {
-		case KeyEvent.KEYCODE_1:
-			engine.doMoveAction(-1, -1);
-			break;
-		case KeyEvent.KEYCODE_2:
-			engine.doMoveAction(0, -1);
-			break;
-		case KeyEvent.KEYCODE_3:
-			engine.doMoveAction(1, -1);
-			break;
-		case KeyEvent.KEYCODE_4:
-			engine.doMoveAction(-1, 0);
-			break;
-		case KeyEvent.KEYCODE_6:
-			engine.doMoveAction(1, 0);
-			break;
-		case KeyEvent.KEYCODE_7:
-			engine.doMoveAction(-1, 1);
-			break;
-		case KeyEvent.KEYCODE_8:
-			engine.doMoveAction(0, 1);
-			break;
-		case KeyEvent.KEYCODE_9:
-			engine.doMoveAction(1, 1);
-			break;
-		case KeyEvent.KEYCODE_P:
-			engine.pickUpItem();
-			break;
-		case KeyEvent.KEYCODE_D:
-			engine.dropItem();
-			break;
 		case KeyEvent.KEYCODE_R:
+			// restart
+			startGame();
+			
+			// repaint
 			paintSelf();
-			break;
-		case KeyEvent.KEYCODE_DPAD_CENTER:
-			engine.genDugeon();
 			break;
 		default:
 			break;
@@ -185,8 +166,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			if (player.getHealth() <= 0) {
+				// we're dead start a new game
+				startGame();
+				
+				// redraw
+				paintSelf();
+			}
 			// check for the DPAD
-			if (event.getX() >= w - D_WIDTH - D_OFFSET
+			else if (event.getX() >= w - D_WIDTH - D_OFFSET
 					&& event.getX() <= w - D_OFFSET
 					&& event.getY() >= h - D_HEIGHT - D_OFFSET
 					&& event.getY() <= h - D_OFFSET) {
@@ -568,6 +556,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 							rowCount++;
 						}
 					}
+				}
+				
+				if (player.getHealth() <= 0 ) {
+					// we're dead make the screen red
+					canvas.drawColor(colorDead);
 				}
 
 				// release the canvas
