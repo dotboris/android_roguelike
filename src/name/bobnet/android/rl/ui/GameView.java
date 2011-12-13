@@ -17,6 +17,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -32,6 +33,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public static final int TILE_SIZE = 32;
 	public static final int SHEET_TILES_X = 20;
 	public static final int SHEET_TILES_Y = 10;
+	public static final int D_WIDTH = 150;
+	public static final int D_HEIGHT = 150;
+	public static final int D_OFFSET = 10;
 	public static final int S_OFFSET = 10;
 	public static final int S_WIDTH = 150;
 	public static final int S_HEIGHT = 20;
@@ -40,6 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	private GameEngine engine;
 	private Player player;
 	private Bitmap[] tileSheets;
+	private Bitmap dpad;
 	private int colorShadow, colorHealth, colorMana;
 	private int w, h;
 	private int minx, miny, maxx, maxy, cx, cy, tx, ty;
@@ -58,18 +63,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 		// listen to holder callbacks
 		holder.addCallback(this);
-		
+
 		// get engine
 		engine = GameEngine.getEngine();
 
-		// load tile sheets
-		tileSheets = new Bitmap[TILE_SHEETS.length];
+		// load bitmaps
 		BitmapFactory.Options ops = new BitmapFactory.Options();
 		ops.inScaled = false;
+
+		// load tile sheets
+		tileSheets = new Bitmap[TILE_SHEETS.length];
 		for (int t = 0; t < TILE_SHEETS.length; t++) {
 			tileSheets[t] = BitmapFactory.decodeResource(getResources(),
 					TILE_SHEETS[t]);
 		}
+
+		// load dpad
+		dpad = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+				getResources(), R.drawable.dpadlight, ops), D_WIDTH, D_HEIGHT,
+				false);
 
 		// load colours
 		colorShadow = getResources().getColor(R.color.shadow);
@@ -149,6 +161,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// check for the DPAD
+			if (event.getX() >= w - D_WIDTH - D_OFFSET
+					&& event.getX() <= w - D_OFFSET
+					&& event.getY() >= h - D_HEIGHT - D_OFFSET
+					&& event.getY() <= h - D_OFFSET) {
+				// figure out the direction that was clicked
+				int dirX = (int) (Math
+						.floor((event.getX() - (w - D_WIDTH - D_OFFSET))
+								/ (D_WIDTH / 3)) - 1);
+				int dirY = -(int) (Math
+						.floor((event.getY() - (h - D_HEIGHT - D_OFFSET))
+								/ (D_HEIGHT / 3)) - 1);
+
+				// go in that direction
+				if (!(dirX == 0 && dirY == 0)) {
+					engine.doMoveAction(dirX, dirY);
+				} else {
+					// wait
+					engine.doAction("A_WAIT", null);
+				}
+
+			}
+
+		}
+
+		return true;
+	}
+
+	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// set the holder
@@ -164,7 +207,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 		// set the holder
 		this.holder = holder;
 
-		// draw ourselves 
+		// draw ourselves
 		paintSelf();
 	}
 
@@ -295,6 +338,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 							/ player.getMaxMana(), 2 * S_OFFSET + S_HEIGHT, w
 							- S_OFFSET, 2 * S_OFFSET + 2 * S_HEIGHT, paint);
 				}
+
+				// draw the dpad
+				canvas.drawBitmap(dpad, null, new Rect(w - D_WIDTH - D_OFFSET,
+						h - D_HEIGHT - D_OFFSET, w - D_OFFSET, h - D_OFFSET),
+						paint);
 
 				// release the canvas
 				holder.unlockCanvasAndPost(canvas);
