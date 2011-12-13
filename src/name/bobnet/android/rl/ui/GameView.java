@@ -42,7 +42,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	public static final int S_OFFSET = 10;
 	public static final int S_WIDTH = 150;
 	public static final int S_HEIGHT = 20;
-	public static final int H_WIDTH = 352;
+	public static final int H_WIDTH = 256;
 	public static final int H_HEIGHT = 224;
 	public static final int H_PADDING = 5;
 	public static final int H_CONTROLS_WIDTH = 32;
@@ -198,6 +198,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 						.floor((event.getY() - (h - D_HEIGHT - D_OFFSET))
 								/ (D_HEIGHT / 3)) - 1);
 
+				// get out of the hud if it's open
+				drawInvHUD = false;
+				drawPickupHUD = false;
+
 				// go in that direction
 				if (!(dirX == 0 && dirY == 0)) {
 					engine.doMoveAction(dirX, dirY);
@@ -205,7 +209,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 					// wait
 					engine.doAction("A_WAIT", null);
 				}
-
 			}
 			// check for the inventory button
 			else if (event.getX() >= w - 2 * D_OFFSET - 2 * TILE_SIZE
@@ -223,8 +226,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 				paintSelf();
 			}
 			// check for the pickup button
-			else if (event.getX() >= w - 2 * D_OFFSET - TILE_SIZE
-					&& event.getX() <= w - 2 * D_OFFSET
+			else if (event.getX() >= w - D_OFFSET - TILE_SIZE
+					&& event.getX() <= w - D_OFFSET
 					&& event.getY() >= h - D_OFFSET * 2 - D_HEIGHT - TILE_SIZE
 					&& event.getY() <= h - D_OFFSET * 2 - D_HEIGHT) {
 				// show / hide what is needed
@@ -305,6 +308,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 						}
 						break;
 					}
+				} else {
+					// exit out of the huds
+					drawInvHUD = false;
+					drawPickupHUD = false;
+
+					// redraw
+					paintSelf();
 				}
 			}
 

@@ -9,6 +9,7 @@ import name.bobnet.android.rl.core.Action;
 import name.bobnet.android.rl.core.GameEngine;
 import name.bobnet.android.rl.core.MessageManager;
 import name.bobnet.android.rl.core.ents.Creature;
+import name.bobnet.android.rl.core.ents.Equipment;
 import name.bobnet.android.rl.core.ents.Item;
 import name.bobnet.android.rl.core.ents.Tile;
 import name.bobnet.android.rl.core.message.Message;
@@ -122,6 +123,12 @@ public abstract class AI {
 				} else if (currAction.name.equals("A_DROP")) {
 					// drop the item
 					parent.dropItem((Item) currAction.ent);
+
+					// unequip if needed
+					if (currAction.ent instanceof Equipment
+							&& parent.isEquipped((Equipment) currAction.ent)) {
+						parent.putEquipment((Equipment) currAction.ent);
+					}
 				} else if (currAction.name.equals("A_EAT")) {
 
 				} else if (currAction.name.equals("A_READ")) {
@@ -140,5 +147,4 @@ public abstract class AI {
 			// we don't have an action, see what we can do
 			nextAction();
 	}
-
 }

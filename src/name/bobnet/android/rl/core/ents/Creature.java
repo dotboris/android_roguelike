@@ -43,6 +43,7 @@ public class Creature extends TemplateEntity {
 
 	// constants
 	public static final int LOS_SIZE = 10;
+	public static final int REGEN_TICKS = 100;
 
 	// variables
 	protected int health, mana;
@@ -58,6 +59,7 @@ public class Creature extends TemplateEntity {
 	private PriorityQueue<PathNode> open;
 	private ArrayList<PathNode> closed;
 	private LinkedList<PathNode> path;
+	private int healthTickCount;
 
 	/**
 	 * @param strength
@@ -135,6 +137,9 @@ public class Creature extends TemplateEntity {
 
 		// set the first tick
 		firstTick = false;
+
+		// set the health ticker
+		healthTickCount = 0;
 
 		// init the ai
 		ai.init(this);
@@ -229,6 +234,16 @@ public class Creature extends TemplateEntity {
 			// set the flag
 			firstTick = true;
 		}
+
+		// health regen
+		if (healthTickCount >= REGEN_TICKS) {
+			// reset the counter
+			healthTickCount = 0;
+
+			// heal ourselves
+			setHealth(health + 1);
+		}
+		healthTickCount++;
 
 		// let the AI tick
 		ai.tick();
@@ -677,7 +692,12 @@ public class Creature extends TemplateEntity {
 	 * Put a piece of equipment on
 	 */
 	public void putEquipment(Equipment equipment) {
-		this.equipment.put(equipment.getSlot(), equipment);
+		if (isEquipped(equipment))
+			// remove the equipment if it's already on
+			this.equipment.put(equipment.getSlot(), null);
+		else
+			// put the equipment on
+			this.equipment.put(equipment.getSlot(), equipment);
 	}
 
 	/**
@@ -850,7 +870,11 @@ public class Creature extends TemplateEntity {
 	 *            the health to set
 	 */
 	public void setHealth(int health) {
-		this.health = health;
+		// don't overheal
+		if (health > getMaxHealth())
+			this.health = getMaxHealth();
+		else
+			this.health = health;
 	}
 
 	/**
