@@ -37,7 +37,7 @@ public abstract class Template {
 	 * @return whether or not this entity can be spawned
 	 */
 	public boolean checkRoll(int roll) {
-		return spawnOdd <= roll && spawnOdd > 0;
+		return roll <= spawnOdd && spawnOdd > 0;
 	}
 
 	/**
