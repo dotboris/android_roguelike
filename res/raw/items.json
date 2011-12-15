@@ -50,7 +50,7 @@
 								{
 									"name" : "supersword",
 									"type" : "template",
-									"spawnodds" : 75,
+									"spawnodds" : 25,
 									
 									"weight" : 30,
 									
@@ -73,6 +73,38 @@
 									
 									"tilesheet" : 0,
 									"tilesheet_x" : 6,
+									"tilesheet_y" : 0,
+									
+									"allow_band" : true,
+									"allow_enchant" : true,
+									"allow_curse" : true
+									
+								},
+								{
+									"name" : "poke_stick",
+									"type" : "template",
+									"spawnodds" : 80,
+									
+									"weight" : 20,
+									
+									"display" : "The poking stick",
+									
+									"req_int" : 0,
+									"req_str" : 5,
+									"req_dex" : 3,
+									
+									"dmg_low_min" : 1,
+									"dmg_low_max" : 2,
+									
+									"dmg_high_min" : 3,
+									"dmg_high_max" : 4,
+									
+									"skills" : [
+										"stab"
+									],
+									
+									"tilesheet" : 0,
+									"tilesheet_x" : 11,
 									"tilesheet_y" : 0,
 									
 									"allow_band" : true,
